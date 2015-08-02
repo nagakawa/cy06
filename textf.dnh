@@ -1,0 +1,58 @@
+// text object utilities because I'm lazy
+function gt {
+	return GetCommonData("cto", ID_INVALID);
+}
+function cta(s) {
+	return ct(s, 100, 1000);
+}
+function ct(s, wc, wp) {
+	let t = ObjText_Create;
+	if (useUruwi) {ObjText_SetTextWW(t, s, wc);}
+	else {
+		ObjText_SetMaxWidth(t, wp);
+		ObjText_SetText(t, s);
+	}
+	Obj_SetValue(t, "wc", wc);
+	Obj_SetValue(t, "wp", wp);
+	st(t);
+	return t;
+}
+function st(t) {
+	SetCommonData("cto", t);
+}
+function txs(s) {
+	if (useUruwi) {ObjText_SetTextWW(gt, s, Obj_GetValue(gt, "wc"));}
+	else {
+		ObjText_SetText(gt, s);
+	}
+}
+function txl(k) {
+	txs(S(k));
+}
+function txp(x, y) {
+	ObjRender_SetPosition(gt, x, y, 0);
+}
+function txct(r, g, b) {
+	ObjText_SetFontColorTop(gt, r, g, b);
+}
+function txcb(r, g, b) {
+	ObjText_SetFontColorBottom(gt, r, g, b);
+}
+function txc(r, g, b) {
+	txct(r, g, b);
+	txcb(r, g, b);
+}
+function txb(r, g, b) {
+	ObjText_SetFontBorderColor(gt, r, g, b);
+	ObjText_SetFontBorderType(gt, BORDER_FULL);
+	ObjText_SetFontBorderWidth(gt, 2);
+}
+function txh(h) {
+	ObjText_SetFontSize(gt, h);
+}
+function txt(t) {
+	ObjText_SetFontType(gt, S("font." ~ t));
+}
+function txr(r) {
+	Obj_SetRenderPriorityI(gt, r);
+}

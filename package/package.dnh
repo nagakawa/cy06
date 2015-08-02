@@ -1,0 +1,243 @@
+#TouhouDanmakufu[Package]
+#ScriptVersion[3]
+#Title["朝陽雲蛇仙　～ Exorcism of Infinite Blossoms"]
+#Text["6th 朝陽 Project"]
+#Player["./../player/player0.dnh", "./../player/player1.dnh", "./../player/player2.dnh", "./../player/player3.dnh", "./../player/player4.dnh", "./../player/player5.dnh"]
+#System["./../system/system.dnh"]
+#include "./loading.dnh"
+#include "./../propkg.dnh"
+
+// Hello viewers
+
+let bgm;
+
+@Initialize {
+	CreateCommonDataArea("Cy06");
+	LoadCommonDataAreaA1("Cy06");
+	CreateCommonDataArea("Replay");
+	CreateCommonDataArea("Str");
+	bgm = ObjSound_Create;
+	ObjSound_SetLoopEnable(bgm, true);
+	ObjSound_SetSoundDivision(bgm, SOUND_BGM);
+	ObjSound_SetVolumeRate(bgm, GetAreaCommonData("Cy06", "BGMVolume", 100));
+	init;
+	ss;
+	titleScene(true);
+}
+
+task ss {
+	loop {
+		if (GetKeyState(KEY_P) == KEY_PUSH) {
+			SaveSnapShotA1(GetCurrentScriptDirectory ~ "../screenshot/" ~ GetCurrentDateTimeS ~ ".bmp");
+		}
+		yield;
+	}
+}
+
+@Event {
+	alternative (GetEventType)
+	case (EV_PLAY_BGM) {
+		let args = GetEventArgument(0);
+		let id = args[0];
+		let fr = args[1];
+		let st = args[2];
+		if (GetCommonData("NowPlaying", -1) == id && !fr) {return;}
+		let path = GetCurrentScriptDirectory ~ "../bgm/cy06_" ~ bgmNames[id] ~ ".ogg";
+		ObjSound_Stop(bgm);
+		if (path != "") {
+			ObjSound_Load(bgm, path);
+			ObjSound_SetSoundDivision(bgm, SOUND_BGM);
+			ObjSound_SetVolumeRate(bgm, GetAreaCommonData("Cy05", "BGMVol", 100));
+			ObjSound_SetLoopEnable(bgm, true);
+			ObjSound_SetLoopTime(bgm, 0, endTimes[id]);
+			ObjSound_Play(bgm);
+			SetAreaCommonData("Cy06", "HeardBGM " ~ IntToString(id), true);
+			SetCommonData("NowPlaying", id);
+			if (st) {
+				let name = "BGM: " ~ S("music.m" ~ id ~ ".title");
+				let textObj = cta(name);
+				txr(19);
+				txp(656, 440);
+				txct(255, 224, 192);
+				txcb(255, 192, 128);
+				txh(12);
+				txt("menu");
+				task fork {
+					descent (i in 0 .. 81) {
+						ObjRender_SetX(textObj, 8 * i + 32);
+						yield;
+					}
+					loop (180) {yield;}
+					ascent (i in 440 .. 480) {
+						ObjRender_SetY(textObj, i);
+						yield;
+					}
+					Obj_Delete(textObj);
+				}
+				fork;
+			}
+		}
+	}
+	case (EV_PLAY_SE) {
+		let path = GetCurrentScriptDirectory ~ "../se/" ~ GetEventArgument(0) ~ ".wav";
+		let se = ObjSound_Create;
+		ObjSound_SetSoundDivision(se, SOUND_SE);
+		ObjSound_SetVolumeRate(se, GetAreaCommonData("Cy05", "SEVolume", 100));
+		ObjSound_Load(se, path);
+		ObjSound_Play(se);
+		task go {
+			loop (600) {yield;}
+			Obj_Delete(se);
+		}
+		go;
+	}
+}
+
+function runScript(path, args) {
+	let sc = LoadScript(path);
+	let l = length(args);
+	ascent (i in 0 .. l) {
+		SetScriptArgument(sc, i, args[i]);
+	}
+	StartScript(sc);
+	while (!IsCloseScript(sc)) {yield;}
+	return GetScriptResult(sc);
+}
+
+task titleScene(showIntro) {
+	let titleSceneEnded = false;
+	let dir = GetCurrentScriptDirectory;
+	let pathTitle = dir ~ "../resource/intro.png";
+	let pathTitle2 = dir ~ "../resource/title.png";
+	let titleImg = ObjPrim_Create(OBJ_SPRITE_2D);
+	// Imagine if you could val titleImg = new Sprite2D(path = pathTitle, coordinate = ToWindow, source = (0, 0, 640, 480), dest = (0, 0, 640, 480), priority = 0.004)
+	Obj_SetRenderPriority(titleImg, 0);
+	ObjPrim_SetTexture(titleImg, pathTitle);
+	ObjSprite2D_SetSourceRect(titleImg, 0, 0, 800, 600);
+	ObjSprite2D_SetDestRect(titleImg, 0, 0, 800, 600);
+	if (showIntro) {
+		wait(150);
+	}
+	ObjPrim_SetTexture(titleImg, pathTitle2);
+	// we don't need to create the title text; it's already on there.
+	let START = 0;
+	let EXTRA = 1;
+	let PRACTICE = 2;
+	let SPELL_PRACTICE = 3;
+	let REPLAY = 4;
+	let DATA = 5;
+	let MUSIC_ROOM = 6;
+	let MANUAL = 7;
+	let CHARACTERS = 8;
+	let OPTION = 9;
+	let QUIT = 10;
+	let selected = 0;
+	function menuItem(i, x, y, text, b) {
+		let objText = cta(text);
+		txp(x, y);
+		txcb(96 + 32 * b, 96 + 32 * b, 144 + 95 * b);
+		txct(112 + 64 * b, 112 + 64 * b, 144 + 95 * b);
+		txb(32 + 32 * b, 32 + 32 * b, 88 + 88 * b);
+		txh(32);
+		txr(3);
+		txt("menu");
+		let objSelect = cta(text);
+		txp(x, y);
+		txcb(96 + 32 * b, 96 + 32 * b, 144 + 95 * b);
+		txct(112 + 64 * b, 112 + 64 * b, 144 + 95 * b);
+		txb(32 + 32 * b, 32 + 32 * b, 88 + 88 * b);
+		txh(32);
+		txr(3);
+		txt("menu");
+		ObjRender_SetBlendType(objSelect, BLEND_ADD_RGB);
+		task fork {
+			while (!titleSceneEnded) {
+				Obj_SetVisible(objSelect, i == selected);
+				yield;
+			}
+			Obj_Delete(objText);
+			Obj_Delete(objSelect);
+		}
+		fork;
+		return [objText, objSelect];
+	}
+	let x = 600;
+	let y = 142;
+	//let exUnlocked = isExtraUnlocked(0) || isExtraUnlocked(1) || isExtraUnlocked(2) || isExtraUnlocked(3);
+	let enabled = [true, false, false, false, true, false, false, false, false, false, true];
+	let labels = ["start", "extra", "practice", "spell", "replay", "scores", "musicRoom", "manual", "character", "options", "quit"];
+	let itemCt = length(labels);
+	let titleItems = [];
+	ascent (i in 0 .. itemCt) {
+		titleItems = titleItems ~ menuItem(i, rand(560, 600), y + 32 * i,
+			S("menu.main." ~ labels[i]), enabled[i]);
+	}
+	let bottomMatter = cta("(C)opyright 2015 Fluffy8x/AGC. Ver 0.01tr.");
+	txp(20, 540);
+	txct(255, 192, 192);
+	txcb(255, 128, 128);
+	txb(128, 64, 64);
+	txh(32);
+	txt("menu");
+	titleItems = titleItems ~ [bottomMatter];
+	playBGM(0);
+	SaveCommonDataAreaA1("Cy06");
+	flushZ;
+	let frames = 0;
+	while (!titleSceneEnded) {
+		if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
+			// TODO: fill in the stubs
+			SaveCommonDataAreaA1("Cy05");
+			alternative (selected)
+			/*case (START) {
+				play(-1);
+			}
+			case (EXTRA) {
+				if (exUnlocked) {playX(-1);}
+			}
+			case (PRACTICE) {
+				playStage;
+			}
+			case (SPELL_PRACTICE) {
+				spellPractice;
+			}
+			case (REPLAY) {
+				replayMenu;
+			}
+			case (DATA) {
+				data;
+			}
+			case (OPTION) {
+				options;
+				ascent (i in 0 .. itemCt) {
+					let t = getInterfaceStrings(MAIN_MENU + i);
+					ObjText_SetText(titleItems[2 * i], t);
+					ObjText_SetText(titleItems[2 * i + 1], t);
+				}
+			}*/
+			case (QUIT) {
+				Obj_Delete(titleImg);
+				ClosePackage;
+				return;
+			}
+		}
+		let up = GetVirtualKeyState(VK_UP);
+		let down = GetVirtualKeyState(VK_DOWN);
+		if (up == KEY_PUSH) {selected--;}
+		else if (down == KEY_PUSH) {selected++;}
+		else if (up == KEY_HOLD) {
+			frames++;
+			if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {selected--;}
+		}
+		else if (down== KEY_HOLD) {
+			frames++;
+			if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {selected++;}
+		}
+		else {frames = 0;}
+		if (selected < 0) {selected = itemCt - 1;}
+		else if (selected >= itemCt) {selected = 0;}
+		yield;
+	}
+}
+
+@MainLoop {yield;}

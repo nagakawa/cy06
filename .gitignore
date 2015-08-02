@@ -1,0 +1,4 @@
+language/**/*.bin
+language/manifest.bin
+replay/
+package/data/

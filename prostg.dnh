@@ -1,0 +1,27 @@
+#include "./procon.dnh"
+
+function getPower {
+	return GetCommonData("Power", 0);
+}
+
+task setPower(p) {
+	SetCommonData("Power", p);
+}
+
+function createStraightLaserA1(x, y, angle, len, width, deleteTime, graphicId, delay) {
+	let l = CreateStraightLaserA1(x, y, angle, len, width, deleteTime, graphicId, delay);
+	ObjLaser_SetGrazeInvalidFrame(l, 3);
+	return l;
+}
+
+function createLooseLaserA1(x, y, speed, angle, len, width, graphicId, delay) {
+	let l = CreateLooseLaserA1(x, y, speed, angle, len, width, graphicId, delay);
+	ObjLaser_SetGrazeInvalidFrame(l, 3);
+	return l;
+}
+
+function createCurveLaserA1(x, y, speed, angle, len, width, graphicId, delay) {
+	let l = CreateCurveLaserA1(x, y, speed, angle, len, width, graphicId, delay);
+	ObjLaser_SetGrazeInvalidFrame(l, 3);
+	return l;
+}

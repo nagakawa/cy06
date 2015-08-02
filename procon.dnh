@@ -1,0 +1,34 @@
+#include "./sound.dnh"
+#include "./itsb.dnh"
+#include "./ww.dnh"
+#include "./language.dnh"
+#include "./textf.dnh"
+
+function getCharacter {
+	return GetAreaCommonData("Replay", "Character", 0);
+}
+
+task setCharacter(c) {
+	SetAreaCommonData("Replay", "Character", c);
+}
+
+function getDifficulty {
+	return GetAreaCommonData("Replay", "Difficulty", 1);
+}
+
+task setDifficulty(d) {
+	SetAreaCommonData("Replay", "Difficulty", d);
+}
+
+function exists(o) {return !Obj_IsDeleted(o);}
+function nexists(o) {return Obj_IsDeleted(o);}
+function delete(o) {return Obj_Delete(o);}
+
+function flush(vk) {
+	while (GetVirtualKeyState(vk) != KEY_FREE) {yield;}
+}
+function flushZ {flush(VK_OK);}
+
+function wait(t) {
+	loop (t) {yield;}
+}
