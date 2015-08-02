@@ -1,7 +1,7 @@
 #TouhouDanmakufu[Package]
 #ScriptVersion[3]
-#Title["ÊúùÈôΩÈõ≤Ëõá‰ªô„ÄÄÔΩû Exorcism of Infinite Blossoms"]
-#Text["6th ÊúùÈôΩ Project"]
+#Title["í©ózâ_é÷êÂÅ@Å` Exorcism of Infinite Blossoms"]
+#Text["6th í©óz Project"]
 #Player["./../player/player0.dnh", "./../player/player1.dnh", "./../player/player2.dnh", "./../player/player3.dnh", "./../player/player4.dnh", "./../player/player5.dnh"]
 #System["./../system/system.dnh"]
 #include "./loading.dnh"
@@ -20,6 +20,7 @@ let bgm;
 	ObjSound_SetLoopEnable(bgm, true);
 	ObjSound_SetSoundDivision(bgm, SOUND_BGM);
 	ObjSound_SetVolumeRate(bgm, GetAreaCommonData("Cy06", "BGMVolume", 100));
+	SetCommonData("BGMObj", bgm);
 	init;
 	ss;
 	titleScene(true);
@@ -47,7 +48,7 @@ task ss {
 		if (path != "") {
 			ObjSound_Load(bgm, path);
 			ObjSound_SetSoundDivision(bgm, SOUND_BGM);
-			ObjSound_SetVolumeRate(bgm, GetAreaCommonData("Cy05", "BGMVol", 100));
+			ObjSound_SetVolumeRate(bgm, GetAreaCommonData("Cy06", "BGMVol", 100));
 			ObjSound_SetLoopEnable(bgm, true);
 			ObjSound_SetLoopTime(bgm, 0, endTimes[id]);
 			ObjSound_Play(bgm);
@@ -82,7 +83,7 @@ task ss {
 		let path = GetCurrentScriptDirectory ~ "../se/" ~ GetEventArgument(0) ~ ".wav";
 		let se = ObjSound_Create;
 		ObjSound_SetSoundDivision(se, SOUND_SE);
-		ObjSound_SetVolumeRate(se, GetAreaCommonData("Cy05", "SEVolume", 100));
+		ObjSound_SetVolumeRate(se, GetAreaCommonData("Cy06", "SEVolume", 100));
 		ObjSound_Load(se, path);
 		ObjSound_Play(se);
 		task go {
@@ -109,6 +110,7 @@ task titleScene(showIntro) {
 	let dir = GetCurrentScriptDirectory;
 	let pathTitle = dir ~ "../resource/intro.png";
 	let pathTitle2 = dir ~ "../resource/title.png";
+	let pathTitle3 = dir ~ "../resource/menu.png";
 	let titleImg = ObjPrim_Create(OBJ_SPRITE_2D);
 	// Imagine if you could val titleImg = new Sprite2D(path = pathTitle, coordinate = ToWindow, source = (0, 0, 640, 480), dest = (0, 0, 640, 480), priority = 0.004)
 	Obj_SetRenderPriority(titleImg, 0);
@@ -139,7 +141,7 @@ task titleScene(showIntro) {
 		txct(112 + 64 * b, 112 + 64 * b, 144 + 95 * b);
 		txb(32 + 32 * b, 32 + 32 * b, 88 + 88 * b);
 		txh(32);
-		txr(3);
+		txr(1);
 		txt("menu");
 		let objSelect = cta(text);
 		txp(x, y);
@@ -147,7 +149,7 @@ task titleScene(showIntro) {
 		txct(112 + 64 * b, 112 + 64 * b, 144 + 95 * b);
 		txb(32 + 32 * b, 32 + 32 * b, 88 + 88 * b);
 		txh(32);
-		txr(3);
+		txr(1);
 		txt("menu");
 		ObjRender_SetBlendType(objSelect, BLEND_ADD_RGB);
 		task fork {
@@ -164,7 +166,7 @@ task titleScene(showIntro) {
 	let x = 600;
 	let y = 142;
 	//let exUnlocked = isExtraUnlocked(0) || isExtraUnlocked(1) || isExtraUnlocked(2) || isExtraUnlocked(3);
-	let enabled = [true, false, false, false, true, false, false, false, false, false, true];
+	let enabled = [true, false, false, false, true, false, false, false, false, true, true];
 	let labels = ["start", "extra", "practice", "spell", "replay", "scores", "musicRoom", "manual", "character", "options", "quit"];
 	let itemCt = length(labels);
 	let titleItems = [];
@@ -186,8 +188,10 @@ task titleScene(showIntro) {
 	let frames = 0;
 	while (!titleSceneEnded) {
 		if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
+			ObjPrim_SetTexture(titleImg, pathTitle3);
+			Obj_SetRenderPriorityI(titleImg, 2);
 			// TODO: fill in the stubs
-			SaveCommonDataAreaA1("Cy05");
+			SaveCommonDataAreaA1("Cy06");
 			alternative (selected)
 			/*case (START) {
 				play(-1);
@@ -206,20 +210,23 @@ task titleScene(showIntro) {
 			}
 			case (DATA) {
 				data;
-			}
+			}*/
 			case (OPTION) {
-				options;
+				runScript(dir ~ "options.dnh", []);
 				ascent (i in 0 .. itemCt) {
-					let t = getInterfaceStrings(MAIN_MENU + i);
+					let t = S("menu.main." ~ labels[i]);
 					ObjText_SetText(titleItems[2 * i], t);
 					ObjText_SetText(titleItems[2 * i + 1], t);
 				}
-			}*/
+			}
 			case (QUIT) {
+				WriteLog("STOP");
 				Obj_Delete(titleImg);
 				ClosePackage;
 				return;
 			}
+			ObjPrim_SetTexture(titleImg, pathTitle2);
+			Obj_SetRenderPriorityI(titleImg, 0);
 		}
 		let up = GetVirtualKeyState(VK_UP);
 		let down = GetVirtualKeyState(VK_DOWN);

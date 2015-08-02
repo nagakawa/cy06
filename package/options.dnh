@@ -1,0 +1,268 @@
+#include "./../propkg.dnh"
+
+function cy06(key, default) {return GetAreaCommonData("Cy06", key, default);}
+task setCy06(key, value) {SetAreaCommonData("Cy06", key, value);}
+
+let selected = 0;
+let textObjs = [];
+let frames = 0;
+let itemCt = 6;
+let ended = false;
+let bgm = GetCommonData("BGMObj", ID_INVALID);
+
+let initialValues = [
+	cy06("BGMVol", 100),
+	cy06("SFXVol", 100),
+	cy06("EffCut", 1)
+];
+
+let labels = [
+	"music",
+	"sound",
+	"effcut",
+	"language",
+	"reset",
+	"exit"
+];
+
+@Initialize {
+	main;
+}
+
+task main {
+	function menuItem(i, x, y, text, b) {
+		let objText = cta(text);
+		txp(x, y);
+		txcb(96 + 32 * b, 96 + 32 * b, 144 + 95 * b);
+		txct(112 + 64 * b, 112 + 64 * b, 144 + 95 * b);
+		txb(32 + 32 * b, 32 + 32 * b, 88 + 88 * b);
+		txh(32);
+		txr(3);
+		txt("menu");
+		let objSelect = cta(text);
+		txp(x, y);
+		txcb(96 + 32 * b, 96 + 32 * b, 144 + 95 * b);
+		txct(112 + 64 * b, 112 + 64 * b, 144 + 95 * b);
+		txb(32 + 32 * b, 32 + 32 * b, 88 + 88 * b);
+		txh(32);
+		txr(3);
+		txt("menu");
+		ObjRender_SetBlendType(objSelect, BLEND_ADD_RGB);
+		task fork {
+			while (!ended) {
+				Obj_SetVisible(objSelect, i == selected);
+				yield;
+			}
+			Obj_Delete(objText);
+			Obj_Delete(objSelect);
+		}
+		fork;
+		return [objText, objSelect];
+	}
+	function createString(i) {
+		if (i == 3) {
+			return S("options.language") ~ S("options.separator") ~ cy06("Language", "ncs_AA");
+		}
+		let iv = initialValues[i];
+		let post = IntToStringBase(iv, base);
+		return S("options." ~ labels[i]) ~ S("options.separator") ~ post;
+	}
+	task updateMenuItem(i) {
+		let str = createString(i);
+		ObjText_SetText(textObjs[2 * i], str);
+		ObjText_SetText(textObjs[2 * i + 1], str);
+	}
+	ascent (i in 0 .. 4) {
+		textObjs = textObjs ~ menuItem(i, 500, 192 + 32 * i, createString(i), true);
+	}
+	ascent (i in 4 .. 6) {
+		textObjs = textObjs ~ menuItem(i, 500, 192 + 32 * i, S("options." ~ labels[i]), true);
+	}
+	let flag = false;
+	flushZ;
+	while (!ended) {
+		if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
+			alternative (selected)
+			case (2) {
+				let old = initialValues[2];
+				old = (old + 1) % 5;
+				initialValues[2] = old;
+				setCy06("EffCut", old);
+				updateMenuItem(2);
+			}
+			case (4) {
+				initialValues = [100, 100, 1, 0];
+				setCy06("BGMVol", 100);
+				setCy06("SFXVol", 100);
+				setCy06("EffCut", 1);
+				ObjSound_SetVolumeRate(bgm, 100);
+				ascent (i in 0 .. 3) {
+					updateMenuItem(i);
+				}
+			}
+			case (5) {
+				ended = true;
+			}
+			case (3) {
+				setCy06("Language", selectLanguage);
+				SaveCommonDataAreaA1("cy06");
+				init;
+				ascent (i in 0 .. 4) {
+					updateMenuItem(i);
+				}
+			}
+		}
+		let up = GetVirtualKeyState(VK_UP);
+		let down = GetVirtualKeyState(VK_DOWN);
+		let left = GetVirtualKeyState(VK_LEFT);
+		let right = GetVirtualKeyState(VK_RIGHT);
+		if (up == KEY_PUSH) {selected--;}
+		else if (down == KEY_PUSH) {selected++;}
+		else if (up == KEY_HOLD) {
+			frames++;
+			if (frames >= 30 && (frames % 10 == 0)) {selected--;}
+		}
+		else if (down == KEY_HOLD) {
+			frames++;
+			if (frames >= 30 && (frames % 10 == 0)) {selected++;}
+		}
+		else if (right == KEY_PUSH || (right == KEY_HOLD && flag)) {
+			alternative (selected)
+			case (2) {
+				let old = initialValues[2];
+				old = (old + 1) % 5;
+				initialValues[2] = old;
+				setCy06("EffCut", old);
+				updateMenuItem(2);
+			}
+			case (0) {
+				let old = initialValues[0];
+				old = min(100, old + 1);
+				setCy06("BGMVol", old);
+				initialValues[0] = old;
+				ObjSound_SetVolumeRate(bgm, old);
+				updateMenuItem(0);
+			}
+			case (1) {
+				let old = initialValues[1];
+				old = min(100, old + 1);
+				initialValues[1] = old;
+				setCy06("SFXVol", old);
+				updateMenuItem(1);
+			}
+			flag = false;
+		}
+		else if (right == KEY_HOLD) {
+			frames++;
+			if (frames >= 30 && (frames % 6 == 0)) {flag = true;}
+		}
+		else if (left == KEY_PUSH || (left == KEY_HOLD && flag)) {
+			frames++;
+			alternative (selected)
+			case (2) {
+				let old = initialValues[2];
+				old = (old + 4) % 5;
+				initialValues[2] = old;
+				setCy06("EffCut", old);
+				updateMenuItem(2);
+			}
+			case (0) {
+				let old = initialValues[0];
+				old = max(0, old - 1);
+				initialValues[0] = old;
+				ObjSound_SetVolumeRate(bgm, old);
+				setCy06("BGMVol", old);
+				updateMenuItem(0);
+			}
+			case (1) {
+				let old = initialValues[1];
+				old = max(0, old - 1);
+				initialValues[1] = old;
+				setCy06("SFXVol", old);
+				updateMenuItem(1);
+			}
+			flag = false;
+		}
+		else if (left == KEY_HOLD) {
+			frames++;
+			if (frames >= 30 && (frames % 6 == 0)) {flag = true;}
+		}
+		else {frames = 0;}
+		if (selected < 0) {selected = itemCt - 1;}
+		else if (selected >= itemCt) {selected = 0;}
+		yield;
+	}
+	finalize;
+}
+
+function selectLanguage {
+	let list = manifest;
+	let ne = length(list);
+	function getIndex {
+		ascent (i in 0 .. ne) {
+			if (list[i] == currentLanguage) {return i;}
+		}
+		return 0;
+	}
+	let s = getIndex;
+	let texts = [];
+	ascent (i in -2 .. 3) {
+		let t = cta(list[(s + i + 5 * ne) % ne]);
+		txp(420, 360 + 20 * i);
+		txcb([128, 255][i == 0], 128, [128, 255][i != 0]);
+		txct([192, 255][i == 0], 128, [192, 255][i != 0]);
+		txb([64, 144][i == 0], 64, [64, 144][i != 0]);
+		txh(20);
+		txt("menu");
+		texts = texts ~ [t];
+	}
+	let done = false;
+	let frames = 0;
+	flushZ;
+	loop {
+		if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
+			ascent (i in 0 .. 5) {
+				Obj_Delete(texts[i]);
+			}
+			return list[s];
+		}
+		let up = GetVirtualKeyState(VK_UP);
+		let down = GetVirtualKeyState(VK_DOWN);
+		let os = s;
+		if (up == KEY_PUSH) {s--;}
+		else if (down == KEY_PUSH) {s++;}
+		else if (up == KEY_HOLD) {
+			frames++;
+			if (frames >= 30 && (frames % 10 == 0)) {s--;}
+		}
+		else if (down== KEY_HOLD) {
+			frames++;
+			if (frames >= 30 && (frames % 10 == 0)) {s++;}
+		}
+		else {frames = 0;}
+		if (s < 0) {s = ne - 1;}
+		else if (s >= ne) {s = 0;}
+		if (s != os) {
+			ascent (i in -2 .. 3) {
+				ObjText_SetText(texts[i + 2], list[(s + i + 5 * ne) % ne]); // Sine!
+			}
+		}
+		yield;
+	}
+}
+
+@Event {
+	
+}
+
+@MainLoop {
+	yield;
+}
+
+task finalize {
+	SaveCommonDataAreaA1("Cy06");
+	ascent (i in 0 .. 2 * itemCt) {
+		Obj_Delete(textObjs[i]);
+	}
+	CloseScript(GetOwnScriptID);
+}

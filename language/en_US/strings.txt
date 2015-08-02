@@ -107,3 +107,13 @@ dialogue.b0=Ceri
 music.m0.title=Sealed Mountain Above the Clouds
 music.m0.sub=The title theme.
 music.m0.description=Complete!
+
+options.on=ON
+options.off=OFF
+options.music=BGM Volume
+options.sound=SE Volume
+options.effcut=Effect Cut
+options.language=Language...
+options.reset=Reset
+options.exit=Back to Title
+options.separator= · 
