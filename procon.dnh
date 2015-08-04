@@ -36,3 +36,7 @@ function wait(t) {
 function getEffectCut {
 	return GetAreaCommonData("Cy06", "EffCut", 1);
 }
+
+function randIntH(l, h) {
+	return trunc(rand(l, h));
+}
