@@ -13,7 +13,7 @@ let current = GetCurrentScriptDirectory();
 	let path = current ~ "playersd.dnh";
 	LoadPlayerShotData(path); //Loads the player bullet graphics
 	// The Player key stores the player.
-	SetCommonData("Player", playerID);
+	SetCommonData("Replay", "Character", playerID);
 	TImage();//Runs the player graphic task
 	TShot();//Runs the shooting task
 	hitbox();
