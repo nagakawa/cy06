@@ -1,0 +1,90 @@
+#TouhouDanmakufu[Player]
+#ScriptVersion[3]
+#ID["Player0"]
+#Title["明槍　怜悧　Aタイプ"]
+//#Image["./ExRumiaImage.png"]
+#include "./shotc.dnh"
+#include "./player_magic_circle.dnh"
+
+let objPlayer = GetPlayerObjectID();
+let objSlowShot = ID_INVALID;
+let current = GetCurrentScriptDirectory();
+let unfocusedSpeed = 5;
+let focusedSpeed = 1.5;
+let startingRadius = 5;
+let playerID = 0;
+
+task TImage {
+	let path = GetCurrentScriptDirectory ~ "../resource/playershots.png";
+	ObjPrim_SetTexture(objPlayer, path);
+	ObjSprite2D_SetSourceRect(objPlayer, 0, 464, 21, 495);
+	loop {
+		ObjSprite2D_SetDestCenter(objPlayer);
+		yield;
+	}
+}
+
+task TShot {
+	let tick = 0;
+	loop {
+		let x = GetPlayerX;
+		let y = GetPlayerY - 4;
+		let shot = GetVirtualKeyState(VK_SHOT);
+		if (shot == KEY_PUSH || shot == KEY_HOLD && tick == 0 &&
+			GetPlayerState == STATE_NORMAL && IsPermitPlayerShot) {
+			if (isFocused) {
+				CreatePlayerShotA1(x, y, 10, 270, 10, 1, STEEL_ARROW);
+				CreatePlayerShotA1(x + 5, y, 10, 265, 8, 1, STEEL_ARROW);
+				CreatePlayerShotA1(x - 5, y, 10, 275, 8, 1, STEEL_ARROW);
+				CreatePlayerShotA1(x + 15, y, 10, 260, 6, 1, STEEL_ARROW);
+				CreatePlayerShotA1(x - 15, y, 10, 270, 6, 1, STEEL_ARROW);
+			}
+			else {
+				home(CreatePlayerShotA1(x, y, 10, 270, 11, 1, SILVER_ARROW));
+				CreatePlayerShotA1(x - 5, y - 3, 10, 270, 9, 1, SILVER_ARROW);
+				CreatePlayerShotA1(x + 5, y - 3, 10, 270, 9, 1, SILVER_ARROW);
+				CreatePlayerShotA1(x - 10, y - 3, 10, 270, 7, 1, SILVER_ARROW);
+				CreatePlayerShotA1(x + 10, y - 3, 10, 270, 7, 1, SILVER_ARROW);
+			}
+		}
+		tick++;
+		if (tick == 3) {tick = 0;}
+		yield;
+	}
+}
+
+task TSpell {
+	let objManage = GetSpellManageObject();
+	let x = GetPlayerX;
+	let y = GetPlayerY;
+	let sword = CreatePlayerShotA1(x, y, 0, 0, 1, 10000, FANTASTIC_SWORD);
+	ObjShot_SetEraseShot(sword, true);
+	SetPlayerInvincibilityFrame(420);
+	let width = GetStgFrameWidth;
+	let height = GetStgFrameHeight;
+	let canShoot = IsPermitPlayerShot;
+	loop (300) {
+		let shots = GetShotIdInCircleA2(x, y, 144, TARGET_ALL);
+		let sl = length(shots);
+		ascent (j in 0 .. sl) {
+			let s = shots[j];
+			if (!ObjShot_IsSpellResist(s) && s != sword) {
+				ObjShot_ToItem(s);
+			}
+		}
+		let enemies = GetAllEnemyID;
+		let n = length(enemies);
+		ascent (i in 0 .. n) {
+			let enemy = enemies[i];
+			if (getDistanceTo(enemy, sword) < 144) {
+				let rate = ObjEnemy_GetInfo(enemy, INFO_DAMAGE_RATE_SPELL);
+				ObjEnemy_AddLife(enemy, -0.35 * rate);
+			}
+		}
+		yield;
+	}
+	Obj_Delete(sword);
+	Obj_Delete(objManage);
+}
+
+#include "./player_event.dnh"

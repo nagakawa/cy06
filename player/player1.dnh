@@ -1,0 +1,92 @@
+#TouhouDanmakufu[Player]
+#ScriptVersion[3]
+#ID["Player1"]
+#Title["明槍　怜悧　Bタイプ"]
+//#Image["./ExRumiaImage.png"]
+#include "./shotc.dnh"
+#include "./player_magic_circle.dnh"
+
+let objPlayer = GetPlayerObjectID();
+let objSlowShot = ID_INVALID;
+let current = GetCurrentScriptDirectory();
+let unfocusedSpeed = 5;
+let focusedSpeed = 1.5;
+let startingRadius = 5;
+let playerID = 1;
+
+task TImage {
+	let path = GetCurrentScriptDirectory ~ "../resource/playershots.png";
+	ObjPrim_SetTexture(objPlayer, path);
+	ObjSprite2D_SetSourceRect(objPlayer, 0, 464, 21, 495);
+	loop {
+		ObjSprite2D_SetDestCenter(objPlayer);
+		yield;
+	}
+}
+
+task TShot {
+	let tick = 0;
+	loop {
+		let x = GetPlayerX;
+		let y = GetPlayerY - 4;
+		let shot = GetVirtualKeyState(VK_SHOT);
+		if (shot == KEY_PUSH || shot == KEY_HOLD && tick == 0 &&
+			GetPlayerState == STATE_NORMAL && IsPermitPlayerShot) {
+			if (isFocused) {
+				CreatePlayerShotA1(x, y, 10, 270, 18, 2, SALAMANDER);
+			}
+			else {
+				CreatePlayerShotA1(x - 5, y, 10, 270, 15, 1, SPIKED_SEED);
+				CreatePlayerShotA1(x + 5, y, 10, 270, 15, 1, SPIKED_SEED);
+				CreatePlayerShotA1(x - 2.5, y, 10, 262, 8, 1, SPIKED_SEED);
+				CreatePlayerShotA1(x + 2.5, y, 10, 278, 8, 1, SPIKED_SEED);
+				CreatePlayerShotA1(x - 2.5, y + 8, 10, 254, 6, 1, SPIKED_SEED);
+				CreatePlayerShotA1(x + 2.5, y + 8, 10, 286, 6, 1, SPIKED_SEED);
+				CreatePlayerShotA1(x - 2.5, y + 8, 10, 246, 6, 1, SPIKED_SEED);
+				CreatePlayerShotA1(x + 2.5, y + 8, 10, 294, 6, 1, SPIKED_SEED);
+			}
+		}
+		tick++;
+		if (tick == 3) {tick = 0;}
+		yield;
+	}
+}
+
+task TSpell {
+	let objManage = GetSpellManageObject();
+	SetPlayerInvincibilityFrame(390);
+	SetForbidPlayerShot(true);
+	shake(300);
+	let width = GetStgFrameWidth;
+	let height = GetStgFrameHeight;
+	loop (300) {
+		ascent (j in 0 .. 5) {
+			ObjShot_SetSpellFactor(CreatePlayerShotA1(rand(0, width), height - 10,
+				rand(15, 25), rand(260, 280), 2, 1, LEAF), true);
+		}
+		let enemies = GetAllEnemyID;
+		let len = length(enemies);
+		let bosses = GetEnemyBossObjectID;
+		let boss = ID_INVALID;
+		if (length(bosses) != 0) {boss = bosses[0];}
+		ascent (j in 0 .. len) {
+			let enemy = enemies[j];
+			if (enemy != boss) {
+				ObjMove_SetY(enemy, max(0, ObjMove_GetY(enemy) - 0.5));
+			}
+		}
+		let shots = GetShotIdInCircleA2(0, 0, 1000, TARGET_ENEMY);
+		let sl = length(shots);
+		ascent (j in 0 .. sl) {
+			let s = shots[j];
+			if (!ObjShot_IsSpellResist(s)) {
+				ObjShot_ToItem(s);
+			}
+		}
+		yield;
+	}
+	SetForbidPlayerShot(false);
+	Obj_Delete(objManage);
+}
+
+#include "./player_event.dnh"

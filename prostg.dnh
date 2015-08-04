@@ -25,3 +25,11 @@ function createCurveLaserA1(x, y, speed, angle, len, width, graphicId, delay) {
 	ObjLaser_SetGrazeInvalidFrame(l, 3);
 	return l;
 }
+
+function getRadius {
+	return GetCommonData("Radius", 5);
+}
+
+task setRadius(p) {
+	SetCommonData("Radius", p);
+}

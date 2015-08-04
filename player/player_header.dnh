@@ -1,0 +1,58 @@
+#include "./../prostg.dnh"
+
+let POWER_PER_BOMB = 3;
+let POWER_PER_DEATHBOMB = 10;
+
+let objPlayer = GetPlayerObjectID();
+let objSlowShot = ID_INVALID;
+let current = GetCurrentScriptDirectory();
+
+@Initialize {
+	SetPlayerSpeed(unfocusedSpeed, focusedSpeed);
+	ObjPlayer_AddIntersectionCircleA1(objPlayer, 0, 0, hbSize, startingRadius); //Sets the hitbox of the player
+	let path = current ~ "playersd.dnh";
+	LoadPlayerShotData(path); //Loads the player bullet graphics
+	// The Player key stores the player.
+	SetCommonData("Player", playerID);
+	TImage();//Runs the player graphic task
+	TShot();//Runs the shooting task
+	hitbox();
+	TMagicCircle();//Runs the invincibility time magic circle task
+}
+
+@MainLoop {
+	SetPlayerClip(11, 11, GetStgFrameWidth-11, GetStgFrameHeight-18);
+	yield;
+}
+
+@Finalize {
+}
+
+@Event {
+	alternative (GetEventType())
+	case (EV_REQUEST_SPELL) {
+		// Requests spellcard
+		let p = getPower;
+		if (p >= POWER_PER_BOMB) {
+			SetScriptResult(true); // Can use spell card
+			setPower(p - POWER_PER_BOMB);
+			TSpell; // Runs spell card task
+		}
+		else {
+			SetScriptResult(false); // Cannot use spell card
+		}
+	}
+	case (EV_HIT) {
+		TExplosion();
+		playSE("freeze07");
+	}
+	case (EV_PLAYER_SHOOTDOWN) {
+		setPower(getPower - POWER_PER_DEATHBOMB);
+		TSpell;
+    }
+	case (EV_PLAYER_REBIRTH) {
+		
+	}
+}
+
+// 464 to 498

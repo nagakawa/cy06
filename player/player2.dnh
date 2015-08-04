@@ -1,0 +1,107 @@
+#TouhouDanmakufu[Player]
+#ScriptVersion[3]
+#ID["Player2"]
+#Title["広江　二虹　Aタイプ"]
+//#Image["./ExRumiaImage.png"]
+#include "./shotc.dnh"
+#include "./player_magic_circle.dnh"
+
+let objPlayer = GetPlayerObjectID();
+let objSlowShot = ID_INVALID;
+let current = GetCurrentScriptDirectory();
+let unfocusedSpeed = 4;
+let focusedSpeed = 2;
+let startingRadius = 8;
+let playerID = 2;
+
+task TImage {
+	let path = GetCurrentScriptDirectory ~ "../resource/playershots.png";
+	ObjPrim_SetTexture(objPlayer, path);
+	ObjSprite2D_SetSourceRect(objPlayer, 0, 464, 21, 499);
+	loop {
+		ObjSprite2D_SetDestCenter(objPlayer);
+		yield;
+	}
+}
+
+
+task TShot {
+	let tick = 0;
+	let wasFocused = false;
+	let lasers = [];
+	loop {
+		let x = GetPlayerX;
+		let y = GetPlayerY - 4;
+		let shot = GetVirtualKeyState(VK_SHOT);
+		if (shot == KEY_PUSH || shot == KEY_HOLD && tick == 0 &&
+			GetPlayerState == STATE_NORMAL && IsPermitPlayerShot) {
+			if (isFocused) {
+				if (!wasFocused) {
+					lasers = [
+						createPlayerLaser(objPlayer, 2, 600, 270, 2.4, [192, 255, 192], 5),
+						createPlayerLaser(objPlayer, 2, 600, 265, 2.2, [255, 255, 192], 5),
+						createPlayerLaser(objPlayer, 2, 600, 275, 2.2, [192, 202, 255], 5),
+						createPlayerLaser(objPlayer, 2, 600, 260, 2, [255, 202, 192], 5),
+						createPlayerLaser(objPlayer, 2, 600, 280, 2, [192, 192, 255], 5),
+						createPlayerLaser(objPlayer, 2, 600, 255, 1.8, [255, 192, 192], 5),
+						createPlayerLaser(objPlayer, 2, 600, 285, 1.8, [255, 192, 255], 5),
+					];
+					wasFocused = true;
+				}
+			}
+			else {
+				if (wasFocused) {
+					let len = length(lasers);
+					ascent (i in 0 .. len) {
+						Obj_Delete(lasers[i]);
+					}
+					wasFocused = false;
+				}
+				ascent (i in -5 .. 5) {
+					let sp = CreatePlayerShotA1(x, y - 2, 12, 270 + 3 * i, 4.8, 1, SOLAR_PROMINENCE);
+				}
+			}
+		}
+		else if (GetPlayerState != STATE_NORMAL || (shot != KEY_PUSH && shot != KEY_HOLD)) {
+			let len = length(lasers);
+			ascent (i in 0 .. len) {
+				Obj_Delete(lasers[i]);
+			}
+			wasFocused = false;
+		}
+		if (!IsPermitPlayerShot) {
+			let len = length(lasers);
+			ascent (i in 0 .. len) {
+				Obj_Delete(lasers[i]);
+			}
+			wasFocused = false;
+		}
+		tick++;
+		if (tick == 3) {tick = 0;}
+		yield;
+	}
+}
+
+task TSpell {
+	let objManage = GetSpellManageObject();
+	SetPlayerInvincibilityFrame(290);
+	SetPlayerSpeed(0, 0);
+	shake(200);
+	let width = GetStgFrameWidth;
+	let height = GetStgFrameHeight;
+	let laser = createPlayerLaser(objPlayer, 100, 600, 270, 18, [255, 255, 255], 20);
+	ObjShot_SetEraseShot(laser, true);
+	ObjShot_SetSpellFactor(laser, true);
+	let canShoot = IsPermitPlayerShot;
+	SetForbidPlayerShot(true);
+	loop (200) {
+		yield;
+	}
+	SetPlayerSpeed(5, 2);
+	SetForbidPlayerShot(!canShoot);
+	Obj_Delete(laser);
+	Obj_Delete(objManage);
+}
+
+
+#include "./player_event.dnh"
