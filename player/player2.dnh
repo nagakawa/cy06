@@ -12,6 +12,7 @@ let current = GetCurrentScriptDirectory();
 let unfocusedSpeed = 4;
 let focusedSpeed = 2;
 let startingRadius = 8;
+let hbSize = 2;
 let playerID = 2;
 
 task TImage {
