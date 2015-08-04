@@ -94,17 +94,6 @@ task ss {
 	}
 }
 
-function runScript(path, args) {
-	let sc = LoadScript(path);
-	let l = length(args);
-	ascent (i in 0 .. l) {
-		SetScriptArgument(sc, i, args[i]);
-	}
-	StartScript(sc);
-	while (!IsCloseScript(sc)) {yield;}
-	return GetScriptResult(sc);
-}
-
 task titleScene(showIntro) {
 	let titleSceneEnded = false;
 	let dir = GetCurrentScriptDirectory;
@@ -193,10 +182,12 @@ task titleScene(showIntro) {
 			// TODO: fill in the stubs
 			SaveCommonDataAreaA1("Cy06");
 			alternative (selected)
-			/*case (START) {
-				play(-1);
+			case (START) {
+				//play(-1);
+				//runScript(dir ~ "difficultySelect.dnh", [0, 5]);
+				runScript(dir ~ "playerSelect.dnh", []);
 			}
-			case (EXTRA) {
+			/*case (EXTRA) {
 				if (exUnlocked) {playX(-1);}
 			}
 			case (PRACTICE) {

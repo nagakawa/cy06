@@ -40,3 +40,17 @@ function getEffectCut {
 function randIntH(l, h) {
 	return trunc(rand(l, h));
 }
+
+function runScript(path, args) {
+	let sc = LoadScript(path);
+	let l = length(args);
+	ascent (i in 0 .. l) {
+		SetScriptArgument(sc, i, args[i]);
+	}
+	StartScript(sc);
+	while (!IsCloseScript(sc)) {yield;}
+	return GetScriptResult(sc);
+}
+
+let MODE_STAGE = 0;
+let MODE_SPELL = 10;

@@ -56,3 +56,8 @@ function txt(t) {
 function txr(r) {
 	Obj_SetRenderPriorityI(gt, r);
 }
+
+function txalign(maxWidth, alignment) {
+	ObjText_SetMaxWidth(gt, maxWidth);
+	ObjText_SetHorizontalAlignment(gt, alignment);
+}

@@ -1,0 +1,155 @@
+#include "./../propkg.dnh"
+
+let selected = 0;
+let textObjs = [];
+let frames = 0;
+let ended = false;
+
+@Initialize {
+	main;
+}
+
+task main {
+	ascent (i in 0 .. 3) {
+		let item = "character.c" ~ IntToString(i) ~ ".";
+		let title = cta(S(item ~ "title"));
+		txh(16);
+		txt("charIntro");
+		txr(4);
+		txc(255, 255, 255);
+		txb(0, 0, 0);
+		txp(100, 250);
+		Obj_SetVisible(title, !i);
+		let name = cta(S(item ~ "name"));
+		txh(36);
+		txt("charIntro");
+		txr(4);
+		txc(255, 255, 255);
+		txb(0, 0, 0);
+		txp(120, 280);
+		Obj_SetVisible(name, !i);
+		textObjs = textObjs ~ [title, name];
+	}
+	let description1 = ct(buildString("c0.a"), 35, 400);
+	txh(16);
+	txt("dialogue");
+	txr(4);
+	txct(255, 255, 255);
+	txcb(255, 192, 192);
+	txb(0, 0, 0);
+	txp(400, 70);
+	let description2 = ct(buildString("c0.b"), 35, 400);
+	txh(16);
+	txt("dialogue");
+	txr(4);
+	txct(255, 255, 255);
+	txcb(192, 192, 255);
+	txb(0, 0, 0);
+	txp(400, 270);
+	textObjs = textObjs ~ [description1, description2];
+	flushZ;
+	loop {
+		let left = GetVirtualKeyState(VK_LEFT);
+		let right = GetVirtualKeyState(VK_RIGHT);
+		let old = selected;
+		if (left == KEY_PUSH) {selected--;}
+		else if (right == KEY_PUSH) {selected++;}
+		else if (left == KEY_HOLD) {
+			frames++;
+			if (frames >= 30 && (frames % 10 == 0)) {selected--;}
+		}
+		else if (right == KEY_HOLD) {
+			frames++;
+			if (frames >= 30 && (frames % 10 == 0)) {selected++;}
+		}
+		let nselected = selected % 3;
+		alternative (selected - old)
+		case (-1) { // LEFT
+			Obj_SetVisible(description1, false);
+			Obj_SetVisible(description2, false);
+			ObjRender_SetX(textObjs[2 * nselected], -700);
+			ObjRender_SetX(textObjs[2 * nselected + 1], -680);
+			Obj_SetVisible(textObjs[2 * nselected], true);
+			Obj_SetVisible(textObjs[2 * nselected + 1], true);
+			loop (20) {
+				addX(textObjs[2 * old], 40);
+				addX(textObjs[2 * old + 1], 40);
+				addX(textObjs[2 * nselected], 40);
+				addX(textObjs[2 * nselected + 1], 40);
+				yield;
+			}
+			Obj_SetVisible(textObjs[2 * old], false);
+			Obj_SetVisible(textObjs[2 * old + 1], false);
+			Obj_SetVisible(description1, true);
+			Obj_SetVisible(description2, true);
+			st(description1);
+			txs(buildString("c" ~ IntToString(nselected) ~ ".a"));
+			st(description2);
+			txs(buildString("c" ~ IntToString(nselected) ~ ".b"));
+		}
+		case (1) { // RIGHT
+			Obj_SetVisible(description1, false);
+			Obj_SetVisible(description2, false);
+			ObjRender_SetX(textObjs[2 * nselected], 900);
+			ObjRender_SetX(textObjs[2 * nselected + 1], 920);
+			Obj_SetVisible(textObjs[2 * nselected], true);
+			Obj_SetVisible(textObjs[2 * nselected + 1], true);
+			loop (20) {
+				addX(textObjs[2 * old], -40);
+				addX(textObjs[2 * old + 1], -40);
+				addX(textObjs[2 * nselected], -40);
+				addX(textObjs[2 * nselected + 1], -40);
+				yield;
+			}
+			Obj_SetVisible(textObjs[2 * old], false);
+			Obj_SetVisible(textObjs[2 * old + 1], false);
+			Obj_SetVisible(description1, true);
+			Obj_SetVisible(description2, true);
+			st(description1);
+			txs(buildString("c" ~ IntToString(nselected) ~ ".a"));
+			st(description2);
+			txs(buildString("c" ~ IntToString(nselected) ~ ".b"));
+		}
+		selected = nselected;
+		if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
+			SetScriptResult(selected);
+			finalize;
+			return;
+		}
+		else if (GetVirtualKeyState(VK_CANCEL) == KEY_PUSH) {
+			SetScriptResult(-1);
+			finalize;
+			return;
+		}
+		yield;
+	}
+}
+
+function addX(obj, diff) {
+	ObjRender_SetX(obj, ObjRender_GetX(obj) + diff);
+}
+
+function buildString(label) {
+	return
+		S("character." ~ label ~ ".label") ~ "[r]" ~
+		S("character.unfocusedLabel") ~ S("character." ~ label ~ ".unfocused") ~ "[r]" ~
+		S("character.focusedLabel") ~ S("character." ~ label ~ ".focused") ~ "[r]" ~
+		S("character.spellLabel") ~ S("character." ~ label ~ ".spell");
+}
+
+@Event {
+	
+}
+
+@MainLoop {
+	yield;
+}
+
+task finalize {
+	SaveCommonDataAreaA1("Cy06");
+	let l = length(textObjs);
+	ascent (i in 0 .. l) {
+		Obj_Delete(textObjs[i]);
+	}
+	CloseScript(GetOwnScriptID);
+}
