@@ -1,0 +1,83 @@
+#include "./../propkg.dnh"
+
+let selected = 0;
+let textObjs = [];
+let frames = 0;
+let ended = false;
+
+@Initialize {
+	main;
+}
+
+task itemTask(text, i) {
+	while (exists(text)) {
+		ObjRender_SetAlpha(text, [80, 255][i == selected]);
+		yield;
+	}
+}
+
+task main {
+	let prefix = S("menu.stagePrefix");
+	let suffix = S("menu.stageSuffix");
+	let difficulty = GetScriptArgument(0);
+	let character = GetScriptArgument(1);
+	ascent (i in 0 .. 6) {
+		let title = cta(prefix ~ IntToString(i + offset) ~ suffix);
+		txh(24);
+		txt("menu");
+		txr(4);
+		let brightness = 255 - 18 * i;
+		txc(255, brightness, brightness);
+		txb(0, 0, 0);
+		txp(500, 150 + 25 * i);
+		itemTask(title, i);
+		textObjs = textObjs ~ [title];
+	}
+	flushZ;
+	let frames = 0;
+	loop {
+		let up = GetVirtualKeyState(VK_UP);
+		let down = GetVirtualKeyState(VK_DOWN);
+		let old = selected;
+		if (up == KEY_PUSH) {selected--;}
+		else if (down == KEY_PUSH) {selected++;}
+		else if (up == KEY_HOLD) {
+			frames++;
+			if (frames >= 30 && (frames % 10 == 0)) {selected--;}
+		}
+		else if (down == KEY_HOLD) {
+			frames++;
+			if (frames >= 30 && (frames % 10 == 0)) {selected++;}
+		}
+		if (selected < 0) {selected = 5;}
+		else if (selected >= 6) {selected = 0;}
+		if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
+			SetScriptResult(selected);
+			finalize;
+			return;
+		}
+		else if (GetVirtualKeyState(VK_CANCEL) == KEY_PUSH) {
+			SetScriptResult(-1);
+			finalize;
+			return;
+		}
+		yield;
+	}
+}
+
+@Event {
+	
+}
+
+@MainLoop {
+	yield;
+}
+
+task finalize {
+	SaveCommonDataAreaA1("Cy06");
+	let l = length(textObjs);
+	ascent (i in 0 .. l) {
+		Obj_Delete(textObjs[i]);
+	}
+	CloseScript(GetOwnScriptID);
+}

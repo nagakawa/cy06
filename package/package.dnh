@@ -183,9 +183,10 @@ task titleScene(showIntro) {
 			SaveCommonDataAreaA1("Cy06");
 			alternative (selected)
 			case (START) {
-				//play(-1);
-				//runScript(dir ~ "difficultySelect.dnh", [0, 5]);
-				runScript(dir ~ "playerSelect.dnh", []);
+				// play(-1);
+				// runScript(dir ~ "difficultySelect.dnh", [0, 5]);
+				// runScript(dir ~ "playerSelect.dnh", []);
+				runScript(dir ~ "stageSelect.dnh", [1, 0]);
 			}
 			/*case (EXTRA) {
 				if (exUnlocked) {playX(-1);}
