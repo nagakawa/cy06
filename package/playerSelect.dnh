@@ -38,6 +38,7 @@ task main {
 	txcb(255, 192, 192);
 	txb(0, 0, 0);
 	txp(400, 70);
+	ObjRender_SetAlpha(description1, 80);
 	let description2 = ct(buildString("c0.b"), 35, 400);
 	txh(16);
 	txt("dialogue");
@@ -46,6 +47,7 @@ task main {
 	txcb(192, 192, 255);
 	txb(0, 0, 0);
 	txp(400, 270);
+	ObjRender_SetAlpha(description2, 80);
 	textObjs = textObjs ~ [description1, description2];
 	flushZ;
 	loop {
@@ -112,9 +114,27 @@ task main {
 		}
 		selected = nselected;
 		if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
-			SetScriptResult(selected);
-			finalize;
-			return;
+			let sel2 = 0;
+			flushZ;
+			loop {
+				if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
+					SetScriptResult(2 * selected + sel2);
+					finalize;
+					return;
+				}
+				else if (GetVirtualKeyState(VK_CANCEL) == KEY_PUSH) {
+					break;
+				}
+				else if (GetVirtualKeyState(VK_UP) == KEY_PUSH ||
+						GetVirtualKeyState(VK_DOWN) == KEY_PUSH) {
+					sel2 = 1 - sel2;
+				}
+				ObjRender_SetAlpha(description1, 255 - 175 * sel2);
+				ObjRender_SetAlpha(description2, 80 + 175 * sel2);
+				yield;
+			}
+			ObjRender_SetAlpha(description1, 80);
+			ObjRender_SetAlpha(description2, 80);
 		}
 		else if (GetVirtualKeyState(VK_CANCEL) == KEY_PUSH) {
 			SetScriptResult(-1);

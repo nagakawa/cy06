@@ -90,7 +90,7 @@ task TSpell {
 	shake(200);
 	let width = GetStgFrameWidth;
 	let height = GetStgFrameHeight;
-	let laser = createPlayerLaser(objPlayer, 100, 600, 270, 18, [255, 255, 255], 20);
+	let laser = createPlayerLaserXY(ObjMove_GetX(objPlayer), ObjMove_GetY(objPlayer) - 50, 100, 600, 270, 18, [255, 255, 255], 20);
 	ObjShot_SetEraseShot(laser, true);
 	ObjShot_SetSpellFactor(laser, true);
 	let canShoot = IsPermitPlayerShot;
