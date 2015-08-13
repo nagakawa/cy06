@@ -1,0 +1,7 @@
+#include "./shotc.dnh"
+
+local
+{
+	let shotdata = GetCurrentScriptDirectory ~ "shotbullets.txt";
+	LoadEnemyShotData(shotdata);
+}

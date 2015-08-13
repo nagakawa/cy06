@@ -99,6 +99,7 @@ stgf.hiscore=ハイ得点
 stgf.score=得点
 stgf.power=Power
 stgf.radius=Radius
+stgf.value=Value
 stgf.trance=Trance
 stgf.trance.suffix=%
 stgf.trance.activated=Trance Start!
@@ -107,8 +108,8 @@ boss.b0.name=けり
 boss.b0.tlname=Ceri
 
 dialogue.c0=レイリ
-dialogue.c1=ニコウ
-dialogue.c2=ハスイケ
+dialogue.c1=スカラ
+dialogue.c2=ハスケル
 dialogue.b0=ケリ
 
 stage.s1.title=Entrance under the Thorny Brambles

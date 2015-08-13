@@ -3,144 +3,144 @@ shot_image = "./../resource/playershots.png"
 delay_rect = (0, 0, 511, 511)
 
 ShotData {
-	id = 256
+	id = 356
 	rect = (1, 0, 16, 15)
 	delay_color = (224, 224, 224)
 	alpha = 140
 }
 ShotData {
-	id = 257
+	id = 357
 	rect = (16, 0, 32, 16)
 	delay_color = (144, 144, 144)
 	alpha = 140
 }
 ShotData {
-	id = 258
+	id = 358
 	rect = (32, 0, 48, 16)
 	delay_color = (128, 200, 128)
 	alpha = 140
 }
 ShotData {
-	id = 259
+	id = 359
 	rect = (48, 0, 64, 16)
 	delay_color = (255, 255, 192)
 }
 ShotData {
-	id = 260
+	id = 360
 	rect = (0, 16, 128, 144)
 	angular_velocity = 6
 }
 ShotData {
-	id = 261
+	id = 361
 	render = ADD_ARGB
 	alpha = 80
 	rect = (64, 0, 80, 16)
 }
 ShotData {
-	id = 262
+	id = 362
 	rect = (80, 0, 95, 15)
 }
 ShotData {
-	id = 263
+	id = 363
 	rect = (112, 0, 127, 15)
 	delay_color = (224, 224, 224)
 }
 ShotData {
-	id = 264
+	id = 364
 	rect = (128, 0, 159, 31)
 }
 ShotData {
-	id = 265
+	id = 365
 	rect = (0, 160, 7, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 266
+	id = 366
 	rect = (8, 160, 15, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 267
+	id = 367
 	rect = (16, 160, 23, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 268
+	id = 368
 	rect = (24, 160, 31, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 269
+	id = 369
 	rect = (32, 160, 39, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 270
+	id = 370
 	rect = (40, 160, 47, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 271
+	id = 371
 	rect = (48, 160, 55, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 272
+	id = 372
 	rect = (56, 160, 63, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 273
+	id = 373
 	rect = (64, 160, 71, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 274
+	id = 374
 	rect = (72, 160, 79, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 275
+	id = 375
 	rect = (80, 160, 87, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 276
+	id = 376
 	rect = (88, 160, 95, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 277
+	id = 377
 	rect = (96, 160, 103, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 278
+	id = 378
 	rect = (104, 160, 111, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 279
+	id = 379
 	rect = (112, 160, 119, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 280
+	id = 380
 	rect = (120, 160, 127, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 281
+	id = 381
 	rect = (128, 160, 135, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 282
+	id = 382
 	rect = (136, 160, 143, 167)
 	fixed_angle = true
 }
 ShotData {
-	id = 283
+	id = 383
 	rect = (160, 0, 191, 31)
 	alpha = 80
 }

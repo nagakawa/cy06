@@ -99,6 +99,7 @@ stgf.hiscore=HiScore
 stgf.score=Score
 stgf.power=Power
 stgf.radius=Radius
+stgf.value=Value
 stgf.trance=Trance
 stgf.trance.suffix=%
 stgf.trance.activated=Trance Start!
