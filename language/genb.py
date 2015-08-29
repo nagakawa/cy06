@@ -1,3 +1,4 @@
+#!/bin/python3
 #TouhouDanmakufu[Package]
 #ScriptVersion[3]
 #Title["Nice Game!"]
@@ -5,6 +6,7 @@
 
 from pathlib import *
 from io import *
+from sys import *
 
 def process_file(path):
 	output_path = path.with_suffix(".bin")
@@ -36,5 +38,6 @@ def iterate(f):
 
 # main
 
-iterate(process_file)
-print("Packaged!")
+path = argv[1]
+process_file(Path(path))
+print("Packaged " + path)

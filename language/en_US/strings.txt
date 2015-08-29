@@ -113,6 +113,8 @@ dialogue.c2=Vija
 dialogue.b0=Ceri
 
 stage.s1.title=Entrance under the Thorny Brambles
+stage.s2.title=Under the Surface of the Flooded River
+stage.s3.title=The Vanishing Rain over the Path
 
 music.m0.title=Sealed Mountain Above the Clouds
 music.m0.sub=The title theme.

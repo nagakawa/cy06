@@ -1,5 +1,9 @@
 #include "./procon.dnh"
 
+// STG FRAME:
+// top-left (16, 16)
+// dimensions 468x568
+
 function getPower {
 	return GetCommonData("Power", 0);
 }
