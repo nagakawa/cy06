@@ -113,6 +113,8 @@ dialogue.c2=ハスケル
 dialogue.b0=ケリ
 
 stage.s1.title=Entrance under the Thorny Brambles
+stage.s2.title=Under the Surface of the Flooded River
+stage.s3.title=The Vanishing Rain over the Path
 
 music.m0.title=雲の上の封山
 music.m0.sub=The title theme.
