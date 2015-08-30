@@ -9,6 +9,6 @@ Code and assets for EIB (CY06).
 
 ### Installation
 
-* Get Python 3.4 and Inkscape; if you're using Windows, get Cygwin too
-* Make sure those two tools are in your path variable
+* Get Python 3.4, Racket, and Inkscape; if you're using Windows, get Cygwin too
+* Make sure those three tools are in your path variable
 * Type `make` to build the PNGs and the language files

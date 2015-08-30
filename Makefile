@@ -3,8 +3,12 @@ ttb = $(foreach dir, $(1), $(foreach file, $(basename $(shell ls $(dir))), $(fil
 
 all: $(fromsvg) $(call ttb, language/*.txt language/*/*.txt)
 
-resource/%.png: resource/%.svg; inkscape -z -e $@ $<
+resource/%.png: resource/%.svg
+	inkscape -z -e $@ $<
+	racket imgtool.rkt $@
 language/%.bin: language/%.txt; python3 language/genb.py $<
+hele/shotc.dnh: hele/genshotc.py; python3 hele/genshotc.py > hele/shotc.dnh
+
 #language/%/%.bin: language/%/%.txt; python3 language/genb.py $< 
 
 clean:

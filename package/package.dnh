@@ -103,13 +103,15 @@ task titleScene(showIntro) {
 	let titleImg = ObjPrim_Create(OBJ_SPRITE_2D);
 	// Imagine if you could val titleImg = new Sprite2D(path = pathTitle, coordinate = ToWindow, source = (0, 0, 640, 480), dest = (0, 0, 640, 480), priority = 0.004)
 	Obj_SetRenderPriority(titleImg, 0);
-	ObjPrim_SetTexture(titleImg, pathTitle);
-	ObjSprite2D_SetSourceRect(titleImg, 0, 0, 800, 600);
-	ObjSprite2D_SetDestRect(titleImg, 0, 0, 800, 600);
 	if (showIntro) {
+		ObjPrim_SetTexture(titleImg, pathTitle);
+		ObjSprite2D_SetSourceRect(titleImg, 0, 0, 800, 600);
+		ObjSprite2D_SetDestRect(titleImg, 0, 0, 800, 600);
 		wait(150);
 	}
 	ObjPrim_SetTexture(titleImg, pathTitle2);
+	ObjSprite2D_SetSourceRect(titleImg, 0, 0, 800, 600);
+	ObjSprite2D_SetDestRect(titleImg, 0, 0, 800, 600);
 	// we don't need to create the title text; it's already on there.
 	let START = 0;
 	let EXTRA = 1;

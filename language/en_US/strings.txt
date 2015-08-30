@@ -92,8 +92,8 @@ character.c2.a.unfocused=Indiscriminate Hurricane
 character.c2.a.focused=Enemy Detector
 character.c2.a.spell="East Wind, West Wind"
 character.c2.b.label=Electric Type
-character.c2.b.unfocused=
-character.c2.b.focused=
+character.c2.b.unfocused=Attack Square
+character.c2.b.focused=Restore Square
 character.c2.b.spell="Vengeful Charged Shooting in Eight Directions"
 stgf.hiscore=HiScore
 stgf.score=Score
@@ -106,11 +106,15 @@ stgf.trance.activated=Trance Start!
 boss.b0.title=Resident of the Lost Caves
 boss.b0.name=Ceri
 boss.b0.tlname=Ceri
+boss.b1.title=Follower of the Rain Clouds
+boss.b1.name=Tarcron Enmon
+boss.b1.tlname=Tarcron Enmon
 
 dialogue.c0=Rencron
 dialogue.c1=Rygen
 dialogue.c2=Vija
 dialogue.b0=Ceri
+dialogue.b1=Enmon
 
 stage.s1.title=Entrance under the Thorny Brambles
 stage.s2.title=Under the Surface of the Flooded River

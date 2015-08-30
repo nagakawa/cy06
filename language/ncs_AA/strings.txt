@@ -92,8 +92,8 @@ character.c2.a.unfocused=Indiscriminate Hurricane
 character.c2.a.focused=Cellyr-Refečyllyr
 character.c2.a.spell=«Elssesa Avona, Mersedesa Avona»
 character.c2.b.label=Electric Type
-character.c2.b.unfocused=
-character.c2.b.focused=
+character.c2.b.unfocused=Toresa Evyn
+character.c2.b.focused=Morsatesa Evyn
 character.c2.b.spell=«Fe-Vjesa Acasaha Maršygo Cysernata»
 stgf.hiscore=ESade
 stgf.score=Sade
@@ -113,6 +113,8 @@ dialogue.c2=Vija
 dialogue.b0=Ceri
 
 stage.s1.title=Entrance under the Thorny Brambles
+stage.s2.title=Under the Surface of the Flooded River
+stage.s3.title=The Vanishing Rain over the Path
 
 music.m0.title=Rotroson aseni Nalčygo Ercelos
 music.m0.sub=Etesa terno.
