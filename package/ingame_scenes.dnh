@@ -1,0 +1,78 @@
+function TEndScene(mode, rpSlot, difficulty, character) {
+	task goBack {
+		if (mode < MODE_SPELL) {unfreeze;}
+		else {SetCommonData("inSP", false);}
+	}
+	if (IsReplay) {
+		return false;
+	}
+	FinalizeStageScene;
+	flushZ;
+	let dir = GetCurrentScriptDirectory;
+	let pathScript = dir ~ "../system/end_scene.dnh";
+	let idScript = LoadScript(pathScript);
+	StartScript(idScript);
+	while (!IsCloseScript(idScript)) {
+		yield;
+	}
+	let res = GetScriptResult(idScript);
+	alternative (res)
+	case (RESULT_SAVE_REPLAY) {
+		TReplaySaveScene(difficulty, character, mode);
+		goBack;
+	}
+	case (RESULT_END) {
+		//if (mode < MODE_SPELL) {titleScene(false);}
+		goBack;
+	}
+	case (RESULT_RETRY) {
+		if (mode == MODE_ALL) {
+			start(rpSlot, difficulty, character, 0);
+		}
+		else if (mode < MODE_SPELL) {
+			start(rpSlot, difficulty, character, mode);
+		}
+		else {
+			/*let spell = mode - MODE_SPELL;
+			let i = 0;
+			while (i < 12) {
+				if (spell <= cumSpellCounts[i]) {break;}
+				i++;
+			}
+			playS(rpSlot, settings, i + 1, spell);*/
+		}
+		return true;
+	}
+	playBGM(0);
+	return false;
+}
+
+function RunPauseScene {
+	if (GetCommonData("pauseblocked", false)) {return;}
+	let dir = GetCurrentScriptDirectory;
+	let pathScript = dir ~ "../system/pause.dnh";
+	let idScript = LoadScript(pathScript);
+	StartScript(idScript);
+	while (!IsCloseScript(idScript)) {
+		yield;
+	}
+	PauseStageScene(false);
+	let res = GetScriptResult(idScript);
+	return res;
+}
+
+
+function TReplaySaveScene(difficulty, character, mode) {
+	let dir = GetCurrentScriptDirectory;
+	let pathScript = dir ~ "../system/system_replay_save.dnh";
+	let idScript = LoadScript(pathScript);
+	SetScriptArgument(idScript, 0, IntToString(difficulty) ~ "|" ~ IntToString(character) ~ "|" ~ IntToString(mode));
+	StartScript(idScript);
+	while (!IsCloseScript(idScript)) {
+		yield;
+	}
+	if (mode < MODE_SPELL) {
+		titleScene(false);
+		unfreeze;
+	}
+}

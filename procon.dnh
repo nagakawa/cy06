@@ -20,6 +20,17 @@ task setDifficulty(d) {
 	SetAreaCommonData("Replay", "Difficulty", d);
 }
 
+let MODE_ALL = 0;
+let MODE_SPELL_OFF = 100;
+
+function getMode {
+	return GetAreaCommonData("Replay", "Mode", MODE_ALL);
+}
+
+task setMode(m) {
+	SetAreaCommonData("Replay", "Mode", m);
+}
+
 function exists(o) {return !Obj_IsDeleted(o);}
 function nexists(o) {return Obj_IsDeleted(o);}
 function delete(o) {return Obj_Delete(o);}
@@ -53,4 +64,22 @@ function runScript(path, args) {
 }
 
 let MODE_STAGE = 0;
-let MODE_SPELL = 10;
+let MODE_SPELL = 100;
+
+function getHistory(spellID) {
+	return GetAreaCommonData("Cy06", "H-" ~ IntToString(spellID) ~ "/" ~ IntToString(getDifficulty), [0, 0]);
+}
+
+task setHistory(spellID, history) {
+	SetAreaCommonData("Cy06", "H-" ~ IntToString(spellID) ~ "/" ~ IntToString(getDifficulty), history);
+}
+
+task saveHistoryPre(spellID) {
+	let old = getHistory(spellID);
+	setHistory(spellID, [old[0], old[1] + 1]);
+}
+
+task saveHistoryPost(spellID, success) {
+	let old = getHistory(spellID);
+	setHistory(spellID, [old[0] + success, old[1]]);
+}

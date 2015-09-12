@@ -3,7 +3,7 @@
 
 (define (nearest-pot x)
   (expt 2
-        (ceiling(/ (log x) (log 2)))))
+        (ceiling (/ (log x) (log 2)))))
 
 (define (image-to-pot-dimensions img)
   (place-image/align img

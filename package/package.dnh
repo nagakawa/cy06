@@ -242,3 +242,13 @@ task titleScene(showIntro) {
 }
 
 @MainLoop {yield;}
+
+function getLevelAndPlayer(ld, ud) {
+	let difficulty = ld;
+	while (true) {
+		difficulty = runScript(dir ~ "difficultySelect.dnh", [ld, ud, initial]);
+		if (difficulty == -1) return [-1, -1];
+		let player = runScript(dir ~ "playerSelect.dnh", []);
+		if (player != -1) return [difficulty, player];
+	}
+}

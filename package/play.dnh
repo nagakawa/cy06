@@ -1,0 +1,110 @@
+#include "../propkg.dnh"
+#include "./ingame_scenes.dnh"
+
+let rpi = -1;
+let difficulty;
+let character;
+let stage = 0;
+let start;
+let end;
+
+@Initialize{
+	rpi = GetScriptArgument(0);
+	difficulty = GetScriptArgument(1);
+	character = GetScriptArgument(2);
+	if (GetScriptArgumentCount <= 3) {
+		stage = GetScriptArgument(3);
+	}
+	start(rpi, difficulty, character, stage);
+}
+
+function start(rpi_, difficulty_, character_, stage_) {
+	rpi = rpi_;
+	difficulty = difficulty_;
+	character = character_;
+	stage = stage_;
+	let cwd = GetCurrentScriptDirectory;
+	if (stage == 0) {
+		start = 1;
+		end = 6;
+	} else {
+		start = stage;
+		end = stage;
+	}
+	InitializeStageScene;
+	let i = start;
+	SetStageIndex(i);
+	let mainPath = current ~ "../stage/" ~ vtos("02d", i) ~ ".dnh";
+	let playerPath = current ~ "../player/player" ~ IntToString(character) ~ ".dnh";
+	SetStageMainScript(mainPath);
+	SetStagePlayerScript(playerPath);
+	setDifficulty(difficulty);
+	setCharacter(character);
+	setMode(stage);
+	SetCommonData("Start", true);
+	if (rpi != -1) {
+		SetStageReplayFile(rpi, REPLAY_FILE_PATH);
+	}
+	StartStageScene;
+}
+
+sub endScene {
+	if (rpi != -1 || !TEndScene(stage, rpi, difficulty, character)) {
+		playBGM(0);
+		CloseStgScene;
+		CloseScript;
+	}
+}
+
+@MainLoop {
+	if (GetVirtualKeyState(VK_PAUSE) == KEY_PUSH && !GetCommonData("pauseblocked", false)) {
+		let res = RunPauseScene;
+		alternative (res)
+		case (RESULT_RETRY) {
+			if (!IsReplay) {
+				TerminateStageScene;
+				start(-1, difficulty, character, stage);
+				return;
+			}
+		}
+		case (RESULT_END) {
+			TerminateStageScene;
+			playBGM(0);
+			CloseStgScene;
+			CloseScript;
+			return;
+		}
+	}
+	let state = GetStageSceneState;
+	if (state == STAGE_STATE_FINISHED) {
+		let res = GetStageSceneResult;
+		alternative (res)
+		case (STAGE_RESULT_CLEARED) {
+			if (i == end) {
+				endScene;
+				return;
+			} else {
+				i++;
+				SetStageIndex(i);
+				SetCommonData("Start", false);
+				let mainPath = current ~ "../stage/" ~ vtos("02d", i) ~ ".dnh";
+				SetStageMainScript(mainPath);
+				StartStageScene;
+			}
+		}
+		case (STAGE_RESULT_PLAYER_DOWN) {
+			endScene;
+			return;
+		}
+		case (STAGE_RESULT_BREAK_OFF) {
+			playBGM(0);
+			CloseStgScene;
+			CloseScript;
+		}
+	}
+	yield;
+}
+
+@Finalize {
+	playBGM(0);
+}

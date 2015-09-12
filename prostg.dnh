@@ -37,3 +37,23 @@ function getRadius {
 task setRadius(p) {
 	SetCommonData("Radius", p);
 }
+
+function getTrancePercentage {
+	return GetCommonData("Trance", 0);
+}
+
+task setTrancePercentage(p) {
+	SetCommonData("Trance", p);
+}
+
+task addTrancePercentage(p) {
+	setTrancePercentage(getTrancePercentage + p);
+}
+
+function isTranceActive {
+	return GetCommonData("IsTrance", false);
+}
+
+task activateTrance(active) {
+	SetCommonData("IsTrance", active);
+}

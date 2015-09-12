@@ -21,7 +21,7 @@ let colors = [
 @Initialize {
 	lower = GetScriptArgument(0);
 	upper = GetScriptArgument(1);
-	selected = lower;
+	selected = GetScriptArgument(2);
 	main;
 }
 

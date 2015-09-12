@@ -18,3 +18,7 @@ function IntToStringBaseLZ(num, base, len) {
 	}
 	return res;
 }
+function RealToStringBase(num, base, prec) {
+	return IntToStringBase(truncate(num / (base ^ prec))) ~
+		IntToStringBaseLZ(num % (base ^ prec));
+}

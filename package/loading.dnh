@@ -77,12 +77,10 @@ function load(img, sound, script) {
 function loadWithDefaults {
 	load(
 		[
-			"cartouche.png",
 			"cenvos.png",
-			"digits.png",
-			"digits_small.png",
 			"enemy.png",
 			"hurtbox.png",
+			"hurtbox_center.png",
 			"items.png",
 			"laser.png",
 			"playershots.png",
