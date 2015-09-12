@@ -1,0 +1,15 @@
+#include "./language.dnh"
+#include "./itsb.dnh"
+
+function IntToStringL(num) {
+	return IntToStringBase(num, base);
+}
+function IntToStringIL(num) {
+	return IntToStringBaseI(num, base, sinterval, separator);
+}
+function RealToStringL(num, prec) {
+	return RealToStringBase(num, base, prec, dpoint);
+}
+function RealToStringIL(num, prec) {
+	return RealToStringBaseI(num, base, prec, sinterval, separator, dseparator, dpoint);
+}

@@ -9,7 +9,9 @@ let current = GetCurrentScriptDirectory();
 
 @Initialize {
 	SetPlayerSpeed(unfocusedSpeed, focusedSpeed);
-	ObjPlayer_AddIntersectionCircleA1(objPlayer, 0, 0, hbSize, startingRadius); //Sets the hitbox of the player
+	ObjPlayer_AddIntersectionCircleA1(objPlayer, 0, 0, hbSize, startingRadius);
+	setRadius(startingRadius);
+	//Sets the hitbox of the player
 	let path = current ~ "playersd.dnh";
 	LoadPlayerShotData(path); //Loads the player bullet graphics
 	// The Player key stores the player.
@@ -22,6 +24,12 @@ let current = GetCurrentScriptDirectory();
 
 @MainLoop {
 	SetPlayerClip(11, 11, GetStgFrameWidth-11, GetStgFrameHeight-18);
+	ObjPlayer_ClearIntersection(objPlayer);
+	if (GetPlayerInvincibilityFrame > 0) {
+		ObjPlayer_AddIntersectionCircleA1(objPlayer, 0, 0, hbSize, getRadius);
+	} else {
+		ObjPlayer_AddIntersectionCircleA2(objPlayer, 0, 0, hbSize + getRadius);
+	}
 	yield;
 }
 

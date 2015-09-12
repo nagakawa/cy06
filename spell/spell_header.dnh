@@ -1,7 +1,7 @@
 #include "../item/itemConsts.dnh"
-#include "../language.dnh"
+#include "../itsbloc.dnh"
 #include "../system/healthbar.dnh"
-#include "../procon.dnh"
+#include "../prostg.dnh"
 let objBoss;
 
 task SetDamageRateAtFrame(obj, shot, bomb, frame) { //Talos
@@ -49,7 +49,7 @@ let list = [];
 }
 
 function getSpellName {
-	return S("spell." ~ IntToString(id) ~ ["enhvixp"[getDifficulty]];
+	return S("spell." ~ IntToString(id) ~ ["enhvixp"[getDifficulty]]);
 }
 
 task TCutIn {
@@ -67,7 +67,7 @@ task TCutIn {
 		ObjText_SetFontBorderWidth(spellText, 1);
 		ObjText_SetFontBorderType(spellText, BORDER_FULL);
 		ObjText_SetFontBorderColor(spellText, 0, 0, 0);
-		ObjRender_SetX(spellText, GetStgFrameWidth - 370);
+		ObjRender_SetX(spellText, GetStgFrameWidth - 350);
 		//Obj_SetRenderPriority(spellText, 0.2);
 		let width = GetStgFrameWidth;
 		let height = GetStgFrameHeight;
@@ -117,8 +117,8 @@ task TBonusUpdate(txt) {
 	while (ObjEnemy_GetInfo(objBoss, INFO_LIFE) > 0) {
 		if (GetPlayerInvincibilityFrame > 1) {success = false;}
 		let score = getBonus;
-		ObjText_SetText(txt, [bf, sb ~ RealToStringBase(score, base, 3)][success] ~
-			hh ~ IntToStringBase(hist[0], base) ~ "/" ~ IntToStringBase(hist[1], base));
+		ObjText_SetText(txt, [bf, sb ~ RealToStringL(score, 3)][success] ~
+			hh ~ IntToStringL(hist[0]) ~ "/" ~ IntToStringL(hist[1]));
 		yield;
 	}
 }
@@ -131,7 +131,7 @@ task TEnd {
 	let ex = ObjMove_GetX(objBoss);
 	let ey = ObjMove_GetY(objBoss);
 	let width = GetStgFrameWidth;
-	TExplosionA(ex, ey, 10, 0.6);
+	// TExplosionA(ex, ey, 10, 0.6);
 	/*ascent(i in 0 .. 32 * (level + getDifficulty)) {
 		createItemU1(POINT_ITEM, ex + rand(-20, 20), ey + rand(-20, 20), 0);
 	}*/

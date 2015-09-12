@@ -9,6 +9,9 @@ function IntToStringBase(num, base) {
 	if (res == "") {return "0";}
 	return res;
 }
+function IntToStringBaseI(num, base, interval, separator) {
+	return intersperseRight(IntToStringBase(num, base), interval, separator);
+}
 function IntToStringBaseLZ(num, base, len) {
 	let res = "";
 	ascent (i in 0 .. len) {
@@ -18,7 +21,32 @@ function IntToStringBaseLZ(num, base, len) {
 	}
 	return res;
 }
-function RealToStringBase(num, base, prec) {
+function RealToStringBase(num, base, prec, point) {
 	return IntToStringBase(truncate(num / (base ^ prec))) ~
+		point ~
 		IntToStringBaseLZ(num % (base ^ prec));
+}
+function RealToStringBaseI(num, base, prec, i, s1, s2, point) {
+	return IntToStringBaseI(truncate(num / (base ^ prec)), base, i, s1) ~
+		point ~
+		intersperseLeft(IntToStringBaseLZ(num % (base ^ prec)), base, i, s2);
+}
+
+function intersperseLeft(str, interval, separator) {
+	let res = "";
+	let len = length(str);
+	let left = ceil(len / interval) - 1;
+	ascent (i in 0 .. left) {
+		res = res ~ str[interval * i .. interval * i + interval] ~ separator;
+	}
+	return res ~ str[interval * left .. len];
+}
+function intersperseRight(str, interval, separator) {
+	let res = "";
+	let len = length(str);
+	let left = ceil(len / interval) - 1;
+	ascent (i in 0 .. left) {
+		res = separator ~ str[len - interval * i - interval .. len - interval * i] ~ res;
+	}
+	return str[0 .. len - interval * left] ~ res;
 }

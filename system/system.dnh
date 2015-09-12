@@ -1,0 +1,94 @@
+#include "../prostg.dnh"
+#include "../itsbloc.dnh"
+
+let cwd = GetCurrentScriptDirectory;
+
+@Initialize {
+	if (getDifficulty == -2) {
+		LoadCommonDataAreaFromReplayFile("Replay");
+		let difficulty = GetAreaCommonData("Replay", "Difficulty", 1);
+		setDifficulty(difficulty);
+	}
+	else {
+		SetAreaCommonData("Replay", "Difficulty", getDifficulty);
+	}
+	if (GetCommonData("Start", false)) {reset;}
+	SetCommonData("Dialogue", false);
+	let path = cwd ~ "../player/playersd.dnh";
+	LoadEnemyShotData(path);
+	initFrame;
+	mech;
+}
+
+function initFrame {
+	let path = cwd ~ "../resource/stgframe.png";
+	let obj = ObjPrim_Create(OBJ_SPRITE_2D);
+	ObjPrim_SetTexture(obj, path);
+	Obj_SetRenderPriority(obj, 5);
+	ObjSprite2D_SetSourceRect(obj, 0, 0, 800, 600);
+	ObjSprite2D_SetDestRect(obj, 0, 0, 800, 600);
+	SetStgFrame(16, 16, 484, 584, 20, 80);
+}
+
+task reset {
+	yield;
+	setPower(0);
+	setRadius(5);
+	setValue(0.01);
+	AddGraze(-GetGraze);
+	SetCommonData("pauseblocked", false);
+}
+
+function createNumberObject(x, y, tr, tg, tb, mw) {
+	let obj = ObjText_Create;
+	ObjRender_SetBlendType(obj, BLEND_ALPHA);
+	Obj_SetRenderPriority(obj, 0.1);
+	ObjRender_SetY(obj, y);
+	ObjRender_SetX(obj, x);
+	ObjText_SetMaxWidth(obj, mw);
+	ObjText_SetHorizontalAlignment(obj, ALIGNMENT_RIGHT);
+	ObjText_SetFontType(obj, S("font.score"));
+	ObjText_SetFontSize(obj, 24);
+	ObjText_SetFontColorTop(obj, tr, tg, tb);
+	ObjText_SetFontColorBottom(obj, 255, 255, 255);
+	ObjText_SetFontBorderType(obj, BORDER_FULL);
+	ObjText_SetFontBorderWidth(obj, 2);
+	ObjText_SetFontBorderColor(obj, 0, 0, 0);
+	return obj;
+}
+
+function updateInt(obj, n) {
+	let text = IntToStringIL(n);
+	ObjText_SetText(obj, text);
+}
+
+function updateReal(obj, n, prec) {
+	let text = RealToStringIL(n, prec);
+	ObjText_SetText(obj, text);
+}
+
+function createText(x, y, tr, tg, tb, key) {
+	let obj = cta(S(key));
+	txp(x, y);
+	txct(tr, tg, tb);
+	txh(20);
+	txt("charIntro");
+	txr(10);
+	return obj;
+}
+
+function getHighScore {
+	let hs = GetAreaCommonData("Cy06",
+		"HS" ~ IntToString(getCharacter) ~ IntToString(getDifficulty), [[1024]])[0][0];
+	return max(GetScore, hs);
+}
+
+task mech {
+	let player = GetPlayerObjectID;
+	loop {
+		AddScore(-GetScore);
+		AddScore(GetGraze);
+		
+		yield;
+	}
+}
