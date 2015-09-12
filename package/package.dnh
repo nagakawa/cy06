@@ -245,10 +245,11 @@ task titleScene(showIntro) {
 
 function getLevelAndPlayer(ld, ud) {
 	let difficulty = ld;
+	let dir = GetCurrentScriptDirectory;
 	while (true) {
-		difficulty = runScript(dir ~ "difficultySelect.dnh", [ld, ud, initial]);
-		if (difficulty == -1) return [-1, -1];
+		difficulty = runScript(dir ~ "difficultySelect.dnh", [ld, ud, difficulty]);
+		if (difficulty == -1) {return [-1, -1];}
 		let player = runScript(dir ~ "playerSelect.dnh", []);
-		if (player != -1) return [difficulty, player];
+		if (player != -1) {return [difficulty, player];}
 	}
 }

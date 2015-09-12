@@ -14,6 +14,7 @@ let cwd = GetCurrentScriptDirectory;
 	}
 	if (GetCommonData("Start", false)) {reset;}
 	SetCommonData("Dialogue", false);
+	StartItemScript(cwd ~ "item/system_item.dnh");
 	let path = cwd ~ "../player/playersd.dnh";
 	LoadEnemyShotData(path);
 	initFrame;

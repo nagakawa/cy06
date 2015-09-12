@@ -22,14 +22,14 @@ function IntToStringBaseLZ(num, base, len) {
 	return res;
 }
 function RealToStringBase(num, base, prec, point) {
-	return IntToStringBase(truncate(num / (base ^ prec))) ~
+	return IntToStringBase(truncate(num / (base ^ prec)), base) ~
 		point ~
-		IntToStringBaseLZ(num % (base ^ prec));
+		IntToStringBaseLZ(num % (base ^ prec), base, prec);
 }
 function RealToStringBaseI(num, base, prec, i, s1, s2, point) {
 	return IntToStringBaseI(truncate(num / (base ^ prec)), base, i, s1) ~
 		point ~
-		intersperseLeft(IntToStringBaseLZ(num % (base ^ prec)), base, i, s2);
+		intersperseLeft(IntToStringBaseLZ(num % (base ^ prec), base, prec), i, s2);
 }
 
 function intersperseLeft(str, interval, separator) {

@@ -1,0 +1,358 @@
+#include "./../language.dnh"
+
+let NUM_STAGES = 6;
+
+@Initialize {
+	//StartScript(LoadScript("./" ~ stage ~ "/stg_back.dnh"));
+	restartBGMWithTitle(bgm);
+	SetCommonData("Stage", atoi(stage));
+	resetBGIndex;
+	TStage;
+}
+@Event {}
+@MainLoop {
+	yield;
+}
+@Finalize {}
+
+function TBossPre {
+	let dir = GetCurrentScriptDirectory;
+	let path = dir ~ stage ~ "/boss.dnh";
+	let idScript = LoadScriptInThread(path);
+	loop(60){yield;}
+	StartScript(idScript);
+	while (!IsCloseScript(idScript)) {
+		yield;
+	}
+	wait(240);
+}
+
+function TBossPost {
+	stageBonus(atoi(stage));
+	wait(240);
+	setLastStage(getCharacter, getDifficulty, atoi(stage));
+	CloseStgScene;
+}
+
+task showStageTitle(colors) {
+	let stageNames = getStageNames(atoi(stage));
+	stageTitle(stageNames[0], stageNames[1], stageNames[2],
+		colors);
+}
+
+let diaColors = [
+	[128, 255, 255],
+	[255, 128, 128],
+	[255, 255, 128]
+];
+
+// Fuck mkm's naming conventions
+// actually, they're fine; I was just raised on Java
+
+function TDialogue(data) {
+	SetForbidPlayerShot(true);
+	SetForbidPlayerSpell(true);
+	toggleDialogue;
+	let width = GetStgFrameWidth;
+	let height = GetStgFrameHeight;
+	let len = length(data);
+	let path = GetCurrentScriptDirectory ~ data[0][0];
+	let path2 = GetCurrentScriptDirectory ~ "./../resource/cartouche.png";
+	let enemyPortrait = ObjPrim_Create(OBJ_SPRITE_2D);
+	ObjPrim_SetTexture(enemyPortrait, path);
+	// 224 wide, 368 tall
+	ObjSprite2D_SetSourceRect(enemyPortrait, 0, 144, 223, 511);
+	ObjSprite2D_SetDestRect(enemyPortrait, width - 223, height - 367, width, height);
+	let playerPortrait = ObjPrim_Create(OBJ_SPRITE_2D);
+	ObjPrim_SetTexture(playerPortrait, GetCurrentScriptDirectory  ~ "../resource/" ~
+		["rencron", "rygen"][getCharacter > 1] ~ "_gen2.png");
+	ObjSprite2D_SetSourceRect(playerPortrait, 0, 1, 223, 368);
+	ObjSprite2D_SetDestRect(playerPortrait, 0, height - 367, 223, height);
+	Obj_SetRenderPriority(playerPortrait, 0.3);
+	let cartouche = ObjPrim_Create(OBJ_PRIMITIVE_2D);
+	ObjPrim_SetVertexCount(cartouche, 4);
+	ObjPrim_SetPrimitiveType(cartouche, PRIMITIVE_TRIANGLEFAN);
+	let vertexData = [[0, 0], [0, 1], [1, 1], [1, 0]];
+	ascent (i in 0 .. 4) {
+		ObjPrim_SetVertexPosition(cartouche, i,
+			16 + (width - 16) * vertexData[i][0],
+			height - 16 - 64 * vertexData[i][1]);
+		ObjPrim_SetVertexColor(cartouche, i, 0, 0, 0);
+		ObjPrim_SetVertexAlpha(cartouche, i, 90 - 15 * (i == 3));
+	}
+	Obj_SetRenderPriority(cartouche, 0.22);
+	let dialogueText = ObjText_Create;
+	ObjText_SetFontType(dialogueText, typeface);
+	ObjText_SetFontSize(dialogueText, 16 * fontScale);
+	ObjRender_SetX(dialogueText, 22);
+	ObjText_SetMaxWidth(dialogueText, 340);
+	ObjRender_SetY(dialogueText, height - 80);
+	let intro = ObjText_Create;
+	ObjText_SetFontType(intro, typeface);
+	ObjText_SetFontSize(intro, 28);
+	ObjText_SetSyntacticAnalysis(intro, true);
+	ObjText_SetMaxWidth(intro, 420);
+	ObjText_SetHorizontalAlignment(intro, ALIGNMENT_CENTER);
+	ObjText_SetFontColorTop(intro, 255, 192, 128);
+	ObjText_SetFontColorBottom(intro, 255, 192, 128);
+	ObjText_SetFontBorderType(intro, BORDER_FULL);
+	ObjText_SetFontBorderWidth(intro, 2);
+	ObjText_SetFontBorderColor(intro, 0, 0, 0);
+	ObjRender_SetX(intro, 32);
+	ObjRender_SetY(intro, height - 128);
+	// REWRITE
+	ascent (i in 1 .. len) {
+		let entry = data[i];
+		let type = atoi(entry[1]);
+		let message = entry[0];
+		if (type == 3) {
+			ObjText_SetText(intro, message);
+		}
+		else if (type == 4) {
+			Obj_SetVisible(enemyPortrait, !Obj_IsVisible(enemyPortrait));
+		}
+		else {
+			let c = diaColors[type];
+			ObjText_SetFontColorBottom(dialogueText, c[0], c[1], c[2]);
+			ObjText_SetFontColorBottom(dialogueText, c[0], c[1], c[2]);
+			ObjText_SetTextWW(dialogueText, message, 510, 16 * fontScale, typeface);
+			ObjRender_SetAlpha(playerPortrait, [128, 255][type == 0]);
+			ObjRender_SetAlpha(enemyPortrait, [128, 255][type == 1]);
+			Obj_SetRenderPriority(enemyPortrait, [0.29, 0.31, 0.3][type]);
+			while (GetVirtualKeyState(VK_SHOT) != KEY_PUSH
+				&& GetVirtualKeyState(VK_USER1) == KEY_FREE) {yield;}
+			wait(10);
+		}
+	}
+	Obj_Delete(enemyPortrait);
+	Obj_Delete(playerPortrait);
+	Obj_Delete(cartouche);
+	Obj_Delete(dialogueText);
+	Obj_Delete(intro);
+	SetForbidPlayerShot(false);
+	SetForbidPlayerSpell(false);
+	toggleDialogue;
+	return 0;
+}
+
+let textSizes = [16, 28, 16, 14];
+let textCoords = [
+	[48, 100],
+	[32, 120],
+	[-16, 160],
+	[64, 200]
+];
+let alignments = [ALIGNMENT_LEFT, ALIGNMENT_CENTER, ALIGNMENT_RIGHT, ALIGNMENT_LEFT];
+
+function lighter(x) {
+	return 255 - (255 - x) / 2;
+}
+
+task stageTitle(name, location, flair, color) {
+	let textObjects = [
+		textOf("Stage " ~ [stage, "FINAL", "EX"][2 * (stage >= "11") + (stage == "10")]),
+		textOf(name),
+		textOf(location),
+		textOf(flair)
+	];
+	let len = length(textObjects);
+	ascent (i in 0 .. len) {
+		let t = textObjects[i];
+		ObjText_SetFontColorTop(t, color[0], color[1], color[2]);
+		ObjText_SetFontColorBottom(t, lighter(color[0]), lighter(color[1]), lighter(color[2]));
+		ObjText_SetFontBorderType(t, BORDER_FULL);
+		ObjText_SetFontBorderWidth(t, 2);
+		ObjText_SetFontBorderColor(t, 0, 0, 0);
+		ObjText_SetFontSize(t, textSizes[i] * fontScale);
+		ObjText_SetMaxWidth(t, 384);
+		ObjText_SetHorizontalAlignment(t, alignments[i]);
+		Obj_SetRenderPriority(t, 1);
+		ObjRender_SetX(t, textCoords[i][0]);
+		ObjRender_SetY(t, textCoords[i][1]);
+		if (i == 1) {
+			ObjText_SetFontType(t, hwFont);
+		}
+	}
+	wait(200);
+	descent (a in 0 .. 100) {
+		ascent (i in 0 .. len) {
+			ObjRender_SetAlpha(textObjects[i], truncate(a * 2.55));
+			yield;
+		}
+	}
+	ascent (i in 0 .. len) {
+		Obj_Delete(textObjects[i]);
+	}
+}
+
+function enemyOf(x, y, speed, angle,
+	graphics, x1, y1, x2, y2,
+	health, shotRate, bombRate, shotRadius, playerRadius,
+	drops) {
+	bombRate = acctR1(bombRate);
+	drops = drops ~ [0, 0, 0, 0, 0, 0, 0, 0];
+	let enemy = ObjEnemy_Create(OBJ_ENEMY);
+	ObjMove_SetPosition(enemy, x, y);
+	ObjMove_SetSpeed(enemy, speed);
+	ObjMove_SetAngle(enemy, angle);
+	ObjEnemy_SetLife(enemy, health);
+	ObjEnemy_SetDamageRate(enemy, shotRate, bombRate);
+	// Fuck setting graphics.
+	ObjPrim_SetTexture(enemy, GetCurrentScriptDirectory ~ graphics);
+	ObjSprite2D_SetSourceRect(enemy, x1, y1, x2, y2);
+	ObjEnemy_Regist(enemy);
+	adjustEnemy(enemy, shotRadius, playerRadius, drops);
+	return enemy;
+}
+// Why don't you just add fucking dot notation so we don't forget to put in the object ID.
+task adjustEnemy(enemy, shotRadius, playerRadius, drops) {
+	let x = 0;
+	let y = 0;
+	while (ObjEnemy_GetInfo(enemy, INFO_LIFE) > 0 && !Obj_IsDeleted(enemy)) {
+		x = ObjMove_GetX(enemy);
+		y = ObjMove_GetY(enemy);
+		ObjEnemy_SetIntersectionCircleToShot(enemy, x, y, shotRadius);
+		ObjEnemy_SetIntersectionCircleToPlayer(enemy, x, y, playerRadius);
+		ObjSprite2D_SetDestCenter(enemy);
+		if (canDeleteEnemy(enemy)) {Obj_Delete(enemy); return;}
+		yield;
+	}
+	let red = drops[0];
+	let blue = drops[1];
+	let purple = drops[2];
+	loop (red) {
+		createItemU1(POWER, x + rand(-20, 20), y + rand(-20, 20), 0);
+	}
+	loop (blue) {
+		createItemU1(RADIUS, x + rand(-20, 20), y + rand(-20, 20), 0);
+	}
+	loop (purple) {
+		createItemU1(TRANCE, x + rand(-20, 20), y + rand(-20, 20), 0);
+	}
+	Obj_Delete(enemy);
+}
+
+function enemyOfRotating(x, y, speed, angle,
+	graphics, x1, y1, x2, y2,
+	health, shotRate, bombRate, shotRadius, playerRadius,
+	drops) {
+	let enemy = enemyOf(x, y, speed, angle,
+		graphics, x1, y1, x2, y2,
+		health, shotRate, bombRate, shotRadius, playerRadius,
+		drops);
+	task fork {
+		while (!Obj_IsDeleted(enemy)) {
+			ObjRender_SetAngleZ(enemy, -(ObjMove_GetAngle(enemy) + 90));
+			yield;
+		}
+	}
+	fork;
+	return enemy;
+}
+
+function spawnEnemyWithLaserPoly(x, y, speed, angle,
+	graphics, x1, y1, x2, y2,
+	health, shotRate, bombRate, shotRadius, playerRadius,
+	drops,
+	r, sides, iav, laserID, delay) {
+	task laserTask(laser) {
+		let a = baseAngle;
+		ObjShot_SetAutoDelete(laser, false);
+		while (!Obj_IsDeleted(center)) {
+			a += iav;
+			ObjMove_SetPosition(laser, ObjMove_GetX(center) + r * cos(a), ObjMove_GetY(center) + r * sin(a));
+			ObjStLaser_SetAngle(laser, ObjStLaser_GetAngle(laser) + iav);
+			yield;
+		}
+		ObjShot_ToItem(laser);
+	}
+	let center = enemyOf(x, y, speed, angle,
+		graphics, x1, y1, x2, y2,
+		health, shotRate, bombRate, shotRadius, playerRadius,
+		drops);
+	let baseAngle = rand(0, 360);
+	loop (sides) {
+		let laser = CreateStraightLaserA1(x + r * cos(baseAngle), y + r * sin(baseAngle),
+			baseAngle + 90 + 180 / sides , 2 * r * sin(180 / sides), 20, 9999, laserID, delay);
+		laserTask(laser);
+		baseAngle += 360 / sides;
+	}
+	return center;
+}
+
+function canDeleteEnemy(enemy) {
+	let x = ObjMove_GetX(enemy);
+	let y = ObjMove_GetY(enemy);
+	return (x < -100) || (x > GetStgFrameWidth + 100) ||
+		(y < -100) || (y > GetStgFrameWidth + 100);
+}
+
+/*function ending(id) {
+	let dir = GetCurrentScriptDirectory ~ "../resource/endings/";
+	let bg = ObjPrim_Create(OBJ_SPRITE_2D);
+	ObjPrim_SetTexture(bg, dir ~ "bg.png");
+	ObjSprite2D_SetSourceRect(bg, 0, 0, 640, 480);
+	ObjSprite2D_SetDestRect(bg, 0, 0, 640, 480);
+	Obj_SetRenderPriority(bg, 0.9);
+	let img = ObjPrim_Create(OBJ_SPRITE_2D);
+	ObjPrim_SetTexture(img, dir ~ "e" ~ IntToString(id) ~ "_0.png");
+	ObjSprite2D_SetSourceRect(img, 0, 0, 640, 480);
+	ObjSprite2D_SetDestRect(img, 0, 0, 640, 480);
+	Obj_SetRenderPriority(img, 0.91);
+	let imgId = 0;
+	let textObjs = [];
+	let data = readEndings(id);
+	let len = length(data);
+	ascent (i in 0 .. len) {
+		let entry = data[i];
+		let istr = SplitString(entry[0], ",");
+		if (istr[0] != "256") {
+			let t = ObjText_Create;
+			Obj_SetRenderPriority(t, 0.92);
+			ObjRender_SetPosition(t, 20, 400 + 16 * length(textObjs), 0);
+			ObjText_SetText(t, entry[1]);
+			ObjText_SetFontType(t, typeface);
+			ObjText_SetFontBorderType(t, BORDER_FULL);
+			ObjText_SetFontColorTop(t, atoi(istr[0]), atoi(istr[1]), atoi(istr[2]));
+			ObjText_SetFontColorBottom(t, atoi(istr[0]), atoi(istr[1]), atoi(istr[2]));
+			textObjs = textObjs ~ [t];
+			while (GetVirtualKeyState(VK_OK) != KEY_PUSH) {yield;}
+		}
+		else {
+			imgId = atoi(istr[1]);
+			ObjPrim_SetTexture(img, dir ~ "e" ~ IntToString(id) ~ "_" ~ IntToString(imgId) ~ ".png");
+			ascent (j in 0 .. length(textObjs)) {Obj_Delete(textObjs[j]);}
+			textObjs = [];
+		}
+		yield;
+	}
+	ascent (j in 0 .. length(textObjs)) {Obj_Delete(textObjs[j]);}
+	Obj_Delete(bg);
+	Obj_Delete(img);
+}*/
+
+/*function credits {
+	let str = readCredits;
+	restartBGM(23);
+	let t = ObjText_Create;
+	ObjText_SetFontType(t, typeface);
+	ObjText_SetFontSize(t, 12 * fontScale);
+	ObjText_SetFontBorderType(t, BORDER_FULL);
+	ObjText_SetFontBorderWidth(t, 2);
+	ObjText_SetFontBorderColor(t, 0, 0, 0);
+	ObjText_SetFontColorTop(t, 255, 255, 255);
+	ObjText_SetFontColorBottom(t, 224, 224, 255);
+	ObjText_SetMaxWidth(t, 320);
+	ObjText_SetTextWW(t, str, 510, 12 * fontScale, typeface);
+	ObjRender_SetPosition(t, 320, 480, 0);
+	Obj_SetRenderPriority(t, 0.93);
+	let bg = ObjPrim_Create(OBJ_SPRITE_2D);
+	let dir = GetCurrentScriptDirectory ~ "../resource/bg/credits.png";
+	ObjPrim_SetTexture(bg, dir);
+	ObjSprite2D_SetSourceRect(bg, 0, 0, 640, 480);
+	ObjSprite2D_SetDestRect(bg, 0, 0, 640, 480);
+	Obj_SetRenderPriority(bg, 0.9);
+	descent (y in -ObjText_GetTotalHeight(t) .. 480) {ObjRender_SetY(t, y); yield;}
+	Obj_Delete(bg);
+	Obj_Delete(t);
+}*/

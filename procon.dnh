@@ -83,3 +83,19 @@ task saveHistoryPost(spellID, success) {
 	let old = getHistory(spellID);
 	setHistory(spellID, [old[0] + success, old[1]]);
 }
+
+function getLastStage(chara, diff) {
+	return GetAreaCommonData("Cy06", "gls" ~ IntToString(chara) ~ IntToString(diff), 1);
+}
+
+task setLastStage(chara, diff, stage) {
+	SetAreaCommonData("Cy06", "gls" ~ IntToString(chara) ~ IntToString(diff), stage);
+}
+
+function inDialogue {
+	return GetCommonData("InDialogue", false);
+}
+
+function toggleDialogue {
+	SetCommonData("InDialogue", !inDialogue);
+}
