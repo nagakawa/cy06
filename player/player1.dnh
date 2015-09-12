@@ -34,17 +34,17 @@ task TShot {
 		if (shot == KEY_PUSH || shot == KEY_HOLD && tick == 0 &&
 			GetPlayerState == STATE_NORMAL && IsPermitPlayerShot) {
 			if (isFocused) {
-				CreatePlayerShotA1(x, y, 10, 270, 18, 2, SALAMANDER);
+				createPlayerShotA1(x, y, 10, 270, 18, 2, SALAMANDER);
 			}
 			else {
-				CreatePlayerShotA1(x - 5, y, 10, 270, 15, 1, SPIKED_SEED);
-				CreatePlayerShotA1(x + 5, y, 10, 270, 15, 1, SPIKED_SEED);
-				CreatePlayerShotA1(x - 2.5, y, 10, 262, 8, 1, SPIKED_SEED);
-				CreatePlayerShotA1(x + 2.5, y, 10, 278, 8, 1, SPIKED_SEED);
-				CreatePlayerShotA1(x - 2.5, y + 8, 10, 254, 6, 1, SPIKED_SEED);
-				CreatePlayerShotA1(x + 2.5, y + 8, 10, 286, 6, 1, SPIKED_SEED);
-				CreatePlayerShotA1(x - 2.5, y + 8, 10, 246, 6, 1, SPIKED_SEED);
-				CreatePlayerShotA1(x + 2.5, y + 8, 10, 294, 6, 1, SPIKED_SEED);
+				createPlayerShotA1(x - 5, y, 10, 270, 15, 1, SPIKED_SEED);
+				createPlayerShotA1(x + 5, y, 10, 270, 15, 1, SPIKED_SEED);
+				createPlayerShotA1(x - 2.5, y, 10, 262, 8, 1, SPIKED_SEED);
+				createPlayerShotA1(x + 2.5, y, 10, 278, 8, 1, SPIKED_SEED);
+				createPlayerShotA1(x - 2.5, y + 8, 10, 254, 6, 1, SPIKED_SEED);
+				createPlayerShotA1(x + 2.5, y + 8, 10, 286, 6, 1, SPIKED_SEED);
+				createPlayerShotA1(x - 2.5, y + 8, 10, 246, 6, 1, SPIKED_SEED);
+				createPlayerShotA1(x + 2.5, y + 8, 10, 294, 6, 1, SPIKED_SEED);
 			}
 		}
 		tick++;

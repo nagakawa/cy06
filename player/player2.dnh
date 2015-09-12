@@ -59,7 +59,7 @@ task TShot {
 					wasFocused = false;
 				}
 				ascent (i in -5 .. 5) {
-					let sp = CreatePlayerShotA1(x, y - 2, 12, 270 + 3 * i, 4.8, 1, SOLAR_PROMINENCE);
+					let sp = createPlayerShotA1(x, y - 2, 12, 270 + 3 * i, 4.8, 1, SOLAR_PROMINENCE);
 				}
 			}
 		}

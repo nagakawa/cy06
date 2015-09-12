@@ -88,7 +88,15 @@ task mech {
 	loop {
 		AddScore(-GetScore);
 		AddScore(GetGraze);
-		
+		if (getTrancePercentage >= 100) {
+			activateTrance(true);
+		} else if (getTrancePercentage <= 0) {
+			setTrancePercentage(0);
+			activateTrance(false);
+		}
+		if (isTranceActive) {
+			addTrancePercentage(-1 / 6);
+		}
 		yield;
 	}
 }

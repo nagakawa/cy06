@@ -63,4 +63,9 @@ let current = GetCurrentScriptDirectory();
 	}
 }
 
+task createPlayerShotA1(x, y, speed, angle, damage, penetration, id) {
+	let dmgp = damage * (getPower / 100) ^ 0.5;
+	CreatePlayerShotA1(x, y, speed, angle, dmgp, penetration, id)
+}
+
 // 464 to 498

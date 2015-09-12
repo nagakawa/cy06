@@ -1,0 +1,87 @@
+#include "./itemConsts.dnh"
+#include "../../prostg.dnh"
+
+let textures = 0;
+
+@Event {
+	alternative (GetEventType)
+	case (EV_DELETE_SHOT_TO_ITEM) {
+		let shot = GetEventArgument(0);
+		let position = GetEventArgument(1);
+		if (length(position) > 0) {
+			createItemU1(RADIUS_SMALL, position[0], position[1]);
+		}
+		CollectAllItems;
+	}
+	case (EV_GET_ITEM) {
+		getItem(GetEventArgument(0), GetEventArgument(1));
+	}
+}
+
+task getItem(type, item) {
+	let x = ObjMove_GetX(item);
+	let y = ObjMove_GetY(item);
+	alternative (type)
+	case (POWER) {
+		let amt = 0.2 * (1 + (GetScore / 100) ^ 0.5);
+		if (isTranceActive) {amt *= 2;}
+		renderScore(x, y, amt, [255, 128, 128]);
+		setPower(getPower + amt);
+	}
+	case (RADIUS) {
+		let amt = getValue;
+		if (isTranceActive) {amt *= 3;}
+		renderScore(x, y, amt, [128, 128, 255]);
+		setRadius(getRadius + amt);
+	}
+	case (TRANCE) {
+		if (isTranceActive) {
+			let amt = getValue;
+			renderScore(x, y, amt, [128, 128, 255]);
+			setRadius(getRadius + amt);
+		}
+		else {
+			renderScore(x, y, base ^ 2 / 256, [192, 128, 192]);
+			addTrancePercentage(100 / 256);
+		}
+	}
+	case (RADIUS_SMALL) {
+		let amt = getValue / 64;
+		if (isTranceActive) {amt *= 3;}
+		renderScore(x, y, amt, [128, 128, 255]);
+		setRadius(getRadius + amt);
+	}
+	case (TRANCE_SMALL) {
+		if (isTranceActive) {
+			let amt = getValue / 64;
+			renderScore(x, y, amt, [128, 128, 255]);
+			setRadius(getRadius + amt);
+		}
+		else {
+			renderScore(x, y, base ^ 2 / 16384, [192, 128, 192]);
+			addTrancePercentage(100 / 16384);
+		}
+	}
+}
+
+task renderScore(x, y, amt, color) {
+	// Generate random numbers early so replays will synchronize properly
+	x += rand(-16, 16);
+	y += rand(-2, 2);
+	if (textures > 200 - 40 * getGraphicsCut) {return;}
+	textures++;
+	let obj = cta(RealToStringIL(amt, 4));
+	txc(color[0], color[1], color[2]);
+	txh(10);
+	txr(29);
+	txt("score");
+	txp(x - 100, y - 8);
+	txalign(100, ALIGNMENT_CENTER);
+	ascent (j in 0 .. 30) {
+		ObjRender_SetY(obj, y - 8 - j);
+		yield;
+	}
+	ObjRender_SetY(obj, y - 22);
+	Obj_Delete(obj);
+	textures--;
+}

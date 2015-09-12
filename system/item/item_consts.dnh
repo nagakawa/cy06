@@ -1,0 +1,5 @@
+let POWER = 1;
+let RADIUS = 2;
+let TRANCE = 3;
+let RADIUS_SMALL = 4;
+let TRANCE_SMALL = 5;

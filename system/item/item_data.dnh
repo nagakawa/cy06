@@ -1,0 +1,29 @@
+#UserItemData
+
+item_image = "./../../resource/items.png"
+
+ItemData {
+	id = 1
+	rect = (0, 1, 15, 16)
+	render = ALPHA
+}
+ItemData {
+	id = 2
+	rect = (16, 1, 31, 16)
+	render = ALPHA
+}
+ItemData {
+	id = 3
+	rect = (0, 17, 15, 32)
+	render = ALPHA
+}
+ItemData {
+	id = 4
+	rect = (16, 17, 23, 24)
+	render = ALPHA
+}
+ItemData {
+	id = 5
+	rect = (24, 17, 31, 24)
+	render = ALPHA
+}

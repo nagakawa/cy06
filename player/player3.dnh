@@ -35,11 +35,11 @@ task TShot {
 		if (shot == KEY_PUSH || shot == KEY_HOLD && tick == 0 &&
 			GetPlayerState == STATE_NORMAL && IsPermitPlayerShot) {
 			if (isFocused) {
-				ObjRender_SetAlpha(CreatePlayerShotA1(x + sin(tick), y, 7, 270, 15, 1, DS_ICE_RED + randIntH(0, 8)), 80);
+				ObjRender_SetAlpha(createPlayerShotA1(x + sin(tick), y, 7, 270, 15, 1, DS_ICE_RED + randIntH(0, 8)), 80);
 			}
 			else {
 				ascent (i in 0 .. 7) {
-					ObjRender_SetAlpha(CreatePlayerShotA1(x, y, 10, 270 + 30 * sin(counter + 360 * i / 7), 15, 1, DS_ICE_RED + i), 80);
+					ObjRender_SetAlpha(createPlayerShotA1(x, y, 10, 270 + 30 * sin(counter + 360 * i / 7), 15, 1, DS_ICE_RED + i), 80);
 				}
 			}
 		}
