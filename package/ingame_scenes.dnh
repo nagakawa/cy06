@@ -5,6 +5,7 @@ function TEndScene(mode, rpSlot, difficulty, character) {
 	if (IsReplay) {
 		return false;
 	}
+	RenderToTextureA1(GetTransitionRenderTargetName, 0, 100, true);
 	FinalizeStageScene;
 	flushZ;
 	let dir = GetCurrentScriptDirectory;
@@ -48,6 +49,7 @@ function TEndScene(mode, rpSlot, difficulty, character) {
 
 function RunPauseScene {
 	if (GetCommonData("pauseblocked", false)) {return;}
+	RenderToTextureA1(GetTransitionRenderTargetName, 0, 100, true);
 	let dir = GetCurrentScriptDirectory;
 	let pathScript = dir ~ "../system/pause.dnh";
 	let idScript = LoadScript(pathScript);

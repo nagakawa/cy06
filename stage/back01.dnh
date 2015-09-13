@@ -2,7 +2,7 @@
 
 let randomValues = [0.3];
 let seeds = [];
-let sky = "";
+let sky = GetCurrentScriptDirectory ~ "../resource/luv.png";
 
 task initBG {
 	ascent (i in 0 .. 32) {
@@ -19,35 +19,36 @@ task initBG {
 			];
 	}
 	ascent (i in 0 .. 8) {
-		seeds = seeds ~ [truncate(rand(10000, 20000))];
+		seeds = seeds ~ [truncate(rand(16384, 32768))];
 	}
 	if (getEffectCut == 4) {CloseScript(GetOwnScriptID);}
-	createCaveMesh(10, 10, 50, seeds[0], seeds[1]);
-	createCaveMesh(-10, 10, 50, seeds[2], seeds[3]);
+	createCaveMesh(20, 70, 50, seeds[0], seeds[1], seeds[2]);
+	createCaveMesh(-20, 70, 50, seeds[3], seeds[4], seeds[5]);
 	debug;
 }
 
 task customBehavior {
-	
+	SetCameraRadius(1);
 }
 
 let MESH_SIZE = 256;
 
-function createCaveMesh(y, sy, res, seed1, seed2) {
+function createCaveMesh(y, sy, res, seed1, seed2, seed3) {
 	let px = MESH_SIZE / y;
 	let verticesPerRow = 1 + 4 * res;
 	let vertexTotal = 2 * res * verticesPerRow + 1;
-	let obj = ObjPrim_Create(OBJ_PRIMITIVE_2D);
+	let obj = ObjPrim_Create(OBJ_PRIMITIVE_3D);
 	ObjPrim_SetPrimitiveType(obj, PRIMITIVE_TRIANGLESTRIP);
 	ObjPrim_SetTexture(obj, GetCurrentScriptDirectory ~ 
 		"../resource/mb3d/Rock_04_UV_H_CM_1.jpg");
 	ObjPrim_SetVertexCount(obj, vertexTotal);
 	function setVertex(vidx, i, j) {
-		if (vidx % 1000 == 0) {WriteLog(vidx % 1000);}
-		let offset = (seed1 * i + seed2 * j) % 256;
-		let x = i * px + px * randomValues[(offset + 7) % 256];
-		let z = j * px + px * randomValues[(offset + 14) % 256];
-		let Y = y + sy * randomValues[offset];
+		let offset = (seed1 * i * i + seed2 * j * j + seed3 * i * j) % 256;
+		let x = i * px + px * (randomValues[(offset + 7) % 256]) ^ 2;
+		let z = j * px + px * (randomValues[(offset + 14) % 256]) ^ 2;
+		let dy = sy * (randomValues[offset]) ^ 4;
+		if (absolute(j) <= 5) {dy *= (0.2 + 0.16 * absolute(j));}
+		let Y = y + dy;
 		let lum = 1 + randomValues[(offset + 128) % 256] * 0.1;
 		ObjPrim_SetVertexPosition(obj, vidx, x, Y, z);
 		ObjPrim_SetVertexUV(obj, vidx, x / res, z / res);
@@ -55,14 +56,14 @@ function createCaveMesh(y, sy, res, seed1, seed2) {
 	}
 	let vidx = 0;
 	ascent (i in -res / 2 .. res / 2) {
-		ascent (j in -res .. res) {
+		ascent (j in -res .. res + 1) {
 			setVertex(vidx, 2 * i, j);
-			setVertex(vidx + 1, 2 * i, j + 1);
+			setVertex(vidx + 1, 2 * i + 1, j);
 			vidx += 2;
 		}
-		descent (j in -res .. res) {
+		descent (j in -res .. res + 1) {
 			setVertex(vidx, 2 * i + 1, j);
-			setVertex(vidx + 1, 2 * i + 1, j + 1);
+			setVertex(vidx + 1, 2 * i + 2, j);
 			vidx += 2;
 		}
 	}

@@ -40,8 +40,8 @@ function rectangular(tx, x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4, u, v) {
 task invisibleOnSpell(obj) {
 	while (exists(obj)) {
 		Obj_SetVisible(obj,
-			GetEnemyBossSceneObjectID != ID_INVALID &&
-			ObjEnemyBossScene_GetInfo(
+			GetEnemyBossSceneObjectID == ID_INVALID ||
+			!ObjEnemyBossScene_GetInfo(
 				GetEnemyBossSceneObjectID,
 				INFO_IS_SPELL
 			)
@@ -89,13 +89,14 @@ task debug {
 		ObjRender_SetBlendType(axis, BLEND_ALPHA);
 	}
 	let text = ObjText_Create;
-	ObjRender_SetPosition(text, 0, 0, 0);
-	ObjText_SetFontType(text, S("dialogue"));
+	ObjRender_SetPosition(text, 32, 32, 0);
+	ObjText_SetFontType(text, S("font.dialogue"));
 	ObjText_SetFontColorTop(text, 255, 255, 255);
 	ObjText_SetFontColorBottom(text, 255, 255, 255);
 	ObjText_SetFontBorderType(text, BORDER_FULL);
 	ObjText_SetFontBorderWidth(text, 2);
 	ObjText_SetFontBorderColor(text, 0, 0, 0);
+	SetCameraAzimuthAngle(0);
 	while (!IsCloseScript(GetOwnScriptID)) {
 		SetPlayerInvincibilityFrame(99999);
 		function pr(k) {

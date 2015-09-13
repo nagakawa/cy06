@@ -58,18 +58,18 @@ task ss {
 				let name = "BGM: " ~ S("music.m" ~ IntToString(id) ~ ".title");
 				let textObj = cta(name);
 				txr(19);
-				txp(656, 440);
-				txct(255, 224, 192);
-				txcb(255, 192, 128);
-				txh(12);
+				txp(810, 560);
+				txct(192, 224, 255);
+				txcb(128, 192, 255);
+				txh(24);
 				txt("menu");
 				task fork {
 					descent (i in 0 .. 81) {
-						ObjRender_SetX(textObj, 8 * i + 32);
+						ObjRender_SetX(textObj, 10 * i + 32);
 						yield;
 					}
 					loop (180) {yield;}
-					ascent (i in 440 .. 480) {
+					ascent (i in 560 .. 600) {
 						ObjRender_SetY(textObj, i);
 						yield;
 					}
@@ -172,6 +172,7 @@ task titleScene(showIntro) {
 	txb(128, 64, 64);
 	txh(32);
 	txt("menu");
+	txr(1);
 	titleItems = titleItems ~ [bottomMatter];
 	playBGM(0);
 	SaveCommonDataAreaA1("Cy06");
