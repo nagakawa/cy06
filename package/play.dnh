@@ -69,6 +69,7 @@ task main {
 				if (!IsReplay) {
 					TerminateStageScene;
 					startMe(-1, difficulty, character, stage);
+					main;
 					return;
 				}
 			}
