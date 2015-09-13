@@ -1,4 +1,5 @@
-#include "./../language.dnh"
+#include "../itsbloc.dnh"
+#include "../sound.dnh"
 
 let NUM_STAGES = 6;
 
@@ -15,9 +16,9 @@ let NUM_STAGES = 6;
 }
 @Finalize {}
 
-function TBossPre {
+function TBossPre(name) {
 	let dir = GetCurrentScriptDirectory;
-	let path = dir ~ stage ~ "/boss.dnh";
+	let path = dir ~ name ~ ".dnh";
 	let idScript = LoadScriptInThread(path);
 	loop(60){yield;}
 	StartScript(idScript);
@@ -28,7 +29,7 @@ function TBossPre {
 }
 
 function TBossPost {
-	stageBonus(atoi(stage));
+	//stageBonus(atoi(stage));
 	wait(240);
 	setLastStage(getCharacter, getDifficulty, atoi(stage));
 	CloseStgScene;
@@ -56,13 +57,10 @@ function TDialogue(data) {
 	let width = GetStgFrameWidth;
 	let height = GetStgFrameHeight;
 	let len = length(data);
-	let path = GetCurrentScriptDirectory ~ data[0][0];
+	//let path = GetCurrentScriptDirectory ~ data[0][0];
 	let path2 = GetCurrentScriptDirectory ~ "./../resource/cartouche.png";
 	let enemyPortrait = ObjPrim_Create(OBJ_SPRITE_2D);
-	ObjPrim_SetTexture(enemyPortrait, path);
-	// 224 wide, 368 tall
-	ObjSprite2D_SetSourceRect(enemyPortrait, 0, 144, 223, 511);
-	ObjSprite2D_SetDestRect(enemyPortrait, width - 223, height - 367, width, height);
+	Obj_SetVisible(enemyPortrait, false);
 	let playerPortrait = ObjPrim_Create(OBJ_SPRITE_2D);
 	ObjPrim_SetTexture(playerPortrait, GetCurrentScriptDirectory  ~ "../resource/" ~
 		["rencron", "rygen"][getCharacter > 1] ~ "_gen2.png");
@@ -87,38 +85,76 @@ function TDialogue(data) {
 	ObjRender_SetX(dialogueText, 22);
 	ObjText_SetMaxWidth(dialogueText, 340);
 	ObjRender_SetY(dialogueText, height - 80);
-	let intro = ObjText_Create;
-	ObjText_SetFontType(intro, typeface);
-	ObjText_SetFontSize(intro, 28);
-	ObjText_SetSyntacticAnalysis(intro, true);
-	ObjText_SetMaxWidth(intro, 420);
-	ObjText_SetHorizontalAlignment(intro, ALIGNMENT_CENTER);
-	ObjText_SetFontColorTop(intro, 255, 192, 128);
-	ObjText_SetFontColorBottom(intro, 255, 192, 128);
-	ObjText_SetFontBorderType(intro, BORDER_FULL);
-	ObjText_SetFontBorderWidth(intro, 2);
-	ObjText_SetFontBorderColor(intro, 0, 0, 0);
-	ObjRender_SetX(intro, 32);
-	ObjRender_SetY(intro, height - 128);
-	// REWRITE
-	ascent (i in 1 .. len) {
+	let intro = cta("");
+	txt(intro, "charIntro");
+	txh(28);
+	txalign(420, ALIGNMENT_CENTER);
+	txc(255, 192, 128);
+	txb(0, 0, 0);
+	txp(32, height - 128);
+	let title = cta("");
+	txt(intro, "charIntro");
+	txh(14);
+	txalign(420, ALIGNMENT_CENTER);
+	txc(255, 192, 128);
+	txb(0, 0, 0);
+	txp(32, height - 144);
+	let name = S("dialogue.un");
+	ascent (i in 0 .. len) {
 		let entry = data[i];
-		let type = atoi(entry[1]);
-		let message = entry[0];
-		if (type == 3) {
-			ObjText_SetText(intro, message);
+		let type = SplitString(entry, " ")[0];
+		let message = entry[len(type) .. len(entry) - 1];
+		alternative (type)
+		case ("ShowName") {
+			ObjText_SetText(intro, S("boss.b" ~ message ~ ".name"));
+			ObjText_SetText(title, S("boss.b" ~ message ~ ".title"));
+			name = S("dialogue.b" ~ message);
 		}
-		else if (type == 4) {
-			Obj_SetVisible(enemyPortrait, !Obj_IsVisible(enemyPortrait));
+		case ("ShowSprite") {
+			Obj_SetVisible(enemyPortrait, true);
 		}
-		else {
-			let c = diaColors[type];
+		case ("HideSprite") {
+			Obj_SetVisible(enemyPortrait, false);
+		}
+		case ("SetSprite") {
+			let args = SplitString(message, " ");
+			let path = GetCurrentScriptDirectory ~ "../resource/ambient/" ~
+				rtos("00", atoi(args[0])) ~ "_" ~ args[1] ~ ".png";
+			ObjPrim_SetTexture(enemyPortrait, path);
+			// TODO: set proper vertex coordinates
+			ObjSprite2D_SetSourceRect(enemyPortrait, 0, 144, 223, 511);
+			ObjSprite2D_SetDestRect(enemyPortrait, width - 223, height - 367, width, height);
+		}
+		case ("PlayBGM") {
+			playBGM(atoi(message));
+		}
+		case ("Fight") {
+			Obj_SetVisible(playerPortrait, false);
+			let eiv = Obj_IsVisible(enemyPortrait);
+			Obj_SetVisible(enemyPortrait, false);
+			Obj_SetVisible(cartouche, false);
+			Obj_SetVisible(dialogueText, false);
+			Obj_SetVisible(intro, false);
+			Obj_SetVisible(title, false);
+			TBossPre(message);
+			Obj_SetVisible(playerPortrait, true);
+			Obj_SetVisible(enemyPortrait, eiv);
+			Obj_SetVisible(cartouche, true);
+			Obj_SetVisible(dialogueText, true);
+			Obj_SetVisible(intro, true);
+			Obj_SetVisible(title, true);
+		}
+		others {
+			let t = (type == "Boss") + 2 * (type == "Narrator");
+			let c = diaColors[t];
 			ObjText_SetFontColorBottom(dialogueText, c[0], c[1], c[2]);
 			ObjText_SetFontColorBottom(dialogueText, c[0], c[1], c[2]);
+			let theName = [S("dialogue.c" ~ IntToString(getCharacter / 2)), name, ""][t];
+			message = theName ~ "[r]" ~ message;
 			ObjText_SetTextWW(dialogueText, message, 510, 16 * fontScale, typeface);
-			ObjRender_SetAlpha(playerPortrait, [128, 255][type == 0]);
-			ObjRender_SetAlpha(enemyPortrait, [128, 255][type == 1]);
-			Obj_SetRenderPriority(enemyPortrait, [0.29, 0.31, 0.3][type]);
+			ObjRender_SetAlpha(playerPortrait, [128, 255][t == 0]);
+			ObjRender_SetAlpha(enemyPortrait, [128, 255][t == 1]);
+			Obj_SetRenderPriority(enemyPortrait, [0.29, 0.31, 0.3][t]);
 			while (GetVirtualKeyState(VK_SHOT) != KEY_PUSH
 				&& GetVirtualKeyState(VK_USER1) == KEY_FREE) {yield;}
 			wait(10);

@@ -1,0 +1,149 @@
+// background
+
+#include "./../prologue.dnh"
+
+let done = false;
+
+/*
+txIndex: a list of file paths
+objects:
+	1 Entry ->
+		[texture index, vertex count, type]
+		[x, y, z, u, v, alpha, red, green, blue] (as many as the vertex count)
+fog: [start, end, red, green, blue]
+sky: path to sky texture
+customBehavior(): task for custom control of objects
+Possible mesh support?
+*/
+
+// 1 - top left
+// 2 - top right
+// 3 - bottom right
+// 4 - bottom left
+function rectangular(tx, x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4, u, v) {
+	let spr = ObjPrim_Create(OBJ_PRIMITIVE_3D);
+	ObjPrim_SetTexture(spr, tx);
+	ObjPrim_SetPrimitiveType(spr, PRIMITIVE_TRIANGLESTRIP);
+	ObjPrim_SetVertexCount(spr, 4);
+	ObjPrim_SetVertexPosition(spr, 0, x1, y1, z1);
+	ObjPrim_SetVertexUV(spr, 0, 0, 0);
+	ObjPrim_SetVertexPosition(spr, 1, x2, y2, z2);
+	ObjPrim_SetVertexUV(spr, 1, u, 0);
+	ObjPrim_SetVertexPosition(spr, 2, x3, y3, z3);
+	ObjPrim_SetVertexUV(spr, 2, u, v);
+	ObjPrim_SetVertexPosition(spr, 3, x4, y4, z4);
+	ObjPrim_SetVertexUV(spr, 3, 0, v);
+	Obj_SetRenderPriority(spr, 0.21);
+	return spr;
+}
+
+let primitives = [];
+
+@Initialize {
+	let bg = ObjPrim_Create(OBJ_SPRITE_2D);
+	ObjPrim_SetTexture(bg, sky);
+	ObjSprite2D_SetSourceRect(bg, 0, 0, GetStgFrameWidth, GetStgFrameHeight);
+	ObjSprite2D_SetDestRect(bg, 0, 0, GetStgFrameWidth, GetStgFrameHeight);
+	ObjRender_SetPosition(bg, GetStgFrameLeft, GetStgFrameTop, 0);
+	Obj_SetRenderPriority(bg, 0.19);
+	initBG;
+	customBehavior;
+	//debug;
+}
+
+task debug {
+	let data = [
+		[1000, 0, 0, 255, 0, 0],
+		[0, 1000, 0, 0, 255, 0],
+		[0, 0, 1000, 0, 0, 255],
+		[-1000, 0, 0, 0, 255, 255],
+		[0, -1000, 0, 255, 0, 255],
+		[0, 0, -1000, 255, 255, 0]
+	];
+	let l = length(data);
+	ascent (i in 0 .. l) {
+		let axis = ObjPrim_Create(OBJ_PRIMITIVE_3D);
+		let d = data[i];
+		ObjPrim_SetPrimitiveType(axis, PRIMITIVE_LINELIST);
+		ObjPrim_SetVertexCount(axis, 2);
+		ObjPrim_SetVertexPosition(axis, 0, 0, 0, 0);
+		ObjPrim_SetVertexPosition(axis, 1, d[0], d[1], d[2]);
+		ascent (j in 0 .. 2) {
+			ObjPrim_SetVertexColor(axis, j, d[3], d[4], d[5]);
+		}
+		ObjRender_SetBlendType(axis, BLEND_ALPHA);
+	}
+	let text = ObjText_Create;
+	ObjRender_SetPosition(text, 0, 0, 0);
+	ObjText_SetFontType(text, typeface);
+	ObjText_SetFontColorTop(text, 255, 255, 255);
+	ObjText_SetFontColorBottom(text, 255, 255, 255);
+	ObjText_SetFontBorderType(text, BORDER_FULL);
+	ObjText_SetFontBorderWidth(text, 2);
+	ObjText_SetFontBorderColor(text, 0, 0, 0);
+	while (!IsCloseScript(GetOwnScriptID)) {
+		SetPlayerInvincibilityFrame(99999);
+		function pr(k) {
+			return GetKeyState(k) == KEY_HOLD;
+		}
+		ObjText_SetText(text,
+			"X " ~ ToString(GetCameraFocusX) ~
+			"[r]Y " ~ ToString(GetCameraFocusY) ~
+			"[r]Z " ~ ToString(GetCameraFocusZ) ~
+			"[r]pitch " ~ ToString(GetCameraPitch) ~
+			"[r]roll " ~ ToString(GetCameraRoll) ~
+			"[r]yaw " ~ ToString(GetCameraYaw) ~
+			"[r]azimuth " ~ ToString(GetCameraAzimuthAngle) ~
+			"[r]elevation " ~ ToString(GetCameraElevationAngle)
+		);
+		if (pr(KEY_W)) {
+			SetCameraFocusZ(GetCameraFocusZ + 1);
+		}
+		else if (pr(KEY_S)) {
+			SetCameraFocusZ(GetCameraFocusZ - 1);
+		}
+		else if (pr(KEY_A)) {
+			SetCameraFocusX(GetCameraFocusX - 1);
+		}
+		else if (pr(KEY_D)) {
+			SetCameraFocusX(GetCameraFocusX + 1);
+		}
+		else if (pr(KEY_T)) {
+			SetCameraFocusY(GetCameraFocusY + 1);
+		}
+		else if (pr(KEY_G)) {
+			SetCameraFocusY(GetCameraFocusY - 1);
+		}
+		else if (pr(KEY_Y)) {
+			SetCameraElevationAngle(GetCameraElevationAngle - 1);
+		}
+		else if (pr(KEY_H)) {
+			SetCameraElevationAngle(GetCameraElevationAngle + 1);
+		}
+		else if (pr(KEY_U)) {
+			SetCameraRoll(GetCameraRoll - 1);
+		}
+		else if (pr(KEY_I)) {
+			SetCameraRoll(GetCameraRoll + 1);
+		}
+		else if (pr(KEY_J)) {
+			SetCameraYaw(GetCameraYaw - 1);
+		}
+		else if (pr(KEY_K)) {
+			SetCameraYaw(GetCameraYaw + 1);
+		}
+		yield;
+		
+	}
+}
+
+@MainLoop {
+	// stub
+	let objScene = GetEnemyBossSceneObjectID();
+	let inSpell = objScene != ID_INVALID && ObjEnemyBossScene_GetInfo(objScene, INFO_IS_SPELL);
+	yield;
+}
+
+@Finalize {
+	done = true;
+}

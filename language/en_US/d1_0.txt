@@ -1,0 +1,20 @@
+Player Well, I finally escaped from the rain.
+Player But I don't know where I am.
+Boss Hello!
+SetSprite 0 def
+ShowSprite
+Boss Good morning!
+Player Who is it?
+ShowName 0
+Boss A resident of these caves.
+Boss My name is Ceri.
+Player So you're the one raining down today.
+Boss Yes.
+Player Then stop.
+PlayBGM 2
+Boss I work only for my master!
+Boss No one will stop me!
+Fight ceri
+Boss You're strong~
+Player Show me the exit or you're asking for more pain.
+Boss Up there at the waterfall.
