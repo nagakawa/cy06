@@ -113,20 +113,20 @@ task debug {
 			"[r]elevation " ~ ToString(GetCameraElevationAngle)
 		);
 		if (pr(KEY_W)) {
-			SetCameraFocusX(GetCameraFocusX - cos(GetCameraYaw));
-			SetCameraFocusZ(GetCameraFocusZ - sin(GetCameraYaw));
-		}
-		else if (pr(KEY_S)) {
 			SetCameraFocusX(GetCameraFocusX + cos(GetCameraYaw));
 			SetCameraFocusZ(GetCameraFocusZ + sin(GetCameraYaw));
 		}
-		else if (pr(KEY_A)) {
-			SetCameraFocusX(GetCameraFocusX + sin(GetCameraYaw));
-			SetCameraFocusZ(GetCameraFocusZ -cos(GetCameraYaw));
+		else if (pr(KEY_S)) {
+			SetCameraFocusX(GetCameraFocusX - cos(GetCameraYaw));
+			SetCameraFocusZ(GetCameraFocusZ - sin(GetCameraYaw));
 		}
-		else if (pr(KEY_D)) {
+		else if (pr(KEY_A)) {
 			SetCameraFocusX(GetCameraFocusX - sin(GetCameraYaw));
 			SetCameraFocusZ(GetCameraFocusZ + cos(GetCameraYaw));
+		}
+		else if (pr(KEY_D)) {
+			SetCameraFocusX(GetCameraFocusX + sin(GetCameraYaw));
+			SetCameraFocusZ(GetCameraFocusZ - cos(GetCameraYaw));
 		}
 		else if (pr(KEY_T)) {
 			SetCameraFocusY(GetCameraFocusY + 1);

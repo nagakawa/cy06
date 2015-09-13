@@ -24,11 +24,21 @@ task initBG {
 	if (getEffectCut == 4) {CloseScript(GetOwnScriptID);}
 	createCaveMesh(20, 70, 50, seeds[0], seeds[1], seeds[2]);
 	createCaveMesh(-20, 70, 50, seeds[3], seeds[4], seeds[5]);
+	SetFogEnable(true);
+	SetFogParam(270, 300, 0, 0, 0);
 	debug;
 }
 
 task customBehavior {
 	SetCameraRadius(1);
+	SetCameraAzimuthAngle(0);
+	SetCameraElevationAngle(0);
+	SetCameraYaw(180);
+	SetCameraFocusXYZ(-320, 5, 0);
+	ascent (i in -1600 .. 1600) {
+		SetCameraFocusX(i / 5);
+		yield;
+	}
 }
 
 let MESH_SIZE = 256;
