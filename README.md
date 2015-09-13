@@ -16,4 +16,4 @@ Code and assets for EIB (CY06).
 ### Resource credits
 
 * `resource/mb3d`: copyright [maxtextures.com](http://www.mb3d.co.uk) ([license](http://www.mb3d.co.uk/mb3d/The_License_Agreement.html))
-* `resource/rentex`: copyright [rendertextures.com](rendertextures.com) ([license](http://www.rendertextures.com/terms-of-use/))
+* `resource/rentex`: copyright [rendertextures.com](http://www.rendertextures.com) ([license](http://www.rendertextures.com/terms-of-use/))

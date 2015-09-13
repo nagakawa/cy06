@@ -35,7 +35,7 @@ task TShot {
 				createPlayerShotA1(x + 5, y, 10, 265, 8, 1, STEEL_ARROW);
 				createPlayerShotA1(x - 5, y, 10, 275, 8, 1, STEEL_ARROW);
 				createPlayerShotA1(x + 15, y, 10, 260, 6, 1, STEEL_ARROW);
-				createPlayerShotA1(x - 15, y, 10, 270, 6, 1, STEEL_ARROW);
+				createPlayerShotA1(x - 15, y, 10, 280, 6, 1, STEEL_ARROW);
 			}
 			else {
 				home(createPlayerShotA1(x, y, 10, 270, 11, 1, SILVER_ARROW));

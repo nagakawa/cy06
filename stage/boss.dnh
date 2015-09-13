@@ -1,0 +1,48 @@
+#include "./../system/healthbar.dnh"
+
+let bossN;
+let start;
+let end;
+
+@Initialize {
+	bossN = GetScriptArgument(0);
+	nstart = GetScriptArgument(1);
+	nend = GetScriptArgument(2);
+	sstart = GetScriptArgument(3);
+	send = GetScriptArgument(4);
+	TPlural;
+}
+
+@MainLoop {
+	yield;
+}
+
+@Finalize {}
+
+task TPlural {
+	let dir = GetCurrentScriptDirectory;
+	let obj = ObjEnemyBossScene_Create;
+	let start = min(nstart, sstart);
+	ascent (i in nstart .. nend) {
+		ObjEnemyBossScene_Add(obj, i - start, dir ~ "../spell/non" ~ IntToString(i) ~ ".dnh");
+	}
+	ascent (i in sstart .. send) {
+		ObjEnemyBossScene_Add(obj, i - start, dir ~ "../spell/spell" ~ IntToString(i) ~ ".dnh");
+	}
+	ObjEnemyBossScene_LoadInThread(obj);
+	ObjEnemyBossScene_Regist(obj);
+	createBossHealthbar(obj, 70, 75);
+	let text = cta(S("boss.b" ~ IntToString(bossN) ~".tlname"));
+	txh(16);
+	txt("bossName");
+	txp(10, 20);
+	txc(192, 64, 128);
+	while (!Obj_IsDeleted(obj)) {
+		yield;
+	}
+	Obj_Delete(text);
+	//loop (300) {yield;}
+	wait(60);
+	SetCommonData("ShakeDisabled", false);
+	CloseScript(GetOwnScriptID);
+}

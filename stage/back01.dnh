@@ -35,7 +35,7 @@ task initBG {
 	createCaveMesh(-20, 70, 50, seeds[3], seeds[4], seeds[5]);
 	SetFogEnable(true);
 	SetFogParam(270, 300, 0, 0, 0);
-	debug;
+	//debug;
 }
 
 task customBehavior {

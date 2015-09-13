@@ -17,10 +17,15 @@ let NUM_STAGES = 6;
 }
 @Finalize {}
 
-function TBossPre(name) {
+function TBossPre(config) {
 	let dir = GetCurrentScriptDirectory;
-	let path = dir ~ name ~ ".dnh";
+	let path = dir ~ "boss.dnh";
 	let idScript = LoadScriptInThread(path);
+	SetScriptArgument(idScript, 0, config[0]);
+	SetScriptArgument(idScript, 1, config[1]);
+	SetScriptArgument(idScript, 2, config[2]);
+	SetScriptArgument(idScript, 3, config[3]);
+	SetScriptArgument(idScript, 4, config[4]);
 	loop(60){yield;}
 	StartScript(idScript);
 	while (!IsCloseScript(idScript)) {
@@ -137,7 +142,8 @@ function TDialogue(data) {
 			Obj_SetVisible(dialogueText, false);
 			Obj_SetVisible(intro, false);
 			Obj_SetVisible(title, false);
-			TBossPre(message);
+			let strs = SplitString(message, " ");
+			TBossPre([atoi(strs[0]), atoi(strs[1]), atoi(strs[2]), atoi(strs[3]), atoi(strs[4])]);
 			Obj_SetVisible(playerPortrait, true);
 			Obj_SetVisible(enemyPortrait, eiv);
 			Obj_SetVisible(cartouche, true);
