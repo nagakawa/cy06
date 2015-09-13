@@ -1,6 +1,6 @@
 // background
 
-#include "./../prologue.dnh"
+#include "./../prostg.dnh"
 
 let done = false;
 
@@ -37,15 +37,30 @@ function rectangular(tx, x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4, u, v) {
 	return spr;
 }
 
+task invisibleOnSpell(obj) {
+	while (exists(obj)) {
+		Obj_SetVisible(obj,
+			GetEnemyBossSceneObjectID != ID_INVALID &&
+			ObjEnemyBossScene_GetInfo(
+				GetEnemyBossSceneObjectID,
+				INFO_IS_SPELL
+			)
+		);
+		yield;
+	}
+}
+
 let primitives = [];
 
 @Initialize {
-	let bg = ObjPrim_Create(OBJ_SPRITE_2D);
-	ObjPrim_SetTexture(bg, sky);
-	ObjSprite2D_SetSourceRect(bg, 0, 0, GetStgFrameWidth, GetStgFrameHeight);
-	ObjSprite2D_SetDestRect(bg, 0, 0, GetStgFrameWidth, GetStgFrameHeight);
-	ObjRender_SetPosition(bg, GetStgFrameLeft, GetStgFrameTop, 0);
-	Obj_SetRenderPriority(bg, 0.19);
+	if (sky != "") {
+		let bg = ObjPrim_Create(OBJ_SPRITE_2D);
+		ObjPrim_SetTexture(bg, sky);
+		ObjSprite2D_SetSourceRect(bg, 0, 0, GetStgFrameWidth, GetStgFrameHeight);
+		ObjSprite2D_SetDestRect(bg, 0, 0, GetStgFrameWidth, GetStgFrameHeight);
+		ObjRender_SetPosition(bg, GetStgFrameLeft, GetStgFrameTop, 0);
+		Obj_SetRenderPriority(bg, 0.19);
+	}
 	initBG;
 	customBehavior;
 	//debug;
@@ -75,7 +90,7 @@ task debug {
 	}
 	let text = ObjText_Create;
 	ObjRender_SetPosition(text, 0, 0, 0);
-	ObjText_SetFontType(text, typeface);
+	ObjText_SetFontType(text, S("dialogue"));
 	ObjText_SetFontColorTop(text, 255, 255, 255);
 	ObjText_SetFontColorBottom(text, 255, 255, 255);
 	ObjText_SetFontBorderType(text, BORDER_FULL);
@@ -97,16 +112,20 @@ task debug {
 			"[r]elevation " ~ ToString(GetCameraElevationAngle)
 		);
 		if (pr(KEY_W)) {
-			SetCameraFocusZ(GetCameraFocusZ + 1);
+			SetCameraFocusX(GetCameraFocusX - cos(GetCameraYaw));
+			SetCameraFocusZ(GetCameraFocusZ - sin(GetCameraYaw));
 		}
 		else if (pr(KEY_S)) {
-			SetCameraFocusZ(GetCameraFocusZ - 1);
+			SetCameraFocusX(GetCameraFocusX + cos(GetCameraYaw));
+			SetCameraFocusZ(GetCameraFocusZ + sin(GetCameraYaw));
 		}
 		else if (pr(KEY_A)) {
-			SetCameraFocusX(GetCameraFocusX - 1);
+			SetCameraFocusX(GetCameraFocusX + sin(GetCameraYaw));
+			SetCameraFocusZ(GetCameraFocusZ -cos(GetCameraYaw));
 		}
 		else if (pr(KEY_D)) {
-			SetCameraFocusX(GetCameraFocusX + 1);
+			SetCameraFocusX(GetCameraFocusX - sin(GetCameraYaw));
+			SetCameraFocusZ(GetCameraFocusZ + cos(GetCameraYaw));
 		}
 		else if (pr(KEY_T)) {
 			SetCameraFocusY(GetCameraFocusY + 1);

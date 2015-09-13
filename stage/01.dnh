@@ -1,0 +1,10 @@
+#include "./stage_header.dnh"
+#Background["./back01.dnh"]
+#System["./../system/system.dnh"]
+
+let stage = "01";
+let bgm = 1;
+
+task TStage {
+	
+}

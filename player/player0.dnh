@@ -6,9 +6,6 @@
 #include "./shotc.dnh"
 #include "./player_magic_circle.dnh"
 
-let objPlayer = GetPlayerObjectID();
-let objSlowShot = ID_INVALID;
-let current = GetCurrentScriptDirectory();
 let unfocusedSpeed = 5;
 let focusedSpeed = 1.5;
 let startingRadius = 5;
@@ -88,4 +85,4 @@ task TSpell {
 	Obj_Delete(objManage);
 }
 
-#include "./player_event.dnh"
+#include "./player_header.dnh"

@@ -11,7 +11,7 @@ function showMenu(title, titleColor, items) {
 		ObjText_SetFontType(obj, S("font.dialogue"));
 		ObjText_SetFontColorTop(obj, 128, 255, 255);
 		ObjText_SetFontColorBottom(obj, 128, 255, 255);
-		Obj_SetRenderPriority(obj, 0.1);
+		Obj_SetRenderPriority(obj, 0.9);
 		ObjRender_SetPosition(obj, x, y, 1);
 		return obj;
 	}
@@ -22,7 +22,7 @@ function showMenu(title, titleColor, items) {
 		ObjText_SetFontType(obj, S("font.menu"));
 		ObjText_SetFontColorTop(obj, titleColor[0], titleColor[1], titleColor[2]);
 		ObjText_SetFontColorBottom(obj, titleColor[0], titleColor[1], titleColor[2]);
-		Obj_SetRenderPriority(obj, 0.1);
+		Obj_SetRenderPriority(obj, 0.9);
 		ObjRender_SetPosition(obj, 32, 64, 1);
 		return obj;
 	}

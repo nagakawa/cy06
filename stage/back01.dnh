@@ -1,0 +1,73 @@
+#include "./back_header.dnh"
+
+let randomValues = [0.3];
+let seeds = [];
+let sky = "";
+
+task initBG {
+	ascent (i in 0 .. 32) {
+		randomValues = randomValues ~
+			[
+				rand(-1, 1),
+				rand(-1, 1),
+				rand(-1, 1),
+				rand(-1, 1),
+				rand(-1, 1),
+				rand(-1, 1),
+				rand(-1, 1),
+				rand(-1, 1)
+			];
+	}
+	ascent (i in 0 .. 8) {
+		seeds = seeds ~ [truncate(rand(10000, 20000))];
+	}
+	if (getEffectCut == 4) {CloseScript(GetOwnScriptID);}
+	createCaveMesh(10, 10, 50, seeds[0], seeds[1]);
+	createCaveMesh(-10, 10, 50, seeds[2], seeds[3]);
+	debug;
+}
+
+task customBehavior {
+	
+}
+
+let MESH_SIZE = 256;
+
+function createCaveMesh(y, sy, res, seed1, seed2) {
+	let px = MESH_SIZE / y;
+	let verticesPerRow = 1 + 4 * res;
+	let vertexTotal = 2 * res * verticesPerRow + 1;
+	let obj = ObjPrim_Create(OBJ_PRIMITIVE_2D);
+	ObjPrim_SetPrimitiveType(obj, PRIMITIVE_TRIANGLESTRIP);
+	ObjPrim_SetTexture(obj, GetCurrentScriptDirectory ~ 
+		"../resource/mb3d/Rock_04_UV_H_CM_1.jpg");
+	ObjPrim_SetVertexCount(obj, vertexTotal);
+	function setVertex(vidx, i, j) {
+		if (vidx % 1000 == 0) {WriteLog(vidx % 1000);}
+		let offset = (seed1 * i + seed2 * j) % 256;
+		let x = i * px + px * randomValues[(offset + 7) % 256];
+		let z = j * px + px * randomValues[(offset + 14) % 256];
+		let Y = y + sy * randomValues[offset];
+		let lum = 1 + randomValues[(offset + 128) % 256] * 0.1;
+		ObjPrim_SetVertexPosition(obj, vidx, x, Y, z);
+		ObjPrim_SetVertexUV(obj, vidx, x / res, z / res);
+		ObjPrim_SetVertexColor(obj, vidx, 88 * lum, 55 * lum, 9 * lum);
+	}
+	let vidx = 0;
+	ascent (i in -res / 2 .. res / 2) {
+		ascent (j in -res .. res) {
+			setVertex(vidx, 2 * i, j);
+			setVertex(vidx + 1, 2 * i, j + 1);
+			vidx += 2;
+		}
+		descent (j in -res .. res) {
+			setVertex(vidx, 2 * i + 1, j);
+			setVertex(vidx + 1, 2 * i + 1, j + 1);
+			vidx += 2;
+		}
+	}
+	setVertex(vidx, res, res);
+	Obj_SetRenderPriority(obj, 0.21);
+	invisibleOnSpell(obj);
+	return obj;
+}

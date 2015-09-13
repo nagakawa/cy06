@@ -7,6 +7,7 @@ let character;
 let stage = 0;
 let start;
 let end;
+let i;
 
 @Initialize{
 	rpi = GetScriptArgument(0);
@@ -15,15 +16,16 @@ let end;
 	if (GetScriptArgumentCount <= 3) {
 		stage = GetScriptArgument(3);
 	}
-	start(rpi, difficulty, character, stage);
+	startMe(rpi, difficulty, character, stage);
+	main;
 }
 
-function start(rpi_, difficulty_, character_, stage_) {
+function startMe(rpi_, difficulty_, character_, stage_) {
 	rpi = rpi_;
 	difficulty = difficulty_;
 	character = character_;
 	stage = stage_;
-	let cwd = GetCurrentScriptDirectory;
+	let current = GetCurrentScriptDirectory;
 	if (stage == 0) {
 		start = 1;
 		end = 6;
@@ -32,10 +34,11 @@ function start(rpi_, difficulty_, character_, stage_) {
 		end = stage;
 	}
 	InitializeStageScene;
-	let i = start;
+	i = start;
 	SetStageIndex(i);
 	let mainPath = current ~ "../stage/" ~ vtos("02d", i) ~ ".dnh";
 	let playerPath = current ~ "../player/player" ~ IntToString(character) ~ ".dnh";
+	WriteLog(playerPath);
 	SetStageMainScript(mainPath);
 	SetStagePlayerScript(playerPath);
 	setDifficulty(difficulty);
@@ -43,7 +46,8 @@ function start(rpi_, difficulty_, character_, stage_) {
 	setMode(stage);
 	SetCommonData("Start", true);
 	if (rpi != -1) {
-		SetStageReplayFile(rpi, REPLAY_FILE_PATH);
+		let path = GetReplayInfo(rpi, REPLAY_FILE_PATH);
+		SetStageReplayFile(path);
 	}
 	StartStageScene;
 }
@@ -51,57 +55,62 @@ function start(rpi_, difficulty_, character_, stage_) {
 sub endScene {
 	if (rpi != -1 || !TEndScene(stage, rpi, difficulty, character)) {
 		playBGM(0);
-		CloseStgScene;
-		CloseScript;
+		TerminateStageScene;
+		CloseScript(GetOwnScriptID);
+	}
+}
+
+task main {
+	while (!IsCloseScript(GetOwnScriptID)) {
+		if (GetVirtualKeyState(VK_PAUSE) == KEY_PUSH && !GetCommonData("pauseblocked", false)) {
+			let res = RunPauseScene;
+			alternative (res)
+			case (RESULT_RETRY) {
+				if (!IsReplay) {
+					TerminateStageScene;
+					startMe(-1, difficulty, character, stage);
+					return;
+				}
+			}
+			case (RESULT_END) {
+				TerminateStageScene;
+				playBGM(0);
+				CloseScript(GetOwnScriptID);
+				return;
+			}
+		}
+		let state = GetStageSceneState;
+		if (state == STAGE_STATE_FINISHED) {
+			let res = GetStageSceneResult;
+			alternative (res)
+			case (STAGE_RESULT_CLEARED) {
+				if (i == end) {
+					endScene;
+					return;
+				} else {
+					i++;
+					SetStageIndex(i);
+					SetCommonData("Start", false);
+					let mainPath = GetCurrentScriptDirectory ~ "../stage/" ~ vtos("02d", i) ~ ".dnh";
+					SetStageMainScript(mainPath);
+					StartStageScene;
+				}
+			}
+			case (STAGE_RESULT_PLAYER_DOWN) {
+				endScene;
+				return;
+			}
+			case (STAGE_RESULT_BREAK_OFF) {
+				playBGM(0);
+				TerminateStageScene;
+				CloseScript(GetOwnScriptID);
+			}
+		}
+		yield;
 	}
 }
 
 @MainLoop {
-	if (GetVirtualKeyState(VK_PAUSE) == KEY_PUSH && !GetCommonData("pauseblocked", false)) {
-		let res = RunPauseScene;
-		alternative (res)
-		case (RESULT_RETRY) {
-			if (!IsReplay) {
-				TerminateStageScene;
-				start(-1, difficulty, character, stage);
-				return;
-			}
-		}
-		case (RESULT_END) {
-			TerminateStageScene;
-			playBGM(0);
-			CloseStgScene;
-			CloseScript;
-			return;
-		}
-	}
-	let state = GetStageSceneState;
-	if (state == STAGE_STATE_FINISHED) {
-		let res = GetStageSceneResult;
-		alternative (res)
-		case (STAGE_RESULT_CLEARED) {
-			if (i == end) {
-				endScene;
-				return;
-			} else {
-				i++;
-				SetStageIndex(i);
-				SetCommonData("Start", false);
-				let mainPath = current ~ "../stage/" ~ vtos("02d", i) ~ ".dnh";
-				SetStageMainScript(mainPath);
-				StartStageScene;
-			}
-		}
-		case (STAGE_RESULT_PLAYER_DOWN) {
-			endScene;
-			return;
-		}
-		case (STAGE_RESULT_BREAK_OFF) {
-			playBGM(0);
-			CloseStgScene;
-			CloseScript;
-		}
-	}
 	yield;
 }
 

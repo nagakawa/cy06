@@ -82,7 +82,7 @@ task hitbox {
 		ObjRender_SetPosition(obj, GetPlayerX, GetPlayerY, 0);
 		ObjRender_SetPosition(objc, GetPlayerX, GetPlayerY, 0);
 		ObjRender_SetAngleXYZ(obj, 0, 0, t);
-		let showHitbox = isFocused && !isHidden && (GetPlayerState == STATE_NORMAL);
+		let showHitbox = isFocused && (GetPlayerState == STATE_NORMAL);
 		Obj_SetVisible(obj, showHitbox);
 		Obj_SetVisible(objc, showHitbox);
 		t += 3;
@@ -94,4 +94,118 @@ function createItemU1(type, x, y) {
 	let i = CreateItemU1(type, x, y, 0);
 	ObjItem_SetRenderScoreEnable(i, false);
 	return i;
+}
+
+function isFocused {
+	return GetVirtualKeyState(VK_SLOWMOVE) != KEY_FREE;
+}
+
+// Causes the shot to home.
+task home(shot) {
+	while (!Obj_IsDeleted(shot)) {
+		let enemy = nearestEnemy(shot);
+		if (enemy != ID_INVALID) {
+			let angle = getAngleTo(shot, enemy);
+			let old = ObjMove_GetAngle(shot);
+			let diff = (angle - old + 360) % 360;
+			if (diff < 180) {ObjMove_SetAngle(shot, old + 2);}
+			if (diff > 180) {ObjMove_SetAngle(shot, old - 2);}
+		}
+		yield;
+	}
+}
+
+task homeToPlayer(shot) {
+	while (!Obj_IsDeleted(shot)) {
+		let angle = GetAngleToPlayer(shot);
+		let old = ObjMove_GetAngle(shot);
+		let diff = (angle - old + 360) % 360;
+		if (diff < 180) {ObjMove_SetAngle(shot, old + 2);}
+		if (diff > 180) {ObjMove_SetAngle(shot, old - 2);}
+		yield;
+	}
+}
+
+task homeToPlayerS(shot, speed) {
+	while (!Obj_IsDeleted(shot)) {
+		let angle = GetAngleToPlayer(shot);
+		let old = ObjMove_GetAngle(shot);
+		let diff = (angle - old + 360) % 360;
+		if (diff < 180) {ObjMove_SetAngle(shot, old + speed);}
+		if (diff > 180) {ObjMove_SetAngle(shot, old - speed);}
+		yield;
+	}
+}
+
+task homeToPlayerD(shot, delay, interval) {
+	while (!Obj_IsDeleted(shot)) {
+		let angle = GetAngleToPlayer(shot);
+		let old = ObjMove_GetAngle(shot);
+		task nudge(amt) {
+			wait(delay);
+			ObjMove_SetAngle(shot, old + amt);
+		}
+		let diff = (angle - old + 360) % 360;
+		if (diff < 180) {nudge(2 * interval);}
+		if (diff > 180) {nudge(-2 * interval);}
+		wait(interval);
+	}
+}
+
+// Returns the ID of the nearest enemy, or ID_INVALID if there are none.
+function nearestEnemy(obj) {
+	let enemies = GetAllEnemyID;
+	let len = length(enemies);
+	let nearest = ID_INVALID;
+	let distance = 99999;
+	ascent (i in 0..len) {
+		let enemy = enemies[i];
+		let d = GetObjectDistance(obj, enemy);
+		if (d < distance) {
+			distance = d;
+			nearest = enemy;
+		}
+	}
+	return nearest;
+}
+
+// Gets the angle from obj1 to obj2.
+function getAngleTo(obj1, obj2) {
+	let x1 = ObjMove_GetX(obj1);
+	let x2 = ObjMove_GetX(obj2);
+	let y1 = ObjMove_GetY(obj1);
+	let y2 = ObjMove_GetY(obj2);
+	return atan2(y2 - y1, x2 - x1) % 360;
+}
+
+function getAngleToXY(obj1, x2, y2) {
+	let x1 = ObjMove_GetX(obj1);
+	let y1 = ObjMove_GetY(obj1);
+	return atan2(y2 - y1, x2 - x1) % 360;
+}
+
+function getAngleTwoPoints(x1, y1, x2, y2) {
+	return atan2(y2 - y1, x2 - x1) % 360;
+}
+
+function getDistanceTo(obj1, obj2) {
+	let x1 = ObjMove_GetX(obj1);
+	let x2 = ObjMove_GetX(obj2);
+	let y1 = ObjMove_GetY(obj1);
+	let y2 = ObjMove_GetY(obj2);
+	return ((x2 - x1) ^ 2 + (y2 - y1) ^ 2) ^ 0.5;
+}
+
+function getDistanceToXY(obj1, x2, y2) {
+	let x1 = ObjMove_GetX(obj1);
+	let y1 = ObjMove_GetY(obj1);
+	return ((x2 - x1) ^ 2 + (y2 - y1) ^ 2) ^ 0.5;
+}
+
+function getDistanceTwoPoints(x1, y1, x2, y2) {
+	return ((x2 - x1) ^ 2 + (y2 - y1) ^ 2) ^ 0.5;
+}
+
+function getDistanceToPlayer(obj) {
+	return getDistanceTo(obj, GetPlayerObjectID);
 }

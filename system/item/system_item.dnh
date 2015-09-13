@@ -1,5 +1,6 @@
-#include "./itemConsts.dnh"
+#include "./item_consts.dnh"
 #include "../../prostg.dnh"
+#include "../../itsbloc.dnh"
 
 let textures = 0;
 
@@ -68,7 +69,7 @@ task renderScore(x, y, amt, color) {
 	// Generate random numbers early so replays will synchronize properly
 	x += rand(-16, 16);
 	y += rand(-2, 2);
-	if (textures > 200 - 40 * getGraphicsCut) {return;}
+	if (textures > 200 - 40 * getEffectCut) {return;}
 	textures++;
 	let obj = cta(RealToStringIL(amt, 4));
 	txc(color[0], color[1], color[2]);

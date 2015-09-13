@@ -1,7 +1,6 @@
 function TEndScene(mode, rpSlot, difficulty, character) {
 	task goBack {
-		if (mode < MODE_SPELL) {unfreeze;}
-		else {SetCommonData("inSP", false);}
+		if (mode >= MODE_SPELL) {SetCommonData("inSP", false);}
 	}
 	if (IsReplay) {
 		return false;
@@ -27,10 +26,10 @@ function TEndScene(mode, rpSlot, difficulty, character) {
 	}
 	case (RESULT_RETRY) {
 		if (mode == MODE_ALL) {
-			start(rpSlot, difficulty, character, 0);
+			startMe(rpSlot, difficulty, character, 0);
 		}
 		else if (mode < MODE_SPELL) {
-			start(rpSlot, difficulty, character, mode);
+			startMe(rpSlot, difficulty, character, mode);
 		}
 		else {
 			/*let spell = mode - MODE_SPELL;
@@ -71,8 +70,8 @@ function TReplaySaveScene(difficulty, character, mode) {
 	while (!IsCloseScript(idScript)) {
 		yield;
 	}
-	if (mode < MODE_SPELL) {
+	/*if (mode < MODE_SPELL) {
 		titleScene(false);
 		unfreeze;
-	}
+	}*/
 }

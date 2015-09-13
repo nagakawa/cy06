@@ -1,4 +1,4 @@
-#include "../item/itemConsts.dnh"
+#include "../item/item_consts.dnh"
 #include "../itsbloc.dnh"
 #include "../system/healthbar.dnh"
 #include "../prostg.dnh"

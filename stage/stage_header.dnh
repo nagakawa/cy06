@@ -1,5 +1,7 @@
 #include "../itsbloc.dnh"
 #include "../sound.dnh"
+#include "../prostg.dnh"
+#include "../system/item/item_consts.dnh"
 
 let NUM_STAGES = 6;
 
@@ -7,7 +9,6 @@ let NUM_STAGES = 6;
 	//StartScript(LoadScript("./" ~ stage ~ "/stg_back.dnh"));
 	restartBGMWithTitle(bgm);
 	SetCommonData("Stage", atoi(stage));
-	resetBGIndex;
 	TStage;
 }
 @Event {}
@@ -35,11 +36,11 @@ function TBossPost {
 	CloseStgScene;
 }
 
-task showStageTitle(colors) {
+/*task showStageTitle(colors) {
 	let stageNames = getStageNames(atoi(stage));
 	stageTitle(stageNames[0], stageNames[1], stageNames[2],
 		colors);
-}
+}*/
 
 let diaColors = [
 	[128, 255, 255],
@@ -74,26 +75,26 @@ function TDialogue(data) {
 	ascent (i in 0 .. 4) {
 		ObjPrim_SetVertexPosition(cartouche, i,
 			16 + (width - 16) * vertexData[i][0],
-			height - 16 - 64 * vertexData[i][1]);
+			height - 16 - 64 * vertexData[i][1], 0);
 		ObjPrim_SetVertexColor(cartouche, i, 0, 0, 0);
 		ObjPrim_SetVertexAlpha(cartouche, i, 90 - 15 * (i == 3));
 	}
 	Obj_SetRenderPriority(cartouche, 0.22);
 	let dialogueText = ObjText_Create;
-	ObjText_SetFontType(dialogueText, typeface);
+	ObjText_SetFontType(dialogueText, S("font.dialogue"));
 	ObjText_SetFontSize(dialogueText, 16 * fontScale);
 	ObjRender_SetX(dialogueText, 22);
 	ObjText_SetMaxWidth(dialogueText, 340);
 	ObjRender_SetY(dialogueText, height - 80);
 	let intro = cta("");
-	txt(intro, "charIntro");
+	txt("charIntro");
 	txh(28);
 	txalign(420, ALIGNMENT_CENTER);
 	txc(255, 192, 128);
 	txb(0, 0, 0);
 	txp(32, height - 128);
 	let title = cta("");
-	txt(intro, "charIntro");
+	txt("charIntro");
 	txh(14);
 	txalign(420, ALIGNMENT_CENTER);
 	txc(255, 192, 128);
@@ -103,7 +104,7 @@ function TDialogue(data) {
 	ascent (i in 0 .. len) {
 		let entry = data[i];
 		let type = SplitString(entry, " ")[0];
-		let message = entry[len(type) .. len(entry) - 1];
+		let message = entry[length(type) .. length(entry)];
 		alternative (type)
 		case ("ShowName") {
 			ObjText_SetText(intro, S("boss.b" ~ message ~ ".name"));
@@ -151,7 +152,7 @@ function TDialogue(data) {
 			ObjText_SetFontColorBottom(dialogueText, c[0], c[1], c[2]);
 			let theName = [S("dialogue.c" ~ IntToString(getCharacter / 2)), name, ""][t];
 			message = theName ~ "[r]" ~ message;
-			ObjText_SetTextWW(dialogueText, message, 510, 16 * fontScale, typeface);
+			ObjText_SetTextWW(dialogueText, message, 80);
 			ObjRender_SetAlpha(playerPortrait, [128, 255][t == 0]);
 			ObjRender_SetAlpha(enemyPortrait, [128, 255][t == 1]);
 			Obj_SetRenderPriority(enemyPortrait, [0.29, 0.31, 0.3][t]);
@@ -170,7 +171,7 @@ function TDialogue(data) {
 	toggleDialogue;
 	return 0;
 }
-
+/*
 let textSizes = [16, 28, 16, 14];
 let textCoords = [
 	[48, 100],
@@ -219,13 +220,12 @@ task stageTitle(name, location, flair, color) {
 	ascent (i in 0 .. len) {
 		Obj_Delete(textObjects[i]);
 	}
-}
+}*/
 
 function enemyOf(x, y, speed, angle,
 	graphics, x1, y1, x2, y2,
 	health, shotRate, bombRate, shotRadius, playerRadius,
 	drops) {
-	bombRate = acctR1(bombRate);
 	drops = drops ~ [0, 0, 0, 0, 0, 0, 0, 0];
 	let enemy = ObjEnemy_Create(OBJ_ENEMY);
 	ObjMove_SetPosition(enemy, x, y);
@@ -257,13 +257,13 @@ task adjustEnemy(enemy, shotRadius, playerRadius, drops) {
 	let blue = drops[1];
 	let purple = drops[2];
 	loop (red) {
-		createItemU1(POWER, x + rand(-20, 20), y + rand(-20, 20), 0);
+		createItemU1(POWER, x + rand(-20, 20), y + rand(-20, 20));
 	}
 	loop (blue) {
-		createItemU1(RADIUS, x + rand(-20, 20), y + rand(-20, 20), 0);
+		createItemU1(RADIUS, x + rand(-20, 20), y + rand(-20, 20));
 	}
 	loop (purple) {
-		createItemU1(TRANCE, x + rand(-20, 20), y + rand(-20, 20), 0);
+		createItemU1(TRANCE, x + rand(-20, 20), y + rand(-20, 20));
 	}
 	Obj_Delete(enemy);
 }

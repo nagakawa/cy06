@@ -34,7 +34,7 @@ task TBackground {
 	let countV = 30;
 	let width = 640 / countH;
 	let height = 480 / countV;
-	let target = GetTransitionRenderTargetName();
+	let target = GetTransitionRenderTargetName;
 	let obj = ObjPrim_Create(OBJ_PRIMITIVE_2D);
 	ObjPrim_SetPrimitiveType(obj, PRIMITIVE_TRIANGLELIST);
 	ObjPrim_SetVertexCount(obj, countH * countV * 6);
