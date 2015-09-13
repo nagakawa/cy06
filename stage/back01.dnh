@@ -22,6 +22,15 @@ task initBG {
 		seeds = seeds ~ [truncate(rand(16384, 32768))];
 	}
 	if (getEffectCut == 4) {CloseScript(GetOwnScriptID);}
+	let waterPath = GetCurrentScriptDirectory ~ "../resource/rentex/09_DIFFUSE.jpg";
+	let w1 = rectangular(waterPath, 560, -50, 20, 560, 100, 20, 560, -50, 10, 560, 100, 10, 2, 1);
+	let w2 = rectangular(waterPath, 570, -50, 20, 570, 100, 20, 570, -50, 10, 570, 100, 10, 2, 1);
+	let w3 = rectangular(waterPath, 570, -50, 10, 570, 100, 10, 560, -50, 10, 560, 100, 10, 2, 1);
+	let w4 = rectangular(waterPath, 570, -50, 20, 570, 100, 20, 560, -50, 20, 560, 100, 20, 2, 1);
+	ObjRender_SetColor(w1, 64, 128, 255);
+	ObjRender_SetColor(w2, 64, 128, 255);
+	ObjRender_SetColor(w3, 64, 128, 255);
+	ObjRender_SetColor(w4, 64, 128, 255);
 	createCaveMesh(20, 70, 50, seeds[0], seeds[1], seeds[2]);
 	createCaveMesh(-20, 70, 50, seeds[3], seeds[4], seeds[5]);
 	SetFogEnable(true);
@@ -59,7 +68,7 @@ function createCaveMesh(y, sy, res, seed1, seed2, seed3) {
 		let dy = sy * (randomValues[offset]) ^ 4;
 		if (absolute(j) <= 5) {dy *= (0.2 + 0.16 * absolute(j));}
 		let Y = y + dy;
-		let lum = 1 + randomValues[(offset + 128) % 256] * 0.1;
+		let lum = 1 + randomValues[(offset + 208) % 256] * 0.1;
 		ObjPrim_SetVertexPosition(obj, vidx, x, Y, z);
 		ObjPrim_SetVertexUV(obj, vidx, x / res, z / res);
 		ObjPrim_SetVertexColor(obj, vidx, 88 * lum, 55 * lum, 9 * lum);

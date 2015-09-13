@@ -12,3 +12,8 @@ Code and assets for EIB (CY06).
 * Get Python 3.4, Racket, and Inkscape; if you're using Windows, get Cygwin too
 * Make sure those three tools are in your path variable
 * Type `make` to build the PNGs and the language files
+
+### Resource credits
+
+* `resource/mb3d`: copyright [maxtextures.com](http://www.mb3d.co.uk) ([license](http://www.mb3d.co.uk/mb3d/The_License_Agreement.html))
+* `resource/rentex`: copyright [rendertextures.com](rendertextures.com) ([license](http://www.rendertextures.com/terms-of-use/))

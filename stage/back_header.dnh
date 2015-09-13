@@ -18,8 +18,8 @@ Possible mesh support?
 
 // 1 - top left
 // 2 - top right
-// 3 - bottom right
-// 4 - bottom left
+// 3 - bottom left
+// 4 - bottom right
 function rectangular(tx, x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4, u, v) {
 	let spr = ObjPrim_Create(OBJ_PRIMITIVE_3D);
 	ObjPrim_SetTexture(spr, tx);

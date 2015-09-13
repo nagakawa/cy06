@@ -79,8 +79,8 @@ task main {
 		else if (selected >= upper) {selected = lower;}
 		let diff = selected - old;
 		if (diff) {
-			loop (20) {
-				easyY -= diff * 5;
+			loop (10) {
+				easyY -= diff * 10;
 				yield;
 			}
 		}
