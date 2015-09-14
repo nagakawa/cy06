@@ -33,19 +33,27 @@ task initBG {
 	ObjRender_SetColor(w4, 64, 128, 255);
 	createCaveMesh(20, 70, 50, seeds[0], seeds[1], seeds[2]);
 	createCaveMesh(-20, 70, 50, seeds[3], seeds[4], seeds[5]);
-	SetFogEnable(true);
-	SetFogParam(270, 300, 0, 0, 0);
+	setFog;
 	//debug;
+}
+
+task setFog {
+	SetFogEnable(true);
+	ascent (i in 0 .. 120) {
+		SetFogParam(2.75 * i, 3 * i, 0, 0, 0);
+		yield;
+	}
 }
 
 task customBehavior {
 	SetCameraRadius(1);
-	SetCameraAzimuthAngle(0);
+	SetCameraAzimuthAngle(1);
 	SetCameraElevationAngle(0);
 	SetCameraYaw(180);
 	SetCameraFocusXYZ(-320, 5, 0);
 	ascent (i in -1600 .. 1600) {
 		SetCameraFocusX(i / 5);
+		SetCameraRoll(45 * sin(i + 1600));
 		yield;
 	}
 }

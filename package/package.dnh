@@ -57,7 +57,7 @@ task ss {
 			if (st) {
 				let name = "BGM: " ~ S("music.m" ~ IntToString(id) ~ ".title");
 				let textObj = cta(name);
-				txr(19);
+				txr(99);
 				txp(810, 560);
 				txct(192, 224, 255);
 				txcb(128, 192, 255);
