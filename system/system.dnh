@@ -18,14 +18,22 @@ let cwd = GetCurrentScriptDirectory;
 	let path = cwd ~ "../player/playersd.dnh";
 	LoadEnemyShotData(path);
 	initFrame;
+	score(false);
+	score(true);
+	tPower;
+	radius;
+	value;
+	trance;
 	mech;
 }
+
+@MainLoop {yield;}
 
 function initFrame {
 	let path = cwd ~ "../resource/stgframe.png";
 	let obj = ObjPrim_Create(OBJ_SPRITE_2D);
 	ObjPrim_SetTexture(obj, path);
-	Obj_SetRenderPriority(obj, 5);
+	Obj_SetRenderPriority(obj, 0.05);
 	ObjSprite2D_SetSourceRect(obj, 0, 0, 800, 600);
 	ObjSprite2D_SetDestRect(obj, 0, 0, 800, 600);
 	SetStgFrame(16, 16, 484, 584, 20, 80);
@@ -55,6 +63,7 @@ function createNumberObject(x, y, tr, tg, tb, mw) {
 	ObjText_SetFontBorderType(obj, BORDER_FULL);
 	ObjText_SetFontBorderWidth(obj, 2);
 	ObjText_SetFontBorderColor(obj, 0, 0, 0);
+	Obj_SetRenderPriority(obj, 0.19);
 	return obj;
 }
 
@@ -72,9 +81,11 @@ function createText(x, y, tr, tg, tb, key) {
 	let obj = cta(S(key));
 	txp(x, y);
 	txct(tr, tg, tb);
-	txh(20);
+	txcb(255, 255, 255);
+	txb(0, 0, 0);
+	txh(24);
 	txt("charIntro");
-	txr(10);
+	txr(19);
 	return obj;
 }
 
@@ -84,9 +95,55 @@ function getHighScore {
 	return max(GetScore, hs);
 }
 
+task score(isHigh) {
+	let text = createText(525, 90 - 50 * isHigh, 128, 255, 128, ["stgf.score", "stgf.hiscore"][isHigh]);
+	let num = createNumberObject(525, 120 - 50 * isHigh, 128, 255, 128, 250);
+	while (!IsCloseScript(GetOwnScriptID)) {
+		updateInt(num, [GetScore, getHighScore][isHigh]);
+		yield;
+	}
+}
+
+task tPower {
+	let text = createText(525, 140, 255, 128, 128, "stgf.power");
+	let num = createNumberObject(525, 170, 255, 128, 128, 250);
+	while (!IsCloseScript(GetOwnScriptID)) {
+		updateReal(num, getPower, 2);
+		yield;
+	}
+}
+
+task radius {
+	let text = createText(525, 190, 128, 128, 255, "stgf.radius");
+	let num = createNumberObject(525, 220, 128, 128, 255, 250);
+	while (!IsCloseScript(GetOwnScriptID)) {
+		updateReal(num, getRadius, 2);
+		yield;
+	}
+}
+
+task value {
+	let text = createText(525, 240, 128, 255, 255, "stgf.value");
+	let num = createNumberObject(525, 270, 128, 255, 255, 250);
+	while (!IsCloseScript(GetOwnScriptID)) {
+		updateReal(num, getValue, sinterval);
+		yield;
+	}
+}
+
+task trance {
+	let text = createText(525, 290, 192, 128, 192, "stgf.trance");
+	let num = createNumberObject(525, 320, 192, 128, 192, 250);
+	while (!IsCloseScript(GetOwnScriptID)) {
+		let normalized = getTrancePercentage * base ^ 2 / 100;
+		ObjText_SetText(num, IntToStringIL(normalized) ~ S("stgf.trance.suffix"));
+		yield;
+	}
+}
+
 task mech {
 	let player = GetPlayerObjectID;
-	loop {
+	while (!IsCloseScript(GetOwnScriptID)) {
 		AddScore(-GetScore);
 		AddScore(GetGraze);
 		if (getTrancePercentage >= 100) {
