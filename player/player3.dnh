@@ -5,6 +5,7 @@
 //#Image["./ExRumiaImage.png"]
 #include "./shotc.dnh"
 #include "./player_magic_circle.dnh"
+#include "../hele/shotc.dnh"
 
 let unfocusedSpeed = 4;
 let focusedSpeed = 2;
@@ -22,7 +23,14 @@ task TImage {
 	}
 }
 
+let off = [
+	ICE_RED, ICE_ORANGE, ICE_LIME, ICE_GREEN,
+	ICE_AQUA, ICE_MINT, ICE_BLUE, ICE_PURPLE
+];
+
 task TShot {
+	let shotsheet = GetCurrentScriptDirectory ~ "../hele/shotbullets.txt";
+	LoadPlayerShotData(shotsheet);
 	let counter = 0;
 	let tick = 0;
 	loop {
@@ -32,11 +40,11 @@ task TShot {
 		if (shot == KEY_PUSH || shot == KEY_HOLD && tick == 0 &&
 			GetPlayerState == STATE_NORMAL && IsPermitPlayerShot) {
 			if (isFocused) {
-				ObjRender_SetAlpha(createPlayerShotA1(x + sin(tick), y, 7, 270, 15, 1, DS_ICE_RED + randIntH(0, 8)), 80);
+				ObjRender_SetAlpha(createPlayerShotA1(x + sin(tick), y, 7, 270, 15, 1, off[randIntH(0, 8)]), 80);
 			}
 			else {
 				ascent (i in 0 .. 7) {
-					ObjRender_SetAlpha(createPlayerShotA1(x, y, 10, 270 + 30 * sin(counter + 360 * i / 7), 15, 1, DS_ICE_RED + i), 80);
+					ObjRender_SetAlpha(createPlayerShotA1(x, y, 10, 270 + 30 * sin(counter + 360 * i / 7), 15, 1, off[i]), 80);
 				}
 			}
 		}

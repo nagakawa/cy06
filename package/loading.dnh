@@ -85,7 +85,8 @@ function loadWithDefaults {
 			"laser.png",
 			"playershots.png",
 			"poc.png",
-			"star.png"
+			"star.png",
+			"laser.png"
 		],
 		[
 			"beep11.wav",

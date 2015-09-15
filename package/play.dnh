@@ -1,5 +1,6 @@
 #include "../propkg.dnh"
 #include "./ingame_scenes.dnh"
+#include "./loading.dnh"
 
 let rpi = -1;
 let difficulty;
@@ -10,6 +11,7 @@ let end;
 let i;
 
 @Initialize {
+	loadWithDefaults;
 	rpi = GetScriptArgument(0);
 	difficulty = GetScriptArgument(1);
 	character = GetScriptArgument(2);

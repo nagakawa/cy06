@@ -1,5 +1,7 @@
 function createPlayerLaser(id, width, len, angle, dmg, color, penetration) {
-	createPlayerLaserXY(ObjMove_GetX(id), ObjMove_GetY(ID);, width, len, angle, dmg, color, penetration);
+	let res = createPlayerLaserXY(ObjMove_GetX(id), ObjMove_GetY(id), width, len, angle, dmg, color, penetration);
+	follow(res, id);
+	return res;
 }
 
 function createPlayerLaserXY(x, y, width, len, angle, dmg, color, penetration) {
@@ -10,7 +12,7 @@ function createPlayerLaserXY(x, y, width, len, angle, dmg, color, penetration) {
 	ObjLaser_SetRenderWidth(laser, width);
 	ObjLaser_SetLength(laser, len);
 	ObjShot_SetAutoDelete(laser, false);
-	ObjShot_SetGraphic(laser, DS_BEAM_RED);
+	ObjShot_SetGraphic(laser, BEAM_RED);
 	ObjRender_SetColor(laser, color[0], color[1], color[2]);
 	ObjShot_SetDamage(laser, dmg);
 	ObjShot_SetPenetration(laser, penetration);
@@ -28,10 +30,11 @@ task laserMain(x, y, laser, xoff, yoff, len, width, color, angle) {
 	ObjRender_SetScaleXYZ(lg, width / 16, 1, 0);
 	ObjRender_SetAngleXYZ(lg, 0, 0, angle - 90);
 	Obj_SetRenderPriority(lg, 0.31);
-	ObjRender_SetBlendType(lg, BLEND_ADD_ARGB );
+	ObjRender_SetBlendType(lg, BLEND_ADD_ARGB);
 	ObjRender_SetColor(lg, color[0], color[1], color[2]);
 	while (!Obj_IsDeleted(laser)) {
-		ObjMove_SetPosition(laser, x, y);
+		let x = ObjMove_GetX(laser);
+		let y = ObjMove_GetY(laser);
 		ObjShot_SetIntersectionLine(laser, x, y, x + xoff, x + yoff, width);
 		ObjRender_SetPosition(lg, x + 0.05 * xoff, y + 0.05 * yoff, 0);
 		ObjSprite2D_SetDestRect(lg, -16, 0, 16, len);
@@ -39,4 +42,11 @@ task laserMain(x, y, laser, xoff, yoff, len, width, color, angle) {
 		yield;
 	}
 	Obj_Delete(lg);
+}
+
+task follow(slave, master) {
+	while (exists(slave) && exists(master)) {
+		ObjMove_SetPosition(slave, ObjMove_GetX(master), ObjMove_GetY(master));
+		yield;
+	}
 }
