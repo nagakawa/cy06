@@ -86,11 +86,13 @@ task main {
 		}
 		if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
 			SetScriptResult(selected);
+			flushZ;
 			finalize;
 			return;
 		}
 		else if (GetVirtualKeyState(VK_CANCEL) == KEY_PUSH) {
 			SetScriptResult(-1);
+			flushX;
 			finalize;
 			return;
 		}

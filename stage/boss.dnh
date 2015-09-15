@@ -10,6 +10,7 @@ let end;
 	nend = GetScriptArgument(2);
 	sstart = GetScriptArgument(3);
 	send = GetScriptArgument(4);
+	SetCommonData("BossN", bossN);
 	TPlural;
 }
 

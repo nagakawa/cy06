@@ -1,7 +1,7 @@
 #TouhouDanmakufu[Player]
 #ScriptVersion[3]
 #ID["Player1"]
-#Title["æ˜æ§ã€€æ€œæ‚§ã€€Bã‚¿ã‚¤ãƒ—"]
+#Title["–¾‘„@—åœ¤@Bƒ^ƒCƒv"]
 //#Image["./ExRumiaImage.png"]
 #include "./shotc.dnh"
 #include "./player_magic_circle.dnh"

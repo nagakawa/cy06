@@ -53,11 +53,13 @@ task main {
 		else if (selected >= 6) {selected = 0;}
 		if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
 			SetScriptResult(selected);
+			flushZ;
 			finalize;
 			return;
 		}
 		else if (GetVirtualKeyState(VK_CANCEL) == KEY_PUSH) {
 			SetScriptResult(-1);
+			flushX;
 			finalize;
 			return;
 		}

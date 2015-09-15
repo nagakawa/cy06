@@ -39,6 +39,7 @@ function flush(vk) {
 	while (GetVirtualKeyState(vk) != KEY_FREE) {yield;}
 }
 function flushZ {flush(VK_OK);}
+function flushX {flush(VK_CANCEL);}
 
 function wait(t) {
 	loop (t) {yield;}

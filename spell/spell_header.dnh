@@ -24,12 +24,15 @@ let bombDamageRates = [100, 100, 80, 60, 40, 0, 0, 0];
 let success = true;
 
 let list = [];
+
+let bossN;
 @Initialize {
 	objBoss = ObjEnemy_Create(OBJ_ENEMY_BOSS);
 	ObjEnemy_Regist(objBoss);
 	ObjMove_SetDestAtFrame(objBoss, GetStgFrameWidth / 2, 90, 30);
 	ObjEnemy_SetDamageRate(objBoss, 0, 0);
 	setBoss(objBoss);
+	bossN = GetCommonData("BossN", 0);
 	if (id != 0 && !IsReplay) {saveHistoryPre(id);}
 	TRender;
 	TCutIn;

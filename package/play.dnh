@@ -9,7 +9,7 @@ let start;
 let end;
 let i;
 
-@Initialize{
+@Initialize {
 	rpi = GetScriptArgument(0);
 	difficulty = GetScriptArgument(1);
 	character = GetScriptArgument(2);
@@ -35,12 +35,12 @@ function startMe(rpi_, difficulty_, character_, stage_) {
 	}
 	InitializeStageScene;
 	i = start;
-	SetStageIndex(i);
 	let mainPath = current ~ "../stage/" ~ vtos("02d", i) ~ ".dnh";
-	let playerPath = current ~ "../player/player" ~ IntToString(character) ~ ".dnh";
+	let playerPath = current ~ "../player/player" ~ IntToString(character_) ~ ".dnh";
+	SetStagePlayerScript(playerPath);
+	SetStageIndex(i);
 	WriteLog(playerPath);
 	SetStageMainScript(mainPath);
-	SetStagePlayerScript(playerPath);
 	setDifficulty(difficulty);
 	setCharacter(character);
 	setMode(stage);

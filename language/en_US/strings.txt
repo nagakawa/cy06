@@ -179,6 +179,9 @@ spell.7i=Rainstorm "Inundation of Clear Water"
 music.m0.title=Sealed Mountain Above the Clouds
 music.m0.sub=The title theme.
 music.m0.description=This theme seems to have an airy feeling, as if one were floating on a cloud.
+music.m1.title=The Underearth Pathway from Rain
+music.m1.sub=The first stage theme.
+music.m1.description=the trombones are too loud
 
 options.on=ON
 options.off=OFF

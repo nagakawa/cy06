@@ -51,9 +51,11 @@ task customBehavior {
 	SetCameraElevationAngle(0);
 	SetCameraYaw(180);
 	SetCameraFocusXYZ(-320, 5, 0);
-	ascent (i in -1600 .. 1600) {
-		SetCameraFocusX(i / 5);
+	let i = -1600;
+	while (!IsCloseScript(GetOwnScriptID)) {
+		if (i < 1600) {SetCameraFocusX(i / 5);}
 		SetCameraRoll(45 * sin(i + 1600));
+		i++;
 		yield;
 	}
 }
@@ -71,15 +73,22 @@ function createCaveMesh(y, sy, res, seed1, seed2, seed3) {
 	ObjPrim_SetVertexCount(obj, vertexTotal);
 	function setVertex(vidx, i, j) {
 		let offset = (seed1 * i * i + seed2 * j * j + seed3 * i * j) % 256;
+		let offset2 = (seeds[5] * i * i + seeds[6] * j * j + seeds[7] * i * j) % 256;
 		let x = i * px + px * (randomValues[(offset + 7) % 256]) ^ 2;
 		let z = j * px + px * (randomValues[(offset + 14) % 256]) ^ 2;
 		let dy = sy * (randomValues[offset]) ^ 4;
 		if (absolute(j) <= 5) {dy *= (0.2 + 0.16 * absolute(j));}
+		else if (offset2 < 3) {dy *= 2 + 0.5 * randomValues[(offset + 98) % 256];}
 		let Y = y + dy;
-		let lum = 1 + randomValues[(offset + 208) % 256] * 0.1;
+		let lr = 1 + randomValues[(offset + 209) % 256] * 0.1;
+		let lg = 1 + randomValues[(offset + 210) % 256] * 0.1;
+		let lb = 1 + randomValues[(offset + 21) % 256] * 0.1;
 		ObjPrim_SetVertexPosition(obj, vidx, x, Y, z);
-		ObjPrim_SetVertexUV(obj, vidx, x / res, z / res);
-		ObjPrim_SetVertexColor(obj, vidx, 88 * lum, 55 * lum, 9 * lum);
+		ObjPrim_SetVertexUV(obj, vidx,
+			0.01 * (x + 0.6 * randomValues[(offset + 74) % 256]),
+			0.01 * (z + 0.6 * randomValues[(offset + 74) % 256])
+		);
+		ObjPrim_SetVertexColor(obj, vidx, 105 * lr, 94 * lg, 78 * lb);
 	}
 	let vidx = 0;
 	ascent (i in -res / 2 .. res / 2) {

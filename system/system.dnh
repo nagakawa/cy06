@@ -36,7 +36,7 @@ function initFrame {
 	Obj_SetRenderPriority(obj, 0.05);
 	ObjSprite2D_SetSourceRect(obj, 0, 0, 800, 600);
 	ObjSprite2D_SetDestRect(obj, 0, 0, 800, 600);
-	SetStgFrame(16, 16, 484, 584, 20, 80);
+	SetStgFrame(20, 20, 480, 580, 20, 80);
 }
 
 task reset {

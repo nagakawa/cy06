@@ -209,3 +209,13 @@ function getDistanceTwoPoints(x1, y1, x2, y2) {
 function getDistanceToPlayer(obj) {
 	return getDistanceTo(obj, GetPlayerObjectID);
 }
+
+task shake(ticks) {
+	if (GetCommonData("ShakeDisabled", false)) {return;}
+	loop (ticks) {
+		Set2DCameraFocusX(GetStgFrameWidth / 2 + rand(-8, 8));
+		Set2DCameraFocusY(GetStgFrameHeight / 2 + rand(-8, 8));
+		yield;
+	}
+	Reset2DCamera;
+}

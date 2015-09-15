@@ -138,6 +138,7 @@ task main {
 		}
 		else if (GetVirtualKeyState(VK_CANCEL) == KEY_PUSH) {
 			SetScriptResult(-1);
+			flushX;
 			finalize;
 			return;
 		}
