@@ -73,11 +73,11 @@ task main {
 			ObjRender_SetX(textObjs[2 * nselected + 1], -680);
 			Obj_SetVisible(textObjs[2 * nselected], true);
 			Obj_SetVisible(textObjs[2 * nselected + 1], true);
-			loop (20) {
-				addX(textObjs[2 * old], 40);
-				addX(textObjs[2 * old + 1], 40);
-				addX(textObjs[2 * nselected], 40);
-				addX(textObjs[2 * nselected + 1], 40);
+			loop (10) {
+				addX(textObjs[2 * old], 80);
+				addX(textObjs[2 * old + 1], 80);
+				addX(textObjs[2 * nselected], 80);
+				addX(textObjs[2 * nselected + 1], 80);
 				yield;
 			}
 			Obj_SetVisible(textObjs[2 * old], false);
@@ -96,11 +96,11 @@ task main {
 			ObjRender_SetX(textObjs[2 * nselected + 1], 920);
 			Obj_SetVisible(textObjs[2 * nselected], true);
 			Obj_SetVisible(textObjs[2 * nselected + 1], true);
-			loop (20) {
-				addX(textObjs[2 * old], -40);
-				addX(textObjs[2 * old + 1], -40);
-				addX(textObjs[2 * nselected], -40);
-				addX(textObjs[2 * nselected + 1], -40);
+			loop (10) {
+				addX(textObjs[2 * old], -80);
+				addX(textObjs[2 * old + 1], -80);
+				addX(textObjs[2 * nselected], -80);
+				addX(textObjs[2 * nselected + 1], -80);
 				yield;
 			}
 			Obj_SetVisible(textObjs[2 * old], false);

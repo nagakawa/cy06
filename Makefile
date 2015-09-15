@@ -1,4 +1,4 @@
-fromsvg = resource/stgframe.png resource/title.png
+fromsvg = resource/stgframe.png resource/title.png resource/nesmeja.png
 ttb = $(foreach dir, $(1), $(foreach file, $(basename $(shell ls $(dir))), $(file).bin))
 
 all: $(fromsvg) $(call ttb, language/*.txt language/*/*.txt) hele/shotc.dnh
