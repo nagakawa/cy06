@@ -1,5 +1,8 @@
 #include "../prostg.dnh"
 #include "../sound.dnh"
+#include "./shotc.dnh"
+#include "../hele/shotc.dnh"
+#include "../ambient/shotc.dnh"
 
 let POWER_PER_BOMB = 3;
 let POWER_PER_DEATHBOMB = 10;
@@ -15,6 +18,10 @@ let current = GetCurrentScriptDirectory();
 	//Sets the hitbox of the player
 	let path = current ~ "playersd.dnh";
 	LoadPlayerShotData(path); //Loads the player bullet graphics
+	path = current ~ "../hele/shotbullets.txt";
+	LoadPlayerShotData(path);
+	path = current ~ "../ambient/shotdata.dnh";
+	LoadPlayerShotData(path);
 	// The Player key stores the player.
 	SetAreaCommonData("Replay", "Character", playerID);
 	TImage();//Runs the player graphic task

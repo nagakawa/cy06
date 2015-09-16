@@ -41,7 +41,6 @@ function startMe(rpi_, difficulty_, character_, stage_) {
 	let playerPath = current ~ "../player/player" ~ IntToString(character_) ~ ".dnh";
 	SetStagePlayerScript(playerPath);
 	SetStageIndex(i);
-	WriteLog(playerPath);
 	SetStageMainScript(mainPath);
 	setDifficulty(difficulty);
 	setCharacter(character);

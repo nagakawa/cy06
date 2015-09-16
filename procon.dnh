@@ -100,3 +100,11 @@ function inDialogue {
 function toggleDialogue {
 	SetCommonData("InDialogue", !inDialogue);
 }
+
+function isCharacterUnlocked(id) {
+	return GetAreaCommonData("Cy06", "Unlocked" ~ IntToString(id), false);
+}
+
+task unlockCharacter(id) {
+	SetAreaCommonData("Cy06", "Unlocked" ~ IntToString(id), true);
+}

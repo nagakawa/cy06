@@ -3,10 +3,8 @@
 #ID["Player2"]
 #Title["広江　二虹　Aタイプ"]
 //#Image["./ExRumiaImage.png"]
-#include "./shotc.dnh"
 #include "./player_magic_circle.dnh"
 #include "./laser.dnh"
-#include "../hele/shotc.dnh"
 
 let unfocusedSpeed = 4;
 let focusedSpeed = 2;
@@ -26,8 +24,6 @@ task TImage {
 
 
 task TShot {
-	let shotsheet = GetCurrentScriptDirectory ~ "../hele/shotbullets.txt";
-	LoadPlayerShotData(shotsheet);
 	let tick = 0;
 	let wasFocused = false;
 	let lasers = [];

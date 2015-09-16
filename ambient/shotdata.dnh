@@ -1,0 +1,882 @@
+#UserShotData
+shot_image = "./shotsheet.png"
+ShotData {
+	id = 400
+	rect = (0, 0, 16, 16)
+	delay_color = (182, 182, 182)
+}
+ShotData {
+	id = 401
+	rect = (16, 0, 32, 16)
+	delay_color = (255, 99, 99)
+}
+ShotData {
+	id = 402
+	rect = (32, 0, 48, 16)
+	delay_color = (255, 103, 99)
+}
+ShotData {
+	id = 403
+	rect = (48, 0, 64, 16)
+	delay_color = (255, 99, 155)
+}
+ShotData {
+	id = 404
+	rect = (64, 0, 80, 16)
+	delay_color = (255, 99, 235)
+}
+ShotData {
+	id = 405
+	rect = (80, 0, 96, 16)
+	delay_color = (168, 99, 255)
+}
+ShotData {
+	id = 406
+	rect = (96, 0, 112, 16)
+	delay_color = (103, 99, 255)
+}
+ShotData {
+	id = 407
+	rect = (112, 0, 128, 16)
+	delay_color = (99, 237, 255)
+}
+ShotData {
+	id = 408
+	rect = (128, 0, 144, 16)
+	delay_color = (161, 236, 236)
+}
+ShotData {
+	id = 409
+	rect = (144, 0, 160, 16)
+	delay_color = (99, 255, 105)
+}
+ShotData {
+	id = 410
+	rect = (160, 0, 176, 16)
+	delay_color = (206, 255, 99)
+}
+ShotData {
+	id = 411
+	rect = (176, 0, 192, 16)
+	delay_color = (255, 174, 99)
+}
+ShotData {
+	id = 412
+	rect = (192, 0, 208, 16)
+	delay_color = (198, 255, 132)
+}
+ShotData {
+	id = 413
+	rect = (208, 0, 224, 16)
+	delay_color = (255, 254, 99)
+}
+ShotData {
+	id = 414
+	rect = (224, 0, 240, 16)
+	delay_color = (157, 214, 140)
+}
+ShotData {
+	id = 415
+	rect = (240, 0, 256, 16)
+	delay_color = (177, 177, 177)
+}
+ShotData {
+	id = 416
+	rect = (0, 16, 16, 32)
+	delay_color = (182, 182, 182)
+}
+ShotData {
+	id = 417
+	rect = (16, 16, 32, 32)
+	delay_color = (255, 99, 99)
+}
+ShotData {
+	id = 418
+	rect = (32, 16, 48, 32)
+	delay_color = (255, 103, 99)
+}
+ShotData {
+	id = 419
+	rect = (48, 16, 64, 32)
+	delay_color = (255, 99, 155)
+}
+ShotData {
+	id = 420
+	rect = (64, 16, 80, 32)
+	delay_color = (255, 99, 235)
+}
+ShotData {
+	id = 421
+	rect = (80, 16, 96, 32)
+	delay_color = (168, 99, 255)
+}
+ShotData {
+	id = 422
+	rect = (96, 16, 112, 32)
+	delay_color = (103, 99, 255)
+}
+ShotData {
+	id = 423
+	rect = (112, 16, 128, 32)
+	delay_color = (99, 237, 255)
+}
+ShotData {
+	id = 424
+	rect = (128, 16, 144, 32)
+	delay_color = (161, 236, 236)
+}
+ShotData {
+	id = 425
+	rect = (144, 16, 160, 32)
+	delay_color = (99, 255, 105)
+}
+ShotData {
+	id = 426
+	rect = (160, 16, 176, 32)
+	delay_color = (206, 255, 99)
+}
+ShotData {
+	id = 427
+	rect = (176, 16, 192, 32)
+	delay_color = (255, 174, 99)
+}
+ShotData {
+	id = 428
+	rect = (192, 16, 208, 32)
+	delay_color = (198, 255, 132)
+}
+ShotData {
+	id = 429
+	rect = (208, 16, 224, 32)
+	delay_color = (255, 254, 99)
+}
+ShotData {
+	id = 430
+	rect = (224, 16, 240, 32)
+	delay_color = (157, 214, 140)
+}
+ShotData {
+	id = 431
+	rect = (240, 16, 256, 32)
+	delay_color = (177, 177, 177)
+}
+ShotData {
+	id = 432
+	rect = (0, 32, 16, 48)
+	delay_color = (182, 182, 182)
+}
+ShotData {
+	id = 433
+	rect = (16, 32, 32, 48)
+	delay_color = (255, 99, 99)
+}
+ShotData {
+	id = 434
+	rect = (32, 32, 48, 48)
+	delay_color = (255, 103, 99)
+}
+ShotData {
+	id = 435
+	rect = (48, 32, 64, 48)
+	delay_color = (255, 99, 155)
+}
+ShotData {
+	id = 436
+	rect = (64, 32, 80, 48)
+	delay_color = (255, 99, 235)
+}
+ShotData {
+	id = 437
+	rect = (80, 32, 96, 48)
+	delay_color = (168, 99, 255)
+}
+ShotData {
+	id = 438
+	rect = (96, 32, 112, 48)
+	delay_color = (103, 99, 255)
+}
+ShotData {
+	id = 439
+	rect = (112, 32, 128, 48)
+	delay_color = (99, 237, 255)
+}
+ShotData {
+	id = 440
+	rect = (128, 32, 144, 48)
+	delay_color = (161, 236, 236)
+}
+ShotData {
+	id = 441
+	rect = (144, 32, 160, 48)
+	delay_color = (99, 255, 105)
+}
+ShotData {
+	id = 442
+	rect = (160, 32, 176, 48)
+	delay_color = (206, 255, 99)
+}
+ShotData {
+	id = 443
+	rect = (176, 32, 192, 48)
+	delay_color = (255, 174, 99)
+}
+ShotData {
+	id = 444
+	rect = (192, 32, 208, 48)
+	delay_color = (198, 255, 132)
+}
+ShotData {
+	id = 445
+	rect = (208, 32, 224, 48)
+	delay_color = (255, 254, 99)
+}
+ShotData {
+	id = 446
+	rect = (224, 32, 240, 48)
+	delay_color = (157, 214, 140)
+}
+ShotData {
+	id = 447
+	rect = (240, 32, 256, 48)
+	delay_color = (177, 177, 177)
+}
+ShotData {
+	id = 448
+	rect = (0, 48, 16, 64)
+	delay_color = (182, 182, 182)
+}
+ShotData {
+	id = 449
+	rect = (16, 48, 32, 64)
+	delay_color = (255, 99, 99)
+}
+ShotData {
+	id = 450
+	rect = (32, 48, 48, 64)
+	delay_color = (255, 103, 99)
+}
+ShotData {
+	id = 451
+	rect = (48, 48, 64, 64)
+	delay_color = (255, 99, 155)
+}
+ShotData {
+	id = 452
+	rect = (64, 48, 80, 64)
+	delay_color = (255, 99, 235)
+}
+ShotData {
+	id = 453
+	rect = (80, 48, 96, 64)
+	delay_color = (168, 99, 255)
+}
+ShotData {
+	id = 454
+	rect = (96, 48, 112, 64)
+	delay_color = (103, 99, 255)
+}
+ShotData {
+	id = 455
+	rect = (112, 48, 128, 64)
+	delay_color = (99, 237, 255)
+}
+ShotData {
+	id = 456
+	rect = (128, 48, 144, 64)
+	delay_color = (161, 236, 236)
+}
+ShotData {
+	id = 457
+	rect = (144, 48, 160, 64)
+	delay_color = (99, 255, 105)
+}
+ShotData {
+	id = 458
+	rect = (160, 48, 176, 64)
+	delay_color = (206, 255, 99)
+}
+ShotData {
+	id = 459
+	rect = (176, 48, 192, 64)
+	delay_color = (255, 174, 99)
+}
+ShotData {
+	id = 460
+	rect = (192, 48, 208, 64)
+	delay_color = (198, 255, 132)
+}
+ShotData {
+	id = 461
+	rect = (208, 48, 224, 64)
+	delay_color = (255, 254, 99)
+}
+ShotData {
+	id = 462
+	rect = (224, 48, 240, 64)
+	delay_color = (157, 214, 140)
+}
+ShotData {
+	id = 463
+	rect = (240, 48, 256, 64)
+	delay_color = (177, 177, 177)
+}
+ShotData {
+	id = 464
+	rect = (0, 64, 16, 80)
+	delay_color = (182, 182, 182)
+}
+ShotData {
+	id = 465
+	rect = (16, 64, 32, 80)
+	delay_color = (255, 99, 99)
+}
+ShotData {
+	id = 466
+	rect = (32, 64, 48, 80)
+	delay_color = (255, 103, 99)
+}
+ShotData {
+	id = 467
+	rect = (48, 64, 64, 80)
+	delay_color = (255, 99, 155)
+}
+ShotData {
+	id = 468
+	rect = (64, 64, 80, 80)
+	delay_color = (255, 99, 235)
+}
+ShotData {
+	id = 469
+	rect = (80, 64, 96, 80)
+	delay_color = (168, 99, 255)
+}
+ShotData {
+	id = 470
+	rect = (96, 64, 112, 80)
+	delay_color = (103, 99, 255)
+}
+ShotData {
+	id = 471
+	rect = (112, 64, 128, 80)
+	delay_color = (99, 237, 255)
+}
+ShotData {
+	id = 472
+	rect = (128, 64, 144, 80)
+	delay_color = (161, 236, 236)
+}
+ShotData {
+	id = 473
+	rect = (144, 64, 160, 80)
+	delay_color = (99, 255, 105)
+}
+ShotData {
+	id = 474
+	rect = (160, 64, 176, 80)
+	delay_color = (206, 255, 99)
+}
+ShotData {
+	id = 475
+	rect = (176, 64, 192, 80)
+	delay_color = (255, 174, 99)
+}
+ShotData {
+	id = 476
+	rect = (192, 64, 208, 80)
+	delay_color = (198, 255, 132)
+}
+ShotData {
+	id = 477
+	rect = (208, 64, 224, 80)
+	delay_color = (255, 254, 99)
+}
+ShotData {
+	id = 478
+	rect = (224, 64, 240, 80)
+	delay_color = (157, 214, 140)
+}
+ShotData {
+	id = 479
+	rect = (240, 64, 256, 80)
+	delay_color = (177, 177, 177)
+}
+ShotData {
+	id = 480
+	rect = (0, 80, 16, 96)
+	delay_color = (182, 182, 182)
+}
+ShotData {
+	id = 481
+	rect = (16, 80, 32, 96)
+	delay_color = (255, 99, 99)
+}
+ShotData {
+	id = 482
+	rect = (32, 80, 48, 96)
+	delay_color = (255, 103, 99)
+}
+ShotData {
+	id = 483
+	rect = (48, 80, 64, 96)
+	delay_color = (255, 99, 155)
+}
+ShotData {
+	id = 484
+	rect = (64, 80, 80, 96)
+	delay_color = (255, 99, 235)
+}
+ShotData {
+	id = 485
+	rect = (80, 80, 96, 96)
+	delay_color = (168, 99, 255)
+}
+ShotData {
+	id = 486
+	rect = (96, 80, 112, 96)
+	delay_color = (103, 99, 255)
+}
+ShotData {
+	id = 487
+	rect = (112, 80, 128, 96)
+	delay_color = (99, 237, 255)
+}
+ShotData {
+	id = 488
+	rect = (128, 80, 144, 96)
+	delay_color = (161, 236, 236)
+}
+ShotData {
+	id = 489
+	rect = (144, 80, 160, 96)
+	delay_color = (99, 255, 105)
+}
+ShotData {
+	id = 490
+	rect = (160, 80, 176, 96)
+	delay_color = (206, 255, 99)
+}
+ShotData {
+	id = 491
+	rect = (176, 80, 192, 96)
+	delay_color = (255, 174, 99)
+}
+ShotData {
+	id = 492
+	rect = (192, 80, 208, 96)
+	delay_color = (198, 255, 132)
+}
+ShotData {
+	id = 493
+	rect = (208, 80, 224, 96)
+	delay_color = (255, 254, 99)
+}
+ShotData {
+	id = 494
+	rect = (224, 80, 240, 96)
+	delay_color = (157, 214, 140)
+}
+ShotData {
+	id = 495
+	rect = (240, 80, 256, 96)
+	delay_color = (177, 177, 177)
+}
+ShotData {
+	id = 496
+	rect = (0, 96, 16, 112)
+	delay_color = (182, 182, 182)
+}
+ShotData {
+	id = 497
+	rect = (16, 96, 32, 112)
+	delay_color = (255, 99, 99)
+}
+ShotData {
+	id = 498
+	rect = (32, 96, 48, 112)
+	delay_color = (255, 103, 99)
+}
+ShotData {
+	id = 499
+	rect = (48, 96, 64, 112)
+	delay_color = (255, 99, 155)
+}
+ShotData {
+	id = 500
+	rect = (64, 96, 80, 112)
+	delay_color = (255, 99, 235)
+}
+ShotData {
+	id = 501
+	rect = (80, 96, 96, 112)
+	delay_color = (168, 99, 255)
+}
+ShotData {
+	id = 502
+	rect = (96, 96, 112, 112)
+	delay_color = (103, 99, 255)
+}
+ShotData {
+	id = 503
+	rect = (112, 96, 128, 112)
+	delay_color = (99, 237, 255)
+}
+ShotData {
+	id = 504
+	rect = (128, 96, 144, 112)
+	delay_color = (161, 236, 236)
+}
+ShotData {
+	id = 505
+	rect = (144, 96, 160, 112)
+	delay_color = (99, 255, 105)
+}
+ShotData {
+	id = 506
+	rect = (160, 96, 176, 112)
+	delay_color = (206, 255, 99)
+}
+ShotData {
+	id = 507
+	rect = (176, 96, 192, 112)
+	delay_color = (255, 174, 99)
+}
+ShotData {
+	id = 508
+	rect = (192, 96, 208, 112)
+	delay_color = (198, 255, 132)
+}
+ShotData {
+	id = 509
+	rect = (208, 96, 224, 112)
+	delay_color = (255, 254, 99)
+}
+ShotData {
+	id = 510
+	rect = (224, 96, 240, 112)
+	delay_color = (157, 214, 140)
+}
+ShotData {
+	id = 511
+	rect = (240, 96, 256, 112)
+	delay_color = (177, 177, 177)
+}
+ShotData {
+	id = 512
+	rect = (0, 112, 16, 128)
+	delay_color = (182, 182, 182)
+}
+ShotData {
+	id = 513
+	rect = (16, 112, 32, 128)
+	delay_color = (255, 99, 99)
+}
+ShotData {
+	id = 514
+	rect = (32, 112, 48, 128)
+	delay_color = (255, 103, 99)
+}
+ShotData {
+	id = 515
+	rect = (48, 112, 64, 128)
+	delay_color = (255, 99, 155)
+}
+ShotData {
+	id = 516
+	rect = (64, 112, 80, 128)
+	delay_color = (255, 99, 235)
+}
+ShotData {
+	id = 517
+	rect = (80, 112, 96, 128)
+	delay_color = (168, 99, 255)
+}
+ShotData {
+	id = 518
+	rect = (96, 112, 112, 128)
+	delay_color = (103, 99, 255)
+}
+ShotData {
+	id = 519
+	rect = (112, 112, 128, 128)
+	delay_color = (99, 237, 255)
+}
+ShotData {
+	id = 520
+	rect = (128, 112, 144, 128)
+	delay_color = (161, 236, 236)
+}
+ShotData {
+	id = 521
+	rect = (144, 112, 160, 128)
+	delay_color = (99, 255, 105)
+}
+ShotData {
+	id = 522
+	rect = (160, 112, 176, 128)
+	delay_color = (206, 255, 99)
+}
+ShotData {
+	id = 523
+	rect = (176, 112, 192, 128)
+	delay_color = (255, 174, 99)
+}
+ShotData {
+	id = 524
+	rect = (192, 112, 208, 128)
+	delay_color = (198, 255, 132)
+}
+ShotData {
+	id = 525
+	rect = (208, 112, 224, 128)
+	delay_color = (255, 254, 99)
+}
+ShotData {
+	id = 526
+	rect = (224, 112, 240, 128)
+	delay_color = (157, 214, 140)
+}
+ShotData {
+	id = 527
+	rect = (240, 112, 256, 128)
+	delay_color = (177, 177, 177)
+}
+ShotData {
+	id = 528
+	rect = (0, 128, 16, 144)
+	delay_color = (182, 182, 182)
+}
+ShotData {
+	id = 529
+	rect = (16, 128, 32, 144)
+	delay_color = (255, 99, 99)
+}
+ShotData {
+	id = 530
+	rect = (32, 128, 48, 144)
+	delay_color = (255, 103, 99)
+}
+ShotData {
+	id = 531
+	rect = (48, 128, 64, 144)
+	delay_color = (255, 99, 155)
+}
+ShotData {
+	id = 532
+	rect = (64, 128, 80, 144)
+	delay_color = (255, 99, 235)
+}
+ShotData {
+	id = 533
+	rect = (80, 128, 96, 144)
+	delay_color = (168, 99, 255)
+}
+ShotData {
+	id = 534
+	rect = (96, 128, 112, 144)
+	delay_color = (103, 99, 255)
+}
+ShotData {
+	id = 535
+	rect = (112, 128, 128, 144)
+	delay_color = (99, 237, 255)
+}
+ShotData {
+	id = 536
+	rect = (128, 128, 144, 144)
+	delay_color = (161, 236, 236)
+}
+ShotData {
+	id = 537
+	rect = (144, 128, 160, 144)
+	delay_color = (99, 255, 105)
+}
+ShotData {
+	id = 538
+	rect = (160, 128, 176, 144)
+	delay_color = (206, 255, 99)
+}
+ShotData {
+	id = 539
+	rect = (176, 128, 192, 144)
+	delay_color = (255, 174, 99)
+}
+ShotData {
+	id = 540
+	rect = (192, 128, 208, 144)
+	delay_color = (198, 255, 132)
+}
+ShotData {
+	id = 541
+	rect = (208, 128, 224, 144)
+	delay_color = (255, 254, 99)
+}
+ShotData {
+	id = 542
+	rect = (224, 128, 240, 144)
+	delay_color = (157, 214, 140)
+}
+ShotData {
+	id = 543
+	rect = (240, 128, 256, 144)
+	delay_color = (177, 177, 177)
+}
+ShotData {
+	id = 544
+	rect = (0, 144, 16, 160)
+	delay_color = (182, 182, 182)
+}
+ShotData {
+	id = 545
+	rect = (16, 144, 32, 160)
+	delay_color = (255, 99, 99)
+}
+ShotData {
+	id = 546
+	rect = (32, 144, 48, 160)
+	delay_color = (255, 103, 99)
+}
+ShotData {
+	id = 547
+	rect = (48, 144, 64, 160)
+	delay_color = (255, 99, 155)
+}
+ShotData {
+	id = 548
+	rect = (64, 144, 80, 160)
+	delay_color = (255, 99, 235)
+}
+ShotData {
+	id = 549
+	rect = (80, 144, 96, 160)
+	delay_color = (168, 99, 255)
+}
+ShotData {
+	id = 550
+	rect = (96, 144, 112, 160)
+	delay_color = (103, 99, 255)
+}
+ShotData {
+	id = 551
+	rect = (112, 144, 128, 160)
+	delay_color = (99, 237, 255)
+}
+ShotData {
+	id = 552
+	rect = (128, 144, 144, 160)
+	delay_color = (161, 236, 236)
+}
+ShotData {
+	id = 553
+	rect = (144, 144, 160, 160)
+	delay_color = (99, 255, 105)
+}
+ShotData {
+	id = 554
+	rect = (160, 144, 176, 160)
+	delay_color = (206, 255, 99)
+}
+ShotData {
+	id = 555
+	rect = (176, 144, 192, 160)
+	delay_color = (255, 174, 99)
+}
+ShotData {
+	id = 556
+	rect = (192, 144, 208, 160)
+	delay_color = (198, 255, 132)
+}
+ShotData {
+	id = 557
+	rect = (208, 144, 224, 160)
+	delay_color = (255, 254, 99)
+}
+ShotData {
+	id = 558
+	rect = (224, 144, 240, 160)
+	delay_color = (157, 214, 140)
+}
+ShotData {
+	id = 559
+	rect = (240, 144, 256, 160)
+	delay_color = (177, 177, 177)
+}
+ShotData {
+	id = 560
+	rect = (0, 160, 16, 176)
+	delay_color = (182, 182, 182)
+}
+ShotData {
+	id = 561
+	rect = (16, 160, 32, 176)
+	delay_color = (255, 99, 99)
+}
+ShotData {
+	id = 562
+	rect = (32, 160, 48, 176)
+	delay_color = (255, 103, 99)
+}
+ShotData {
+	id = 563
+	rect = (48, 160, 64, 176)
+	delay_color = (255, 99, 155)
+}
+ShotData {
+	id = 564
+	rect = (64, 160, 80, 176)
+	delay_color = (255, 99, 235)
+}
+ShotData {
+	id = 565
+	rect = (80, 160, 96, 176)
+	delay_color = (168, 99, 255)
+}
+ShotData {
+	id = 566
+	rect = (96, 160, 112, 176)
+	delay_color = (103, 99, 255)
+}
+ShotData {
+	id = 567
+	rect = (112, 160, 128, 176)
+	delay_color = (99, 237, 255)
+}
+ShotData {
+	id = 568
+	rect = (128, 160, 144, 176)
+	delay_color = (161, 236, 236)
+}
+ShotData {
+	id = 569
+	rect = (144, 160, 160, 176)
+	delay_color = (99, 255, 105)
+}
+ShotData {
+	id = 570
+	rect = (160, 160, 176, 176)
+	delay_color = (206, 255, 99)
+}
+ShotData {
+	id = 571
+	rect = (176, 160, 192, 176)
+	delay_color = (255, 174, 99)
+}
+ShotData {
+	id = 572
+	rect = (192, 160, 208, 176)
+	delay_color = (198, 255, 132)
+}
+ShotData {
+	id = 573
+	rect = (208, 160, 224, 176)
+	delay_color = (255, 254, 99)
+}
+ShotData {
+	id = 574
+	rect = (224, 160, 240, 176)
+	delay_color = (157, 214, 140)
+}
+ShotData {
+	id = 575
+	rect = (240, 160, 256, 176)
+	delay_color = (177, 177, 177)
+}
