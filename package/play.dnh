@@ -9,6 +9,7 @@ let stage = 0;
 let start;
 let end;
 let i;
+let alreadyLoaded = [false, false, false, false, false, false, false];
 
 @Initialize {
 	rpi = GetScriptArgument(0);
@@ -30,11 +31,14 @@ let textures = [
 
 function startStage(stage) {
 	SetStageIndex(i);
-	load(
-		textures[stage - 1],
-		[],
-		[]
-	);
+	if (!alreadyLoaded[stage - 1]) {
+		load(
+			textures[stage - 1],
+			[],
+			[]
+		);
+		alreadyLoaded[stage - 1] = true;
+	}
 }
 
 function startMe(rpi_, difficulty_, character_, stage_) {
