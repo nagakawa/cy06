@@ -54,9 +54,10 @@ function startMe(rpi_, difficulty_, character_, stage_) {
 	i = start;
 	let mainPath = current ~ "../stage/" ~ vtos("02d", i) ~ ".dnh";
 	let playerPath = current ~ "../player/player" ~ IntToString(character_) ~ ".dnh";
+	WriteLog(playerPath);
 	SetStagePlayerScript(playerPath);
-	SetStageMainScript(mainPath);
 	startStage(i);
+	SetStageMainScript(mainPath);
 	setDifficulty(difficulty);
 	setCharacter(character);
 	setMode(stage);
