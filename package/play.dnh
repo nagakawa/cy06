@@ -1,5 +1,6 @@
 #include "../propkg.dnh"
 #include "./ingame_scenes.dnh"
+#include "./loading.dnh"
 
 let rpi = -1;
 let difficulty;
@@ -20,6 +21,22 @@ let i;
 	main;
 }
 
+let textures = [
+	[
+		"mb3d/Rock_04_UV_H_CM_1.jpg",
+		"rentex/09_DIFFUSE.jpg"
+	]
+];
+
+function startStage(stage) {
+	SetStageIndex(i);
+	load(
+		textures[stage - 1],
+		[],
+		[]
+	);
+}
+
 function startMe(rpi_, difficulty_, character_, stage_) {
 	rpi = rpi_;
 	difficulty = difficulty_;
@@ -37,9 +54,9 @@ function startMe(rpi_, difficulty_, character_, stage_) {
 	i = start;
 	let mainPath = current ~ "../stage/" ~ vtos("02d", i) ~ ".dnh";
 	let playerPath = current ~ "../player/player" ~ IntToString(character_) ~ ".dnh";
-	SetStagePlayerScript(playerPath);
-	SetStageIndex(i);
 	WriteLog(playerPath);
+	SetStagePlayerScript(playerPath);
+	startStage(i);
 	SetStageMainScript(mainPath);
 	setDifficulty(difficulty);
 	setCharacter(character);
@@ -90,7 +107,7 @@ task main {
 					return;
 				} else {
 					i++;
-					SetStageIndex(i);
+					startStage(i);
 					SetCommonData("Start", false);
 					let mainPath = GetCurrentScriptDirectory ~ "../stage/" ~ vtos("02d", i) ~ ".dnh";
 					SetStageMainScript(mainPath);

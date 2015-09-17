@@ -26,6 +26,7 @@ let colors = [
 }
 
 task main {
+	easyY = 270 - 100 * (selected - lower);
 	ascent (i in lower .. upper) {
 		let item = "difficulty.d" ~ IntToString(i) ~ ".";
 		let label = cta(S(item ~ "label"));

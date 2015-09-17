@@ -143,7 +143,9 @@ function TDialogue(data) {
 			Obj_SetVisible(intro, false);
 			Obj_SetVisible(title, false);
 			let strs = SplitString(message, " ");
-			TBossPre([atoi(strs[0]), atoi(strs[1]), atoi(strs[2]), atoi(strs[3]), atoi(strs[4])]);
+			let bossID = atoi(strs[0]);
+			unlockCharacter(bossID);
+			TBossPre([bossID, atoi(strs[1]), atoi(strs[2]), atoi(strs[3]), atoi(strs[4])]);
 			Obj_SetVisible(playerPortrait, true);
 			Obj_SetVisible(enemyPortrait, eiv);
 			Obj_SetVisible(cartouche, true);

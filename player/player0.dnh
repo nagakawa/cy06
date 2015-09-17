@@ -3,7 +3,6 @@
 #ID["Player0"]
 #Title["明槍　怜悧　Aタイプ"]
 //#Image["./ExRumiaImage.png"]
-#include "./shotc.dnh"
 #include "./player_magic_circle.dnh"
 
 let unfocusedSpeed = 5;

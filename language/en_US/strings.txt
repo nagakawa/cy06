@@ -114,7 +114,14 @@ stgf.trance=Trance
 stgf.trance.suffix=%
 stgf.trance.activated=Trance Start!
 stgf.bonus=Bonus +
-stgf.failed=Bonus 0.0
+stgf.failed=Bonus 0.00
+stgf.d0=EASY
+stgf.d1=NORMAL
+stgf.d2=HARD
+stgf.d3=VERY HARD
+stgf.d4=INTENSE
+stgf.d5=EXTRA
+stgf.d6=PHANTASM
 
 boss.b0.title=Resident of the Lost Caves
 boss.b0.name=Ceri

@@ -2,7 +2,7 @@
 
 // shot sheet (NOTE: shot_image is NOT a var but fixed ph3 function. Don't try to rename it.)
 // change the pathname to desired location / type
-shot_image = "bullets.png"	
+shot_image = "./bullets.png"	
 
 // default delay rect
 delay_rect = (288,256,320,287)	

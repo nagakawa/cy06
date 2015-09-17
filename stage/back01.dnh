@@ -21,7 +21,8 @@ task initBG {
 	ascent (i in 0 .. 8) {
 		seeds = seeds ~ [truncate(rand(16384, 32768))];
 	}
-	if (getEffectCut == 4) {CloseScript(GetOwnScriptID);}
+	if (getEffectCut == 4) {CloseScript(GetOwnScriptID); return;}
+	let start = GetPackageTime;
 	let waterPath = GetCurrentScriptDirectory ~ "../resource/rentex/09_DIFFUSE.jpg";
 	let w1 = rectangular(waterPath, 560, -50, 20, 560, 100, 20, 560, -50, 10, 560, 100, 10, 2, 1);
 	let w2 = rectangular(waterPath, 570, -50, 20, 570, 100, 20, 570, -50, 10, 570, 100, 10, 2, 1);
@@ -31,9 +32,10 @@ task initBG {
 	ObjRender_SetColor(w2, 64, 128, 255);
 	ObjRender_SetColor(w3, 64, 128, 255);
 	ObjRender_SetColor(w4, 64, 128, 255);
-	createCaveMesh(20, 70, 50, seeds[0], seeds[1], seeds[2]);
-	createCaveMesh(-20, 70, 50, seeds[3], seeds[4], seeds[5]);
+	createCaveMesh(20, 100, 50, seeds[0], seeds[1], seeds[2]);
+	createCaveMesh(-20, 100, 50, seeds[3], seeds[4], seeds[5]);
 	setFog;
+	WriteLog("It took " ~ IntToString(GetPackageTime - start) ~ " ms to initialize the background.");
 	//debug;
 }
 
@@ -77,8 +79,8 @@ function createCaveMesh(y, sy, res, seed1, seed2, seed3) {
 		let x = i * px + px * (randomValues[(offset + 7) % 256]) ^ 2;
 		let z = j * px + px * (randomValues[(offset + 14) % 256]) ^ 2;
 		let dy = sy * (randomValues[offset]) ^ 4;
-		if (absolute(j) <= 5) {dy *= (0.2 + 0.16 * absolute(j));}
-		else if (offset2 < 3) {dy *= 2 + 0.5 * randomValues[(offset + 98) % 256];}
+		if (absolute(j) <= 5) {dy *= (0.2 + 0.032 * j * j);}
+		else if (offset2 < 3) {dy *= 2 + 0.8 * randomValues[(offset + 98) % 256];}
 		let Y = y + dy;
 		let lr = 1 + randomValues[(offset + 209) % 256] * 0.1;
 		let lg = 1 + randomValues[(offset + 210) % 256] * 0.1;
@@ -106,5 +108,7 @@ function createCaveMesh(y, sy, res, seed1, seed2, seed3) {
 	setVertex(vidx, res, res);
 	Obj_SetRenderPriority(obj, 0.21);
 	invisibleOnSpell(obj);
+	ObjRender_SetZWrite(obj, true);
+	ObjRender_SetZTest(obj, true);
 	return obj;
 }
