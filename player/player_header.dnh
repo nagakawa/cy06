@@ -72,7 +72,7 @@ let current = GetCurrentScriptDirectory();
 }
 
 function createPlayerShotA1(x, y, speed, angle, damage, penetration, id) {
-	let dmgp = damage * (getPower / 100) ^ 0.5;
+	let dmgp = damage * (1 + (getPower / 100) ^ 0.5);
 	return CreatePlayerShotA1(x, y, speed, angle, dmgp, penetration, id)
 }
 

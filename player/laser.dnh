@@ -12,7 +12,7 @@ function createPlayerLaserXY(x, y, width, len, angle, dmg, color, penetration) {
 	ObjLaser_SetRenderWidth(laser, width);
 	ObjLaser_SetLength(laser, len);
 	ObjShot_SetAutoDelete(laser, false);
-	ObjShot_SetGraphic(laser, BEAM_RED);
+	ObjShot_SetGraphic(laser, BEAM_GRAY);
 	ObjRender_SetColor(laser, color[0], color[1], color[2]);
 	ObjShot_SetDamage(laser, dmg);
 	ObjShot_SetPenetration(laser, penetration);

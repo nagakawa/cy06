@@ -3,30 +3,32 @@ function loadingImage(name) {
 	let img = ObjPrim_Create(OBJ_SPRITE_2D);
 	ObjPrim_SetTexture(img, GetCurrentScriptDirectory ~ "../resource/" ~ name ~ ".png");
 	ObjSprite2D_SetSourceRect(img, 1, 0, 128, 63);
-	ObjSprite2D_SetDestRect(img, 481, 400, 608, 463);
+	ObjSprite2D_SetDestRect(img, 601, 520, 768, 583);
 	Obj_SetRenderPriority(img, 0.95);
 	return img;
 }
 
 function loadingText {
 	let t = cta(S("loading"));
-	txp(461, 410);
+	txp(601, 530);
 	txct(255, 255, 255);
 	txcb(224, 231, 255);
 	txh(18);
 	txt("menu");
 	txb(0, 0, 0);
+	txr(96);
 	return t;
 }
 
 function fileText {
 	let t = cta(S("loading"));
-	txp(441, 410);
+	txp(641, 550);
 	txct(255, 255, 255);
 	txcb(224, 231, 255);
-	txh(18);
+	txh(10);
 	txt("dialogue");
 	txb(0, 0, 0);
+	txr(96);
 	return t;
 }
 
@@ -84,9 +86,10 @@ function loadWithDefaults {
 			"items.png",
 			"laser.png",
 			"playershots.png",
-			"poc.png",
-			"star.png",
-			"laser.png"
+			"nesmeja.png",
+			"laser.png",
+			"../hele/bullets.png",
+			"../ambient/shotsheet.png"
 		],
 		[
 			"beep11.wav",
