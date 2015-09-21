@@ -144,6 +144,7 @@ dialogue.b0=Ceri
 dialogue.b1=Enmon
 dialogue.b2=Cvyldo
 dialogue.b3=Fynme
+dialogue.b4=Cergas
 
 stage.s1.title=Entrance under the Thorny Brambles
 stage.s2.title=Under the Surface of the Flooded River
@@ -189,6 +190,7 @@ music.m0.description=This theme seems to have an airy feeling, as if one were fl
 music.m1.title=The Underearth Pathway from Rain
 music.m1.sub=The first stage theme.
 music.m1.description=the trombones are too loud
+#music.m2.title=
 
 options.on=ON
 options.off=OFF

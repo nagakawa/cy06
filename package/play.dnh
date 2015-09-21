@@ -55,22 +55,27 @@ function startMe(rpi_, difficulty_, character_, stage_) {
 		end = stage;
 	}
 	InitializeStageScene;
+	WriteLog("initialized stage scene");
 	i = start;
 	let mainPath = current ~ "../stage/" ~ vtos("02d", i) ~ ".dnh";
 	let playerPath = current ~ "../player/player" ~ IntToString(character_) ~ ".dnh";
-	WriteLog(playerPath);
 	SetStagePlayerScript(playerPath);
+	WriteLog("player set");
 	startStage(i);
 	SetStageMainScript(mainPath);
+	WriteLog("main set");
 	setDifficulty(difficulty);
 	setCharacter(character);
 	setMode(stage);
+	WriteLog("DCM set");
 	SetCommonData("Start", true);
 	if (rpi != -1) {
 		let path = GetReplayInfo(rpi, REPLAY_FILE_PATH);
 		SetStageReplayFile(path);
 	}
+	WriteLog("replay set");
 	StartStageScene;
+	WriteLog("blastoff!");
 }
 
 sub endScene {

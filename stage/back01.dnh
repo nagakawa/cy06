@@ -32,6 +32,10 @@ task initBG {
 	ObjRender_SetColor(w2, 64, 128, 255);
 	ObjRender_SetColor(w3, 64, 128, 255);
 	ObjRender_SetColor(w4, 64, 128, 255);
+	flow(w1);
+	flow(w2);
+	flow(w3);
+	flow(w4);
 	createCaveMesh(20, 100, 50, seeds[0], seeds[1], seeds[2]);
 	createCaveMesh(-20, 100, 50, seeds[3], seeds[4], seeds[5]);
 	setFog;
@@ -55,7 +59,7 @@ task customBehavior {
 	SetCameraFocusXYZ(-320, 5, 0);
 	let i = -1600;
 	while (!IsCloseScript(GetOwnScriptID)) {
-		if (i < 1600) {SetCameraFocusX(i / 5);}
+		if (i <= 1600) {SetCameraFocusX(i / 5);}
 		SetCameraRoll(45 * sin(i + 1600));
 		i++;
 		yield;
@@ -111,4 +115,17 @@ function createCaveMesh(y, sy, res, seed1, seed2, seed3) {
 	ObjRender_SetZWrite(obj, true);
 	ObjRender_SetZTest(obj, true);
 	return obj;
+}
+
+task flow(water) {
+	while (GetCameraFocusX < 320) {yield;}
+	let u = 0;
+	while (exists(water)) {
+		ObjPrim_SetVertexUV(water, 0, u, 0);
+		ObjPrim_SetVertexUV(water, 1, u + 2, 0);
+		ObjPrim_SetVertexUV(water, 2, u + 2, 1);
+		ObjPrim_SetVertexUV(water, 3, u, 1);
+		u += 1 / 60;
+		yield;
+	}
 }

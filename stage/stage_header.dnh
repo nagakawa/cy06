@@ -84,32 +84,37 @@ function TDialogue(data) {
 		ObjPrim_SetVertexColor(cartouche, i, 0, 0, 0);
 		ObjPrim_SetVertexAlpha(cartouche, i, 90 - 15 * (i == 3));
 	}
-	Obj_SetRenderPriority(cartouche, 0.22);
+	Obj_SetRenderPriority(cartouche, 0.32);
 	let dialogueText = ObjText_Create;
 	ObjText_SetFontType(dialogueText, S("font.dialogue"));
 	ObjText_SetFontSize(dialogueText, 16 * fontScale);
 	ObjRender_SetX(dialogueText, 22);
 	ObjText_SetMaxWidth(dialogueText, 340);
 	ObjRender_SetY(dialogueText, height - 80);
+	Obj_SetRenderPriority(dialogueText, 0.33);
 	let intro = cta("");
 	txt("charIntro");
-	txh(28);
+	txh(36);
 	txalign(420, ALIGNMENT_CENTER);
 	txc(255, 192, 128);
 	txb(0, 0, 0);
 	txp(32, height - 128);
 	let title = cta("");
 	txt("charIntro");
-	txh(14);
+	txh(16);
 	txalign(420, ALIGNMENT_CENTER);
 	txc(255, 192, 128);
 	txb(0, 0, 0);
-	txp(32, height - 144);
+	txp(32, height - 160);
 	let name = S("dialogue.un");
 	ascent (i in 0 .. len) {
 		let entry = data[i];
+		WriteLog("entry " ~ ToString(entry));
 		let type = SplitString(entry, " ")[0];
-		let message = entry[length(type) .. length(entry)];
+		let message = "";
+		if (length(type) != length(entry)) {
+			message = entry[length(type) + 1 .. length(entry)];
+		}
 		alternative (type)
 		case ("ShowName") {
 			ObjText_SetText(intro, S("boss.b" ~ message ~ ".name"));
@@ -132,7 +137,7 @@ function TDialogue(data) {
 			ObjSprite2D_SetDestRect(enemyPortrait, width - 223, height - 367, width, height);
 		}
 		case ("PlayBGM") {
-			playBGM(atoi(message));
+			playBGMWithTitle(atoi(message));
 		}
 		case ("Fight") {
 			Obj_SetVisible(playerPortrait, false);
@@ -156,7 +161,7 @@ function TDialogue(data) {
 		others {
 			let t = (type == "Boss") + 2 * (type == "Narrator");
 			let c = diaColors[t];
-			ObjText_SetFontColorBottom(dialogueText, c[0], c[1], c[2]);
+			ObjText_SetFontColorTop(dialogueText, c[0], c[1], c[2]);
 			ObjText_SetFontColorBottom(dialogueText, c[0], c[1], c[2]);
 			let theName = [S("dialogue.c" ~ IntToString(getCharacter / 2)), name, ""][t];
 			message = theName ~ "[r]" ~ message;

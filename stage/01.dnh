@@ -6,5 +6,5 @@ let stage = "01";
 let bgm = 1;
 
 task TStage {
-	
+	TDialogue(readDD("d1_0"));
 }

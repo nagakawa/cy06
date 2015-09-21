@@ -1,6 +1,5 @@
 Player Well, I finally escaped from the rain.
 Player But I don't know where I am.
-Boss Hello!
 SetSprite 0 def
 ShowSprite
 Boss Good morning!

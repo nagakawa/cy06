@@ -1,7 +1,12 @@
 #include "./../system/healthbar.dnh"
+#include "../prostg.dnh"
+#include "../textf.dnh"
 
 let bossN;
-let start;
+let nstart;
+let nend;
+let sstart;
+let send;
 let end;
 
 @Initialize {

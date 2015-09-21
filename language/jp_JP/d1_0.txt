@@ -1,0 +1,19 @@
+Player Well, I finally escaped from the rain.
+Player But I don't know where I am.
+SetSprite 0 def
+ShowSprite
+Boss おはようございます！
+Player 誰か
+ShowName 0
+Boss 洞窟の在住者
+Boss 名前はけりです
+Player So you're the one raining down today.
+Boss Yes.
+Player Then stop.
+PlayBGM 2
+Boss I work only for my master!
+Boss No one will stop me!
+Fight 0 2 4 2 4
+Boss You're strong~
+Player Show me the exit or you're asking for more pain.
+Boss Up there at the waterfall.
