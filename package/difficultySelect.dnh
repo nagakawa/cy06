@@ -30,7 +30,7 @@ task main {
 	ascent (i in lower .. upper) {
 		let item = "difficulty.d" ~ IntToString(i) ~ ".";
 		let label = cta(S(item ~ "label"));
-		txh(16);
+		txh(18);
 		txt("charIntro");
 		txr(4);
 		txc(255, 255, 255);
@@ -50,7 +50,7 @@ task main {
 		txp(200, 280);
 		textObjectTask(label2, 100 * (i - lower) + 12, i);
 		let description = cta(S(item ~ "description"));
-		txh(12);
+		txh(16);
 		txt("dialogue");
 		txr(4);
 		txc(255, 255, 255);

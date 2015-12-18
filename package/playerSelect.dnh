@@ -13,8 +13,8 @@ task main {
 	ascent (i in 0 .. 3) {
 		let item = "character.c" ~ IntToString(i) ~ ".";
 		let title = cta(S(item ~ "title"));
-		txh(16);
-		txt("charIntro");
+		txh(18);
+		txt("charDesc");
 		txr(4);
 		txc(255, 255, 255);
 		txb(0, 0, 0);
@@ -31,7 +31,7 @@ task main {
 		textObjs = textObjs ~ [title, name];
 	}
 	let description1 = ct(buildString("c0.a"), 35, 400);
-	txh(16);
+	txh(16 * fontScale);
 	txt("dialogue");
 	txr(4);
 	txct(255, 255, 255);
@@ -40,7 +40,7 @@ task main {
 	txp(400, 70);
 	ObjRender_SetAlpha(description1, 80);
 	let description2 = ct(buildString("c0.b"), 35, 400);
-	txh(16);
+	txh(16 * fontScale);
 	txt("dialogue");
 	txr(4);
 	txct(255, 255, 255);
@@ -159,7 +159,7 @@ function buildString(label) {
 }
 
 @Event {
-	
+
 }
 
 @MainLoop {

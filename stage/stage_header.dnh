@@ -100,8 +100,8 @@ function TDialogue(data) {
 	txb(0, 0, 0);
 	txp(32, height - 128);
 	let title = cta("");
-	txt("charIntro");
-	txh(16);
+	txt("charDesc");
+	txh(18);
 	txalign(420, ALIGNMENT_CENTER);
 	txc(255, 192, 128);
 	txb(0, 0, 0);

@@ -24,11 +24,13 @@ task playSE(path) {
 let bgmNames = [
 	"title",
 	"st01",
-	"st01B"
+	"st01B",
+	"st02"
 ];
 
 let endTimes = [
 	78,
 	99,
-	103
+	103,
+	144
 ];

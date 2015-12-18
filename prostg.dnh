@@ -27,6 +27,7 @@ function createLooseLaserA1(x, y, speed, angle, len, width, graphicId, delay) {
 function createCurveLaserA1(x, y, speed, angle, len, width, graphicId, delay) {
 	let l = CreateCurveLaserA1(x, y, speed, angle, len, width, graphicId, delay);
 	ObjLaser_SetGrazeInvalidFrame(l, 3);
+	ObjCrLaser_SetTipDecrement(l, 0);
 	return l;
 }
 
