@@ -59,53 +59,59 @@ let diaColors = [
 function TDialogue(data) {
 	SetForbidPlayerShot(true);
 	SetForbidPlayerSpell(true);
-	toggleDialogue;
 	let width = GetStgFrameWidth;
 	let height = GetStgFrameHeight;
+	let top = GetStgFrameTop;
+	let left = GetStgFrameLeft;
+	toggleDialogue;
 	let len = length(data);
 	//let path = GetCurrentScriptDirectory ~ data[0][0];
 	let path2 = GetCurrentScriptDirectory ~ "./../resource/cartouche.png";
 	let enemyPortrait = ObjPrim_Create(OBJ_SPRITE_2D);
 	Obj_SetVisible(enemyPortrait, false);
+	Obj_SetRenderPriority(enemyPortrait, 0.81);
 	let playerPortrait = ObjPrim_Create(OBJ_SPRITE_2D);
-	ObjPrim_SetTexture(playerPortrait, GetCurrentScriptDirectory  ~ "../resource/" ~
-		["rencron", "rygen"][getCharacter > 1] ~ "_gen2.png");
-	ObjSprite2D_SetSourceRect(playerPortrait, 0, 1, 223, 368);
-	ObjSprite2D_SetDestRect(playerPortrait, 0, height - 367, 223, height);
-	Obj_SetRenderPriority(playerPortrait, 0.3);
+	ObjPrim_SetTexture(playerPortrait, GetCurrentScriptDirectory ~ 
+		"../ambient/portrait/c" ~
+		IntToString(getCharacter / 2) ~ "_0.png");
+	ObjSprite2D_SetSourceRect(playerPortrait, 0, 1, 511, 512);
+	ObjSprite2D_SetDestRect(playerPortrait, 0, 68, 511, 579);
+	Obj_SetRenderPriority(playerPortrait, 0.81);
 	let cartouche = ObjPrim_Create(OBJ_PRIMITIVE_2D);
 	ObjPrim_SetVertexCount(cartouche, 4);
 	ObjPrim_SetPrimitiveType(cartouche, PRIMITIVE_TRIANGLEFAN);
 	let vertexData = [[0, 0], [0, 1], [1, 1], [1, 0]];
 	ascent (i in 0 .. 4) {
 		ObjPrim_SetVertexPosition(cartouche, i,
-			16 + (width - 16) * vertexData[i][0],
-			height - 16 - 64 * vertexData[i][1], 0);
+			left + 16 + (width - 16) * vertexData[i][0],
+			top + height - 16 - 64 * vertexData[i][1], 0);
 		ObjPrim_SetVertexColor(cartouche, i, 0, 0, 0);
 		ObjPrim_SetVertexAlpha(cartouche, i, 90 - 15 * (i == 3));
 	}
-	Obj_SetRenderPriority(cartouche, 0.32);
+	Obj_SetRenderPriority(cartouche, 0.82);
 	let dialogueText = ObjText_Create;
 	ObjText_SetFontType(dialogueText, S("font.dialogue"));
 	ObjText_SetFontSize(dialogueText, 16 * fontScale);
-	ObjRender_SetX(dialogueText, 22);
+	ObjRender_SetX(dialogueText, left + 22);
 	ObjText_SetMaxWidth(dialogueText, 340);
-	ObjRender_SetY(dialogueText, height - 80);
-	Obj_SetRenderPriority(dialogueText, 0.33);
+	ObjRender_SetY(dialogueText, top + height - 80);
+	Obj_SetRenderPriority(dialogueText, 0.83);
 	let intro = cta("");
 	txt("charIntro");
 	txh(36);
 	txalign(420, ALIGNMENT_CENTER);
 	txc(255, 192, 128);
 	txb(0, 0, 0);
-	txp(32, height - 128);
+	txr(84);
+	txp(180, 412);
 	let title = cta("");
 	txt("charDesc");
 	txh(18);
 	txalign(420, ALIGNMENT_CENTER);
 	txc(255, 192, 128);
 	txb(0, 0, 0);
-	txp(32, height - 160);
+	txr(84);
+	txp(180, 380);
 	let name = S("dialogue.un");
 	ascent (i in 0 .. len) {
 		let entry = data[i];
@@ -129,12 +135,12 @@ function TDialogue(data) {
 		}
 		case ("SetSprite") {
 			let args = SplitString(message, " ");
-			let path = GetCurrentScriptDirectory ~ "../resource/ambient/" ~
-				rtos("00", atoi(args[0])) ~ "_" ~ args[1] ~ ".png";
+			let path = GetCurrentScriptDirectory ~ "../ambient/portrait/b" ~
+				args[0] ~ "_" ~ args[1] ~ ".png";
 			ObjPrim_SetTexture(enemyPortrait, path);
 			// TODO: set proper vertex coordinates
-			ObjSprite2D_SetSourceRect(enemyPortrait, 0, 144, 223, 511);
-			ObjSprite2D_SetDestRect(enemyPortrait, width - 223, height - 367, width, height);
+			ObjSprite2D_SetSourceRect(enemyPortrait, 0, 1, 511, 512);
+			ObjSprite2D_SetDestRect(enemyPortrait, 288, 68, 799, 579);
 		}
 		case ("PlayBGM") {
 			playBGMWithTitle(atoi(message));
@@ -168,7 +174,7 @@ function TDialogue(data) {
 			ObjText_SetTextWW(dialogueText, message, 80);
 			ObjRender_SetAlpha(playerPortrait, [128, 255][t == 0]);
 			ObjRender_SetAlpha(enemyPortrait, [128, 255][t == 1]);
-			Obj_SetRenderPriority(enemyPortrait, [0.29, 0.31, 0.3][t]);
+			//Obj_SetRenderPriority(enemyPortrait, [0.29, 0.31, 0.3][t]);
 			while (GetVirtualKeyState(VK_SHOT) != KEY_PUSH
 				&& GetVirtualKeyState(VK_USER1) == KEY_FREE) {yield;}
 			wait(10);
