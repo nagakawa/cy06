@@ -1,4 +1,4 @@
-#include "../item/item_consts.dnh"
+#include "../system/item/item_consts.dnh"
 #include "../itsbloc.dnh"
 #include "../system/healthbar.dnh"
 #include "../prostg.dnh"
@@ -99,12 +99,11 @@ task TCutIn {
 	} else {
 		wait(30); // Wait so boss doesn't accidentally shoot at (0, 0)
 	}
-	dragToDefaults(30);
 	wait(30);
 	TWork;
 }
 
-function getBonus {
+function getBonus(bs) {
 	return ObjEnemyBossScene_GetInfo(bs, INFO_SPELL_SCORE) *
 		(2 -
 			ObjEnemyBossScene_GetInfo(bs, INFO_TIMERF) /
@@ -116,10 +115,10 @@ task TBonusUpdate(txt) {
 	let hist = getHistory(id);
 	let sb = S("stgf.bonus");
 	let bf = S("stgf.failed");
-	let hh = " | " ~ getInterfaceStrings(SPELL_HISTORY);
+	let hh = " | " ~ S("stgf.history");
 	while (ObjEnemy_GetInfo(objBoss, INFO_LIFE) > 0) {
 		if (GetPlayerInvincibilityFrame > 1) {success = false;}
-		let score = getBonus;
+		let score = getBonus(bs);
 		ObjText_SetText(txt, [bf, sb ~ RealToStringL(score, 3)][success] ~
 			hh ~ IntToStringL(hist[0]) ~ "/" ~ IntToStringL(hist[1]));
 		yield;

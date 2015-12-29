@@ -117,6 +117,7 @@ stgf.trance.suffix=%
 stgf.trance.activated=Trance Start!
 stgf.bonus=Bonus +
 stgf.failed=Bonus 0.00
+stgf.history=History
 stgf.d0=EASY
 stgf.d1=NORMAL
 stgf.d2=HARD

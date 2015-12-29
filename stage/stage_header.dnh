@@ -156,7 +156,11 @@ function TDialogue(data) {
 			let strs = SplitString(message, " ");
 			let bossID = atoi(strs[0]);
 			unlockCharacter(bossID);
+			SetForbidPlayerShot(false);
+			SetForbidPlayerSpell(false);
 			TBossPre([bossID, atoi(strs[1]), atoi(strs[2]), atoi(strs[3]), atoi(strs[4])]);
+			SetForbidPlayerShot(true);
+			SetForbidPlayerSpell(true);
 			Obj_SetVisible(playerPortrait, true);
 			Obj_SetVisible(enemyPortrait, eiv);
 			Obj_SetVisible(cartouche, true);
@@ -185,6 +189,7 @@ function TDialogue(data) {
 	Obj_Delete(cartouche);
 	Obj_Delete(dialogueText);
 	Obj_Delete(intro);
+	Obj_Delete(title);
 	SetForbidPlayerShot(false);
 	SetForbidPlayerSpell(false);
 	toggleDialogue;

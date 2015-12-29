@@ -39,7 +39,7 @@ task TPlural {
 	ObjEnemyBossScene_Regist(obj);
 	createBossHealthbar(obj, 70, 75);
 	let text = cta(S("boss.b" ~ IntToString(bossN) ~".tlname"));
-	txh(16);
+	txh(24);
 	txt("bossName");
 	txp(10, 20);
 	txc(192, 64, 128);

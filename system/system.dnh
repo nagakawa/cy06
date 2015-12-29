@@ -25,6 +25,7 @@ let cwd = GetCurrentScriptDirectory;
 	value;
 	trance;
 	difficultyText;
+	timeLeft;
 	mech;
 }
 
@@ -138,6 +139,20 @@ task trance {
 	while (!IsCloseScript(GetOwnScriptID)) {
 		let normalized = getTrancePercentage * base ^ 2 / 100;
 		ObjText_SetText(num, IntToStringIL(normalized) ~ S("stgf.trance.suffix"));
+		yield;
+	}
+}
+
+task timeLeft {
+	let num = createNumberObject(GetStgFrameWidth - 80, GetStgFrameTop + 8, 255, 255, 192, 80);
+	Obj_SetRenderPriority(num, 1);
+	while (!IsCloseScript(GetOwnScriptID)) {
+		let bs = GetEnemyBossSceneObjectID;
+		if (bs != ID_INVALID) {
+			let timeF = ObjEnemyBossScene_GetInfo(bs, INFO_TIMERF) / 60;
+			updateReal(num, timeF, 2);
+		}
+		Obj_SetVisible(num, bs != ID_INVALID);
 		yield;
 	}
 }
