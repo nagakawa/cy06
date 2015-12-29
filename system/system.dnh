@@ -33,6 +33,20 @@ let cwd = GetCurrentScriptDirectory;
 	mech;
 }
 
+@Event {
+	alternative (GetEventType)
+	/*case (EV_START_BOSS_SPELL) {
+		let path = dirCurrent ~ "system_magic_circle.dnh";
+		let id = LoadScript(path);
+		StartScript(id);
+	}*/
+	case (EV_GAIN_SPELL) {
+		let objScene = GetEnemyBossSceneObjectID;
+		let radius = ObjEnemyBossScene_GetInfo(objScene, INFO_SPELL_SCORE);
+		spellBonus(radius);
+	}
+}
+
 @MainLoop {yield;}
 
 function initFrame {
@@ -200,4 +214,8 @@ task mech {
 		}
 		yield;
 	}
+}
+
+task spellBonus(radius) {
+	setRadius(getRadius + radius);
 }

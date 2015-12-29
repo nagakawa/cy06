@@ -1,0 +1,23 @@
+#include "./spell_header.dnh"
+
+let level = 1;
+let id = 2;
+
+@Event {
+	alternative (GetEventType)
+	case (EV_REQUEST_LIFE) {
+		SetScriptResult(4000);
+	}
+	case (EV_REQUEST_TIMER) {
+		SetScriptResult(32);
+	}
+}
+
+task TRender {}
+
+task TWork {
+	while (!isDead) {
+		CreateShotOA1(objBoss, rand(2, 3), rand(0, 360), 71, 30);
+		yield;
+	}
+}

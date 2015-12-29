@@ -3,9 +3,10 @@
 #include "../system/healthbar.dnh"
 #include "../prostg.dnh"
 let objBoss;
+let baseBonus;
 
 task SetDamageRateAtFrame(obj, shot, bomb, frame) { //Talos
-  ObjEnemy_SetDamageRate(obj, 0,0);
+  ObjEnemy_SetDamageRate(obj, 0, 0);
   let time = frame;
   // below modified by Fluffy8x to wait until player is also not invincible
   while ((GetPlayerInvincibilityFrame > 0 && !isTranceActive) || IsPlayerSpellActive) { //Prevents Bomb Damage from previous attack. 
@@ -35,6 +36,7 @@ let bossN;
 	setBoss(objBoss);
 	bossN = GetCommonData("BossN", 0);
 	if (id != 0 && !IsReplay) {saveHistoryPre(id);}
+	baseBonus = 0.5 * level; // TODO: elaborate
 	TRender;
 	TCutIn;
 	TTimer;
@@ -67,7 +69,7 @@ task TCutIn {
 		let scName = getSpellName;
 		let spellText = ct(scName, 50, 300);
 		txh(16);
-		ObjText_SetHorizontalAlignment(spellText, ALIGNMENT_RIGHT);
+		txt("dialogue");
 		ObjText_SetFontBorderWidth(spellText, 1);
 		ObjText_SetFontBorderType(spellText, BORDER_FULL);
 		ObjText_SetFontBorderColor(spellText, 0, 0, 0);
@@ -76,18 +78,19 @@ task TCutIn {
 		let width = GetStgFrameWidth;
 		let height = GetStgFrameHeight;
 		let enemyPortrait = ObjPrim_Create(OBJ_SPRITE_2D);
-		ObjPrim_SetTexture(enemyPortrait, GetCurrentScriptDirectory ~ "../resource/ambient/" ~ rtos("00", level)
-			~ "_def.png");
+		ObjPrim_SetTexture(enemyPortrait, GetCurrentScriptDirectory ~ "../ambient/portrait/b" ~ IntToString(level - 1)
+			~ "_0.png");
 		// 224 wide, 368 tall
-		ObjSprite2D_SetSourceRect(enemyPortrait, 0, 144, 223, 511);
+		ObjSprite2D_SetSourceRect(enemyPortrait, 0, 1, 511, 512);
 		descent (i in 0 .. 90) {
-			ObjSprite2D_SetDestRect(enemyPortrait, width - 223 + i, height - 367, width + i, height);
+			ObjSprite2D_SetDestRect(enemyPortrait, width - 511 + i, height - 511, width + i, height);
 			ObjRender_SetY(spellText, 30 + i);
 			yield;
 		}
 		let bonusText = ObjText_Create;
-		ObjText_SetFontSize(bonusText, 8);
+		ObjText_SetFontSize(bonusText, 12);
 		ObjText_SetMaxWidth(bonusText, 400);
+		ObjText_SetFontType(bonusText, S("font.score"));
 		ObjText_SetHorizontalAlignment(bonusText, ALIGNMENT_RIGHT);
 		ObjText_SetFontBorderWidth(bonusText, 1);
 		ObjText_SetFontBorderType(bonusText, BORDER_FULL);
@@ -105,7 +108,7 @@ task TCutIn {
 }
 
 function getBonus(bs) {
-	return ObjEnemyBossScene_GetInfo(bs, INFO_SPELL_SCORE) *
+	return baseBonus *
 		(2 -
 			ObjEnemyBossScene_GetInfo(bs, INFO_TIMERF) /
 			ObjEnemyBossScene_GetInfo(bs, INFO_ORGTIMERF));
@@ -148,11 +151,11 @@ task TEnd {
 		ObjEnemyBossScene_GetInfo(bs, INFO_PLAYER_SPELL_COUNT) == 0 &&
 		(ObjEnemyBossScene_GetInfo(bs, INFO_TIMERF) != 0 ||
 		ObjEnemyBossScene_GetInfo(bs, INFO_IS_DURABLE_SPELL));
-	/*if (success) {
-		//if (id != 0) {NotifyEventAll(EV_GAIN_SPELL, id);}
-		createItemU1(2, rand(0, width), 0, 0);
-		createItemU1(3, rand(0, width), 0, 0);
-	}*/
+	if (success) {
+		if (id != 0) {NotifyEventAll(EV_GAIN_SPELL, id);}
+		//createItemU1(2, rand(0, width), 0, 0);
+		//createItemU1(3, rand(0, width), 0, 0);
+	}
 	if (id != 0 && !IsReplay) {saveHistoryPost(id, success);}
 	DeleteShotAll(TYPE_ALL, TYPE_ITEM);
 	Obj_Delete(objBoss);

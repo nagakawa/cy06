@@ -39,13 +39,13 @@ task getItem(type, item) {
 	case (RADIUS) {
 		let amt = getValue;
 		if (isTranceActive) {amt *= 3;}
-		renderScore(x, y, amt, [128, 128, 255]);
+		renderScore(x, y, amt, [128, 136, 255]);
 		setRadius(getRadius + amt);
 	}
 	case (TRANCE) {
 		if (isTranceActive) {
 			let amt = getValue;
-			renderScore(x, y, amt, [128, 128, 255]);
+			renderScore(x, y, amt, [128, 136, 255]);
 			setRadius(getRadius + amt);
 		}
 		else {
@@ -56,13 +56,13 @@ task getItem(type, item) {
 	case (RADIUS_SMALL) {
 		let amt = getValue / 64;
 		if (isTranceActive) {amt *= 3;}
-		renderScore(x, y, amt, [128, 128, 255]);
+		renderScore(x, y, amt, [128, 136, 255]);
 		setRadius(getRadius + amt);
 	}
 	case (TRANCE_SMALL) {
 		if (isTranceActive) {
 			let amt = getValue / 64;
-			renderScore(x, y, amt, [128, 128, 255]);
+			renderScore(x, y, amt, [128, 136, 255]);
 			setRadius(getRadius + amt);
 		}
 		else {

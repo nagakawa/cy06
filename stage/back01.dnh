@@ -118,6 +118,7 @@ function createCaveMesh(y, sy, res, seed1, seed2, seed3) {
 }
 
 task flow(water) {
+	invisibleOnSpell(water);
 	while (GetCameraFocusX < 320) {yield;}
 	let u = 0;
 	while (exists(water)) {
