@@ -16,5 +16,8 @@ let id = 0;
 task TRender {}
 
 task TWork {
-	
+	while (!isDead) {
+		CreateShotOA1(objBoss, rand(2, 3), rand(0, 360), 71, 30);
+		yield;
+	}
 }

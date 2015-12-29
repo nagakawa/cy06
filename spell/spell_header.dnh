@@ -27,6 +27,7 @@ let list = [];
 
 let bossN;
 @Initialize {
+	let current = GetCurrentScriptDirectory;
 	objBoss = ObjEnemy_Create(OBJ_ENEMY_BOSS);
 	ObjEnemy_Regist(objBoss);
 	ObjMove_SetDestAtFrame(objBoss, GetStgFrameWidth / 2, 90, 30);

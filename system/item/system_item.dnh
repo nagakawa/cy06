@@ -4,6 +4,11 @@
 
 let textures = 0;
 
+@Initialize {
+	LoadItemData(GetCurrentScriptDirectory ~ "item_data.dnh");
+	SetDefaultBonusItemEnable(false);
+}
+
 @Event {
 	alternative (GetEventType)
 	case (EV_DELETE_SHOT_TO_ITEM) {
@@ -18,6 +23,8 @@ let textures = 0;
 		getItem(GetEventArgument(0), GetEventArgument(1));
 	}
 }
+
+@MainLoop {yield;}
 
 task getItem(type, item) {
 	let x = ObjMove_GetX(item);
@@ -63,6 +70,9 @@ task getItem(type, item) {
 			addTrancePercentage(100 / 16384);
 		}
 	}
+	others {
+		RaiseError("Unknown item!");
+	}
 }
 
 task renderScore(x, y, amt, color) {
@@ -73,11 +83,12 @@ task renderScore(x, y, amt, color) {
 	textures++;
 	let obj = cta(RealToStringIL(amt, 4));
 	txc(color[0], color[1], color[2]);
-	txh(10);
+	txh(12);
 	txr(29);
 	txt("score");
 	txp(x - 100, y - 8);
 	txalign(100, ALIGNMENT_CENTER);
+	ObjRender_SetAlpha(gt, 128);
 	ascent (j in 0 .. 30) {
 		ObjRender_SetY(obj, y - 8 - j);
 		yield;

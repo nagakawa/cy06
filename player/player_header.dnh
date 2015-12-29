@@ -13,9 +13,9 @@ let current = GetCurrentScriptDirectory();
 
 @Initialize {
 	SetPlayerSpeed(unfocusedSpeed, focusedSpeed);
+	//Sets the hitbox of the player
 	ObjPlayer_AddIntersectionCircleA1(objPlayer, 0, 0, hbSize, startingRadius);
 	setRadius(startingRadius);
-	//Sets the hitbox of the player
 	let path = current ~ "playersd.dnh";
 	LoadPlayerShotData(path); //Loads the player bullet graphics
 	path = current ~ "../hele/shotbullets.txt";
@@ -34,9 +34,9 @@ let current = GetCurrentScriptDirectory();
 	SetPlayerClip(11, 11, GetStgFrameWidth - 11, GetStgFrameHeight - 18);
 	ObjPlayer_ClearIntersection(objPlayer);
 	if (GetPlayerInvincibilityFrame > 0) {
-		ObjPlayer_AddIntersectionCircleA1(objPlayer, 0, 0, hbSize, getRadius);
-	} else {
 		ObjPlayer_AddIntersectionCircleA2(objPlayer, 0, 0, hbSize + getRadius);
+	} else {
+		ObjPlayer_AddIntersectionCircleA1(objPlayer, 0, 0, hbSize, getRadius);
 	}
 	yield;
 }
@@ -63,8 +63,9 @@ let current = GetCurrentScriptDirectory();
 		playSE("freeze07");
 	}
 	case (EV_PLAYER_SHOOTDOWN) {
-		setPower(getPower - POWER_PER_DEATHBOMB);
-		TSpell;
+		setPower(getPower - POWER_PER_DEATHBOMB + POWER_PER_BOMB);
+		if (getPower >= POWER_PER_BOMB) {TSpell;}
+		else {SetPlayerLife(-1);}
     }
 	case (EV_PLAYER_REBIRTH) {
 		

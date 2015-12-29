@@ -16,6 +16,10 @@ let cwd = GetCurrentScriptDirectory;
 	SetCommonData("Dialogue", false);
 	StartItemScript(cwd ~ "item/system_item.dnh");
 	let path = cwd ~ "../player/playersd.dnh";
+	LoadEnemyShotData(path); //Loads the player bullet graphics
+	path = cwd ~ "../hele/shotbullets.txt";
+	LoadEnemyShotData(path);
+	path = cwd ~ "../ambient/shotdata.dnh";
 	LoadEnemyShotData(path);
 	initFrame;
 	score(false);
