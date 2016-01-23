@@ -37,10 +37,10 @@ let bossN;
 	bossN = GetCommonData("BossN", 0);
 	if (id != 0 && !IsReplay) {saveHistoryPre(id);}
 	baseBonus = 0.5 * level; // TODO: elaborate
-	TRender;
-	TCutIn;
-	TTimer;
-	TEnd;
+	render;
+	cutIn;
+	timer;
+	end;
 }
 
 @MainLoop {
@@ -58,7 +58,7 @@ function getSpellName {
 	return S("spell." ~ IntToString(id) ~ ["enhvixp"[getDifficulty]]);
 }
 
-task TCutIn {
+task cutIn {
 	//while (GetPlayerInvincibilityFrame > 0 || IsPlayerSpellActive) {yield;}
 	if (ObjEnemyBossScene_GetInfo(GetEnemyBossSceneObjectID, INFO_IS_DURABLE_SPELL)) {
 		ObjEnemy_SetDamageRate(objBoss, 0, 0);
@@ -129,7 +129,7 @@ task TBonusUpdate(txt) {
 	}
 }
 
-task TEnd {
+task end {
 	while (ObjEnemy_GetInfo(objBoss, INFO_LIFE) > 0) {
 		yield;
 	}
@@ -208,10 +208,32 @@ sub roar {
 	playSE("animal02");
 }
 
-task TTimer {
+task timer {
 	while (ObjEnemy_GetInfo(objBoss, INFO_LIFE) > 0) {
 		let ticks = ObjEnemyBossScene_GetInfo(GetEnemyBossSceneObjectID, INFO_TIMERF);
 		if (ticks % 60 == 0 && ticks != 0 && ticks <= 60 * base) {playSE("beep11");}
 		yield;
 	}
+}
+
+task render {
+	let path = GetCurrentScriptDirectory ~ "../ambient/spritesheet/" ~
+		spriteName ~ ".png";
+	ObjPrim_SetTexture(objBoss, path);
+	switchSprite(0, 0);
+	renderCustom;
+	while (!isDead) {
+		ObjSprite2D_SetDestCenter(objBoss);
+		yield;
+	}
+}
+
+task switchSprite(row, col) {
+	ObjSprite2D_SetSourceRect(
+		objBoss,
+		10 + spriteWidth * col,
+		spriteHeight * row + 1,
+		10 + spriteWidth * (col + 1) - 1,
+		spriteHeight * (row + 1)
+	);
 }

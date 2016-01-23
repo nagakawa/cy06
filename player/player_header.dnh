@@ -33,11 +33,10 @@ let current = GetCurrentScriptDirectory();
 @MainLoop {
 	SetPlayerClip(11, 11, GetStgFrameWidth - 11, GetStgFrameHeight - 18);
 	ObjPlayer_ClearIntersection(objPlayer);
-	if (GetPlayerInvincibilityFrame > 0) {
-		ObjPlayer_AddIntersectionCircleA2(objPlayer, 0, 0, hbSize + getRadius);
-	} else {
+	if (GetPlayerInvincibilityFrame <= 0) {
 		ObjPlayer_AddIntersectionCircleA1(objPlayer, 0, 0, hbSize, getRadius);
 	}
+	ObjPlayer_AddIntersectionCircleA2(objPlayer, 0, 0, hbSize + getRadius);
 	yield;
 }
 

@@ -67,6 +67,14 @@ task activateTrance(active) {
 	SetCommonData("IsTrance", active);
 }
 
+task saveStats(stage) {
+	let s = IntToString(stage);
+	SetAreaCommonData("Replay", "Power" ~ s, getPower);
+	SetAreaCommonData("Replay", "Value" ~ s, getValue);
+	SetAreaCommonData("Replay", "Trance" ~ s, getTrancePercentage);
+	SetAreaCommonData("Rank", "Rank" ~ s, getRank);
+}
+
 task hitbox {
 	let path = GetCurrentScriptDirectory ~ "resource/hurtbox.png";
 	let pathc = GetCurrentScriptDirectory ~ "resource/hurtbox_center.png";
@@ -219,4 +227,24 @@ task shake(ticks) {
 		yield;
 	}
 	Reset2DCamera;
+}
+
+function getRank {
+	return GetCommonData("Rank", getDifficulty);
+}
+
+task setRank(d) {
+	SetCommonData("Rank", d);
+}
+
+function getStartRank {
+	return GetCommonData("StartRank", getDifficulty);
+}
+
+task setStartRank(d) {
+	SetCommonData("StartRank", d);
+}
+
+function getMinRank {
+	return 0.7 * (getDifficulty + 1) - 1;
 }

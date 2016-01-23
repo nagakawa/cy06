@@ -1,4 +1,5 @@
 #include "./spell_header.dnh"
+#include "./sp_ceri.dnh"
 
 let level = 1;
 let id = 0;
@@ -12,8 +13,6 @@ let id = 0;
 		SetScriptResult(32);
 	}
 }
-
-task TRender {}
 
 task TWork {
 	while (!isDead) {

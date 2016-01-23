@@ -1,0 +1,14 @@
+
+let spriteName = "b0";
+let spriteWidth = 48;
+let spriteHeight = 80;
+
+task renderCustom {
+	let s = 0;
+	while (!isDead) {
+		wait(10);
+		s++;
+		if (s == 12) { s = 0; }
+		switchSprite(truncate(s / 4), s % 4);
+	}
+}
