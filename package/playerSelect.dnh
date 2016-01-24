@@ -4,8 +4,10 @@ let selected = 0;
 let textObjs = [];
 let frames = 0;
 let ended = false;
+let difficulty;
 
 @Initialize {
+	difficulty = GetScriptArgument(0);
 	main;
 }
 
@@ -49,6 +51,7 @@ task main {
 	txp(400, 270);
 	ObjRender_SetAlpha(description2, 80);
 	textObjs = textObjs ~ [description1, description2];
+	let dd = difficultyDisplay;
 	flushZ;
 	loop {
 		let left = GetVirtualKeyState(VK_LEFT);
@@ -173,4 +176,45 @@ task finalize {
 		Obj_Delete(textObjs[i]);
 	}
 	CloseScript(GetOwnScriptID);
+}
+
+let colors = [
+	[128, 255, 128],
+	[128, 255, 255],
+	[128, 128, 255],
+	[255, 128, 255],
+	[255, 128, 128],
+	[255, 255, 128],
+	[255, 192, 128]
+];
+
+function difficultyDisplay {
+	let item = "difficulty.d" ~ IntToString(difficulty) ~ ".";
+	let label = cta(S(item ~ "label"));
+	txh(14);
+	txt("charIntro");
+	txr(4);
+	txc(255, 255, 255);
+	txb(0, 0, 0);
+	txalign(200, ALIGNMENT_CENTER);
+	txp(10, 470);
+	let label2 = cta(S(item ~ "label2"));
+	txh(27);
+	txt("menu");
+	txr(4);
+	txct(255, 255, 255);
+	let cols = colors[difficulty];
+	txcb(cols[0], cols[1], cols[2]);
+	txb(0, 0, 0);
+	txalign(200, ALIGNMENT_CENTER);
+	txp(10, 480);
+	let description = cta(S(item ~ "description"));
+	txh(12);
+	txt("dialogue");
+	txr(4);
+	txc(255, 255, 255);
+	txb(0, 0, 0);
+	txalign(200, ALIGNMENT_CENTER);
+	txp(10, 510);
+	textObjs = textObjs ~ [label, label2, description];
 }

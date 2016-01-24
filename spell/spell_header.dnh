@@ -38,7 +38,7 @@ let bossN;
 	setBoss(objBoss);
 	bossN = GetCommonData("BossN", 0);
 	if (id != 0 && !IsReplay) {saveHistoryPre(id);}
-	baseBonus = 0.5 * getRank; // TODO: elaborate
+	baseBonus = 0.5 + 0.5 * getRank; // TODO: elaborate
 	render;
 	cutIn;
 	timer;

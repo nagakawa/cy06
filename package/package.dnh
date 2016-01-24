@@ -62,7 +62,7 @@ task ss {
 				txct(192, 224, 255);
 				txcb(128, 192, 255);
 				txh(24);
-				txt("menu");
+				txt("charIntro");
 				task fork {
 					descent (i in 0 .. 81) {
 						ObjRender_SetX(textObj, 10 * i + 32);
@@ -254,7 +254,7 @@ function getLevelAndPlayer(ld, ud) {
 	loop {
 		difficulty = runScript(dir ~ "difficultySelect.dnh", [ld, ud, difficulty]);
 		if (difficulty == -1) {return [-1, -1];}
-		let player = runScript(dir ~ "playerSelect.dnh", []);
+		let player = runScript(dir ~ "playerSelect.dnh", [difficulty]);
 		if (player != -1) {return [difficulty, player];}
 	}
 }
