@@ -126,6 +126,17 @@ function TDialogue(data) {
 			ObjText_SetText(intro, S("boss.b" ~ message ~ ".name"));
 			ObjText_SetText(title, S("boss.b" ~ message ~ ".title"));
 			name = S("dialogue.b" ~ message);
+			ObjRender_SetAlpha(intro, 255);
+			ObjRender_SetAlpha(title, 255);
+			task fadeOut {
+				wait(180);
+				descent (i in 0 .. 255) {
+					ObjRender_SetAlpha(intro, 3 * i);
+					ObjRender_SetAlpha(title, 3 * i);
+					yield;
+				}
+			}
+			fadeOut;
 		}
 		case ("ShowSprite") {
 			Obj_SetVisible(enemyPortrait, true);

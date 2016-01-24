@@ -83,10 +83,12 @@ task hitbox {
 	ObjPrim_SetTexture(obj, path);
 	ObjSprite2D_SetSourceRect(obj, 0, 0, 41, 41);
 	ObjSprite2D_SetDestCenter(obj);
+	Obj_SetRenderPriority(obj, 0.79);
 	let objc = ObjPrim_Create(OBJ_SPRITE_2D);
 	ObjPrim_SetTexture(objc, pathc);
 	ObjSprite2D_SetSourceRect(objc, 0, 0, 7, 7);
 	ObjSprite2D_SetDestCenter(objc);
+	Obj_SetRenderPriority(objc, 0.79);
 	let t = 0;
 	loop {
 		ObjRender_SetPosition(obj, GetPlayerX, GetPlayerY, 0);
