@@ -7,16 +7,60 @@ let id = 2;
 @Event {
 	alternative (GetEventType)
 	case (EV_REQUEST_LIFE) {
-		SetScriptResult(4000);
+		SetScriptResult(6000);
 	}
 	case (EV_REQUEST_TIMER) {
-		SetScriptResult(32);
+		SetScriptResult(48);
+	}
+}
+
+task laserTask(l) {
+	while (ObjMove_GetY(l) > 0) {
+		if (nexists(l)) { return; }
+		yield;
+	}
+	let x = ObjMove_GetX(l);
+	let n = truncate(3 + 0.8 * getRank);
+	let d = truncate(12 + 2 * getRank);
+	ascent (i in 0 .. n) {
+		if (nexists(l)) { return; }
+		let speed = 1 + 0.35 * getRank;
+		loop (d) {
+			let a = rand(0, 180);
+			CreateShotB2(
+				x, 0,
+				speed * cos(a), speed * sin(a),
+				0, 0.05,
+				speed, speed * 1.5,
+				BALL_S_RED,
+				15
+			);
+		}
+		explosionShort;
+		wait(15);
+	}
+}
+
+task shootLaser(angle) {
+	let l = createLooseLaserA1(
+		ObjMove_GetX(objBoss), ObjMove_GetY(objBoss),
+		1.2, angle,
+		100, 10,
+		BEAM_RED, 30
+	);
+	laserTask(l);
+}
+
+task easyNormal {
+	ObjMove_SetDestAtFrame(objBoss, GetStgFrameWidth / 2, 150, 60);
+	wait(60);
+	while (!isDead) {
+		shootLaser(-60);
+		shootLaser(-120);
+		wait(120);
 	}
 }
 
 task TWork {
-	while (!isDead) {
-		CreateShotOA1(objBoss, rand(2, 3), rand(0, 360), 71, 30);
-		yield;
-	}
+	if (getDifficulty < 2) { easyNormal; }
 }

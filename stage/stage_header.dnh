@@ -130,7 +130,7 @@ function TDialogue(data) {
 			ObjRender_SetAlpha(title, 255);
 			task fadeOut {
 				wait(180);
-				descent (i in 0 .. 255) {
+				descent (i in 0 .. 85) {
 					ObjRender_SetAlpha(intro, 3 * i);
 					ObjRender_SetAlpha(title, 3 * i);
 					yield;
