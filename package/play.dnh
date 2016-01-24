@@ -5,9 +5,9 @@
 let rpi = -1;
 let difficulty;
 let character;
-let stage = 0;
-let start;
-let end;
+let start = 1;
+let end = 6;
+let mode;
 let i;
 let alreadyLoaded = [false, false, false, false, false, false, false];
 
@@ -15,10 +15,12 @@ let alreadyLoaded = [false, false, false, false, false, false, false];
 	rpi = GetScriptArgument(0);
 	difficulty = GetScriptArgument(1);
 	character = GetScriptArgument(2);
-	if (GetScriptArgumentCount <= 3) {
-		stage = GetScriptArgument(3);
+	mode = GetScriptArgument(3);
+	if (GetScriptArgumentCount >= 6) {
+		start = GetScriptArgument(4);
+		end = GetScriptArgument(5);
 	}
-	startMe(rpi, difficulty, character, stage);
+	startMe(rpi, difficulty, character, mode, start, end);
 	main;
 }
 
@@ -41,19 +43,12 @@ function startStage(stage) {
 	}
 }
 
-function startMe(rpi_, difficulty_, character_, stage_) {
+function startMe(rpi_, difficulty_, character_, mode_, start_, end_) {
 	rpi = rpi_;
 	difficulty = difficulty_;
 	character = character_;
-	stage = stage_;
+	mode = mode_;
 	let current = GetCurrentScriptDirectory;
-	if (stage == 0) {
-		start = 1;
-		end = 6;
-	} else {
-		start = stage;
-		end = stage;
-	}
 	InitializeStageScene;
 	WriteLog("initialized stage scene");
 	i = start;
@@ -66,12 +61,13 @@ function startMe(rpi_, difficulty_, character_, stage_) {
 	WriteLog("main set");
 	setDifficulty(difficulty);
 	setCharacter(character);
-	setMode(stage);
+	setMode(mode);
 	WriteLog("DCM set");
 	SetCommonData("Start", true);
 	if (rpi != -1) {
 		let path = GetReplayInfo(rpi, REPLAY_FILE_PATH);
 		SetStageReplayFile(path);
+		loadStageStats(start, difficulty);
 	}
 	WriteLog("replay set");
 	StartStageScene;
@@ -79,7 +75,7 @@ function startMe(rpi_, difficulty_, character_, stage_) {
 }
 
 sub endScene {
-	if (rpi != -1 || !TEndScene(stage, rpi, difficulty, character)) {
+	if (rpi != -1 || !TEndScene(start, rpi, difficulty, character)) {
 		playBGM(0);
 		TerminateStageScene;
 		CloseScript(GetOwnScriptID);
@@ -94,7 +90,7 @@ task main {
 			case (RESULT_RETRY) {
 				if (!IsReplay) {
 					TerminateStageScene;
-					startMe(-1, difficulty, character, stage);
+					startMe(-1, difficulty, character, mode, start, end);
 					main;
 					return;
 				}
@@ -143,4 +139,28 @@ task main {
 
 @Finalize {
 	playBGM(0);
+}
+
+task loadStageStats(stage, difficulty) {
+	let s = IntToString(stage);
+	SetAreaCommonData(
+		"Replay", "Power",
+		GetAreaCommonData("Replay", "Power" ~ s, 0)
+	);
+	SetAreaCommonData(
+		"Replay", "Radius",
+		GetAreaCommonData("Replay", "Radius" ~ s, 5)
+	);
+	SetAreaCommonData(
+		"Replay", "Value",
+		GetAreaCommonData("Replay", "Value" ~ s, 0.01)
+	);
+	SetAreaCommonData(
+		"Replay", "Trance",
+		GetAreaCommonData("Replay", "Trance" ~ s, 0)
+	);
+	SetAreaCommonData(
+		"Replay", "Rank",
+		GetAreaCommonData("Replay", "Rank" ~ s, difficulty)
+	);
 }

@@ -30,6 +30,8 @@ let cwd = GetCurrentScriptDirectory;
 	trance;
 	difficultyText;
 	timeLeft;
+	currentFps;
+	replayFps;
 	mech;
 }
 
@@ -61,10 +63,12 @@ function initFrame {
 
 task reset {
 	yield;
-	setPower(0);
-	setRadius(5);
-	setValue(0.01);
-	AddGraze(-GetGraze);
+	if (!IsReplay) {
+		setPower(0);
+		setRadius(5);
+		setValue(0.01);
+		AddGraze(-GetGraze);
+	}
 	SetCommonData("pauseblocked", false);
 }
 
@@ -215,6 +219,53 @@ task mech {
 			addTrancePercentage(-1 / 6);
 		}
 		oldg = GetGraze;
+		yield;
+	}
+}
+
+task currentFps {
+	let objText = ObjText_Create;
+	ObjText_SetFontSize(objText, 14);
+	ObjText_SetFontType(objText, S("font.score"));
+	ObjText_SetFontBold(objText, true);
+	ObjText_SetFontColorTop(objText, 128, 128, 255);
+	ObjText_SetFontColorBottom(objText, 255, 255, 255);
+	ObjText_SetFontBorderType(objText, BORDER_FULL);
+	ObjText_SetFontBorderColor(objText, 0, 0, 0);
+	ObjText_SetFontBorderWidth(objText, 1);
+	ObjText_SetHorizontalAlignment(objText, ALIGNMENT_RIGHT);
+	ObjText_SetMaxWidth(objText, GetScreenWidth - 8);
+	Obj_SetRenderPriority(objText, 1.0);
+	ObjRender_SetX(objText, 0);
+	ObjRender_SetY(objText, GetScreenHeight - 20);
+	loop {
+		let fps = GetCurrentFps;
+		let text = RealToStringL(fps, 2);
+		ObjText_SetText(objText, text);
+		yield;
+	}
+}
+
+task replayFps {
+	if (!IsReplay) { return; }
+	let objText = ObjText_Create;
+	ObjText_SetFontSize(objText, 12);
+	ObjText_SetFontType(objText, S("font.score"));
+	ObjText_SetFontBold(objText, true);
+	ObjText_SetFontColorTop(objText, 128, 128, 255);
+	ObjText_SetFontColorBottom(objText, 255, 255, 255);
+	ObjText_SetFontBorderType(objText, BORDER_FULL);
+	ObjText_SetFontBorderColor(objText, 0, 0, 0);
+	ObjText_SetFontBorderWidth(objText, 1);
+	Obj_SetRenderPriority(objText, 1.0);
+	let px = GetStgFrameLeft + GetStgFrameWidth - 18;
+	let py = GetStgFrameTop + GetScreenHeight - 14;
+	ObjRender_SetX(objText, px);
+	ObjRender_SetY(objText, py);
+	loop {
+		let fps = GetReplayFps;
+		let text = RealToStringL(fps, 2);
+		ObjText_SetText(objText, text);
 		yield;
 	}
 }
