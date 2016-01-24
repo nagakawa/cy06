@@ -2,6 +2,8 @@
 #include "../itsbloc.dnh"
 #include "../system/healthbar.dnh"
 #include "../prostg.dnh"
+#include "../hele/shotc.dnh"
+
 let objBoss;
 let baseBonus;
 
@@ -67,13 +69,13 @@ task cutIn {
 	if (id != 0) {
 		ObjEnemyBossScene_StartSpell(GetEnemyBossSceneObjectID);
 		let scName = getSpellName;
-		let spellText = ct(scName, 50, 300);
+		let spellText = ct(scName, 40, 350);
 		txh(16);
 		txt("dialogue");
 		ObjText_SetFontBorderWidth(spellText, 1);
 		ObjText_SetFontBorderType(spellText, BORDER_FULL);
 		ObjText_SetFontBorderColor(spellText, 0, 0, 0);
-		ObjRender_SetX(spellText, GetStgFrameWidth - 350);
+		ObjRender_SetX(spellText, GetStgFrameWidth - 400);
 		//Obj_SetRenderPriority(spellText, 0.2);
 		let width = GetStgFrameWidth;
 		let height = GetStgFrameHeight;

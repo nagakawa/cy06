@@ -14,9 +14,41 @@ let id = 0;
 	}
 }
 
-task TWork {
+task shootFrom(x, y) {
+	let a = rand(0, 360);
+	let t = 0;
+	shotSound;
+	while (t < 60 && !isDead) {
+		let r = getRank;
+		let dt = max(3, truncate(9 - 1.2 * r));
+		ascent (i in 0 .. 3 + r) {
+			CreateShotA1(x, y, 2.4 + 0.2 * i, a, SCALE_RED, 5);
+			CreateShotA1(x, y, 2.4 + 0.2 * i, a + 180, SCALE_RED, 5);
+		}
+		a += 6 * dt;
+		t += dt;
+		wait(dt);
+	}
+}
+
+task move {
+	let a = 270;
+	let bx = ObjMove_GetX(objBoss);
+	let by = ObjMove_GetY(objBoss) + 60;
 	while (!isDead) {
-		CreateShotOA1(objBoss, rand(2, 3), rand(0, 360), 71, 30);
+		ObjMove_SetPosition(objBoss, bx + 120 * cos(a), by + 60 * sin(a));
+		a += 2;
 		yield;
+	}
+}
+
+task TWork {
+	move;
+	while (!isDead) {
+		shootFrom(
+			ObjMove_GetX(objBoss) + rand(-120, 120),
+			ObjMove_GetY(objBoss) + rand(-30, 90)
+		);
+		wait(max(30, 40 - 2 * getRank));
 	}
 }
