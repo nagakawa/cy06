@@ -51,7 +51,7 @@ task shootLaser(angle) {
 	laserTask(l);
 }
 
-task easyNormal {
+task easyNormalHard {
 	ObjMove_SetDestAtFrame(objBoss, GetStgFrameWidth / 2, 150, 60);
 	wait(60);
 	while (!isDead) {
@@ -61,6 +61,70 @@ task easyNormal {
 	}
 }
 
+function moveWithDelayLaser(x, y, a, i) {
+	if (isDead) { return; }
+	let x0 = ObjMove_GetX(objBoss);
+	let y0 = ObjMove_GetY(objBoss);
+	let dist = getDistanceTwoPoints(x0, y0, x, y);
+	let delay = max(20, 30 - i);
+	delayLaser(
+		x0, y0,
+		getAngleTwoPoints(x0, y0, x, y),
+		dist, 20,
+		delay, BEAM_LIME, delay
+	);
+	wait(delay);
+	if (isDead) { return; }
+	ObjMove_SetDestAtSpeed(objBoss, x, y, 6);
+	shotSound;
+	wait(dist / 6);
+	if (isDead) { return; }
+	explosionLong;
+	let n = truncate(20 + 4 * getRank);
+	let s = randomSign;
+	loop (n) {
+		CreateShotOA1(objBoss, 2, a, RICE_M_RED, 30);
+		a += s * 120 / n;
+		CreateShotOA1(objBoss, 1.8, a, RICE_M_RED, 30);
+		a += s * 120 / n;
+		CreateShotOA1(objBoss, 1.6, a, RICE_M_RED, 30);
+		a += s * 120 / n;
+	}
+	CreateLooseLaserA1(
+		x, y,
+		2.4,
+		(GetAngleToPlayer(objBoss) + a + rand(-90, 90)) / 2,
+		180, 15,
+		BEAM_YELLOW,
+		30
+	);
+}
+
+task veryHardIntense {
+	let cx = GetStgFrameWidth / 2;
+	let cy = GetStgFrameHeight / 2;
+	let i = 0;
+	while (!isDead) {
+		moveWithDelayLaser(cx * rand(0.75, 1.25), 0, 90, i);
+		moveWithDelayLaser(0, cy * rand(0.75, 1.25), 0, i);
+		moveWithDelayLaser(cx * rand(0.75, 1.25), cy * 2, 270, i);
+		moveWithDelayLaser(cx * 2, cy * rand(0.75, 1.25), 180, i);
+		ObjMove_SetDestAtFrame(objBoss, cx, cy / 2, 30);
+		wait(30);
+		ascent (i in 0 .. 5) {
+			let n = truncate(20 + 4 * getRank + 0.3 * i);
+			let a = rand(0, 360);
+			loop (n) {
+				CreateShotOA1(objBoss, 1.8 + 0.2 * i, a, RICE_M_YELLOW, 30);
+				a += 360 / n;
+			}
+			wait(20);
+		}
+		wait(50);
+	}
+}
+
 task TWork {
-	if (getDifficulty < 2) { easyNormal; }
+	if (getDifficulty < 3) { easyNormalHard; }
+	else { veryHardIntense; }
 }
