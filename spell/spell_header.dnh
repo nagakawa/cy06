@@ -38,7 +38,7 @@ let bossN;
 	setBoss(objBoss);
 	bossN = GetCommonData("BossN", 0);
 	if (id != 0 && !IsReplay) {saveHistoryPre(id);}
-	baseBonus = 0.5 * level; // TODO: elaborate
+	baseBonus = 0.5 * getRank; // TODO: elaborate
 	render;
 	cutIn;
 	timer;
@@ -80,8 +80,11 @@ task cutIn {
 		let width = GetStgFrameWidth;
 		let height = GetStgFrameHeight;
 		let enemyPortrait = ObjPrim_Create(OBJ_SPRITE_2D);
-		ObjPrim_SetTexture(enemyPortrait, GetCurrentScriptDirectory ~ "../ambient/portrait/b" ~ IntToString(level - 1)
-			~ "_0.png");
+		ObjPrim_SetTexture(
+			enemyPortrait,
+			GetCurrentScriptDirectory ~  "../ambient/portrait/b" ~
+				IntToString(level - 1) ~ "_0.png"
+		);
 		// 224 wide, 368 tall
 		ObjSprite2D_SetSourceRect(enemyPortrait, 0, 1, 511, 512);
 		descent (i in 0 .. 90) {
@@ -149,12 +152,15 @@ task end {
 		Obj_Delete(list[i]);
 	}
 	let bs = GetEnemyBossSceneObjectID;
-	let success = ObjEnemyBossScene_GetInfo(bs, INFO_PLAYER_SHOOTDOWN_COUNT) == 0 &&
+	/*let success = ObjEnemyBossScene_GetInfo(bs, INFO_PLAYER_SHOOTDOWN_COUNT) == 0 &&
 		ObjEnemyBossScene_GetInfo(bs, INFO_PLAYER_SPELL_COUNT) == 0 &&
 		(ObjEnemyBossScene_GetInfo(bs, INFO_TIMERF) != 0 ||
-		ObjEnemyBossScene_GetInfo(bs, INFO_IS_DURABLE_SPELL));
+		ObjEnemyBossScene_GetInfo(bs, INFO_IS_DURABLE_SPELL));*/
 	if (success) {
-		if (id != 0) {NotifyEventAll(EV_GAIN_SPELL, id);}
+		if (id != 0) {
+			NotifyEventAll(EV_GAIN_SPELL, id);
+			spellBonus(getBonus(bs));
+		}
 		//createItemU1(2, rand(0, width), 0, 0);
 		//createItemU1(3, rand(0, width), 0, 0);
 	}
@@ -238,4 +244,8 @@ task switchSprite(row, col) {
 		10 + spriteWidth * (col + 1) - 1,
 		spriteHeight * (row + 1)
 	);
+}
+
+task spellBonus(radius) {
+	setRadius(getRadius + radius);
 }

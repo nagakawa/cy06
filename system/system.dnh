@@ -40,11 +40,11 @@ let cwd = GetCurrentScriptDirectory;
 		let id = LoadScript(path);
 		StartScript(id);
 	}*/
-	case (EV_GAIN_SPELL) {
+	/*case (EV_GAIN_SPELL) {
 		let objScene = GetEnemyBossSceneObjectID;
 		let radius = ObjEnemyBossScene_GetInfo(objScene, INFO_SPELL_SCORE);
 		spellBonus(radius);
-	}
+	}*/
 }
 
 @MainLoop {yield;}
@@ -200,7 +200,9 @@ task difficultyText {
 
 task mech {
 	let player = GetPlayerObjectID;
+	let oldg = GetGraze;
 	while (!IsCloseScript(GetOwnScriptID)) {
+		if (GetGraze - oldg > 0) {playSE("on01");}
 		AddScore(-GetScore);
 		AddScore(GetGraze);
 		if (getTrancePercentage >= 100) {
@@ -212,10 +214,7 @@ task mech {
 		if (isTranceActive) {
 			addTrancePercentage(-1 / 6);
 		}
+		oldg = GetGraze;
 		yield;
 	}
-}
-
-task spellBonus(radius) {
-	setRadius(getRadius + radius);
 }
