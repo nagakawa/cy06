@@ -249,3 +249,10 @@ task setStartRank(d) {
 function getMinRank {
 	return 0.7 * (getDifficulty + 1) - 1;
 }
+
+task addRank(r) {
+	let n = getRank + r;
+	let s = getStartRank;
+	n = min(s + 0.5, n);
+	setRank(n);
+}

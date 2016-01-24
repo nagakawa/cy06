@@ -14,7 +14,7 @@ let id = 0;
 	}
 }
 
-task shootFrom(x, y) {
+task shootFrom(x, y, type) {
 	let a = rand(0, 360);
 	let t = 0;
 	shotSound;
@@ -22,8 +22,8 @@ task shootFrom(x, y) {
 		let r = getRank;
 		let dt = max(3, truncate(9 - 1.2 * r));
 		ascent (i in 0 .. 3 + r) {
-			CreateShotA1(x, y, 2.4 + 0.2 * i, a, SCALE_RED, 5);
-			CreateShotA1(x, y, 2.4 + 0.2 * i, a + 180, SCALE_RED, 5);
+			CreateShotA1(x, y, 2.4 + 0.2 * i, a, type, 5);
+			CreateShotA1(x, y, 2.4 + 0.2 * i, a + 180, type, 5);
 		}
 		a += 6 * dt;
 		t += dt;
@@ -47,7 +47,8 @@ task TWork {
 	while (!isDead) {
 		shootFrom(
 			ObjMove_GetX(objBoss) + rand(-120, 120),
-			ObjMove_GetY(objBoss) + rand(-30, 90)
+			ObjMove_GetY(objBoss) + rand(-30, 90),
+			[SCALE_RED, SCALE_ORANGE, SCALE_YELLOW][randIntH(0, 3)]
 		);
 		wait(max(30, 40 - 2 * getRank));
 	}

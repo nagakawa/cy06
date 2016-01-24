@@ -247,5 +247,6 @@ task switchSprite(row, col) {
 }
 
 task spellBonus(radius) {
+	addRank(0.1);
 	setRadius(getRadius + radius);
 }

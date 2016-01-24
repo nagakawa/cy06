@@ -1,4 +1,4 @@
-Player Well, I finally escaped from the rain.
+Player じゃあ、ようやく雨宿りした
 Player But I don't know where I am.
 SetSprite 0 0
 ShowSprite
@@ -7,9 +7,9 @@ Player 誰か
 ShowName 0
 Boss 洞窟の在住者
 Boss 名前はけりです
-Player So you're the one raining down today.
-Boss Yes.
-Player Then stop.
+Player 雨を降らせる者だね
+Boss そうです
+Player そしたら止めて
 PlayBGM 2
 Boss I work only for my master!
 Boss No one will stop me!

@@ -50,6 +50,7 @@ let current = GetCurrentScriptDirectory();
 		let p = getPower;
 		if (p >= POWER_PER_BOMB) {
 			SetScriptResult(true); // Can use spell card
+			addRank(-0.05);
 			setPower(p - POWER_PER_BOMB);
 			TSpell; // Runs spell card task
 		}
@@ -63,6 +64,7 @@ let current = GetCurrentScriptDirectory();
 	}
 	case (EV_PLAYER_SHOOTDOWN) {
 		setPower(getPower - POWER_PER_DEATHBOMB + POWER_PER_BOMB);
+		addRank(-0.1);
 		if (getPower >= POWER_PER_BOMB) {TSpell;}
 		else {SetPlayerLife(-1);}
     }

@@ -67,6 +67,7 @@ task reset {
 		setPower(0);
 		setRadius(5);
 		setValue(0.01);
+		setRank(getDifficulty);
 		AddGraze(-GetGraze);
 	}
 	SetCommonData("pauseblocked", false);
@@ -219,6 +220,7 @@ task mech {
 			addTrancePercentage(-1 / 6);
 		}
 		oldg = GetGraze;
+		addRank(0.00005);
 		yield;
 	}
 }

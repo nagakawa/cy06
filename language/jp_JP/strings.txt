@@ -186,7 +186,7 @@ music.m0.title=雲の上の封山
 music.m0.sub=タイトルのテーマ。
 # need to translate this
 music.m0.description=This theme seems to have an airy feeling, as if one were floating on a cloud, with a waterfall running against a mountain not near or far away.
-music.m1.title=The Underearth Pathway from Rain
+music.m1.title=雨宿りの地下の通路
 music.m1.sub=一面のテーマ。
 music.m1.description=the trombones are too loud
 music.m2.title=今日の力、明日の夢
