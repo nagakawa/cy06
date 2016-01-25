@@ -1,0 +1,171 @@
+// high scores
+
+#include "../language.dnh"
+#include "../system/name_entry.dnh"
+#include "../sound.dnh"
+#include "../system/transparent_background.dnh"
+
+let op;
+let data;
+let head;
+let txt;
+
+let SUBMIT_HIGH_SCORE = 0;
+let VIEW_HIGH_SCORE = 1;
+let hsFont = S("font.score");
+let scin = 128;
+let scarr = [];
+let scnames = [];
+let chara;
+let difficulty;
+let score;
+let stage;
+
+#include "../itsb.dnh"
+
+@Initialize {
+	arrows;
+}
+
+@Event {
+	
+}
+
+@MainLoop {
+	yield;
+}
+
+task arrows {
+	TBackground;
+	descent (i in 0 .. 16) {
+		scarr = scarr ~ [[scin * (i + 1), 1]];
+		scnames = scnames ~ [""];
+	}
+	op = GetScriptArgument(0);
+	data = GetScriptArgument(1);
+	chara = data[0];
+	difficulty = data[1];
+	if (op == SUBMIT_HIGH_SCORE) {
+		stage = data[2];
+		score = data[3];
+		if (hasHighScore(score, chara, difficulty)) {
+			yield;
+			let name = enterName("HighScoreGet!");
+			let hs = getHighScore(chara, difficulty);
+			let hsn = getHighScoreNames(chara, difficulty);
+			let i = 0;
+			loop {
+				if (score > hs[i][0]) {break;}
+				i++;
+			}
+			descent (j in i .. 15) {
+				hs[j + 1] = hs[j];
+				hsn[j + 1] = hsn[j];
+			}
+			hs[i] = [score, stage];
+			hsn[i] = name;
+			SetAreaCommonData("Cy06", "HS" ~ IntToString(chara) ~ IntToString(difficulty), hs);
+			SetAreaCommonData("Cy06", "HSn" ~ IntToString(chara) ~ IntToString(difficulty), hsn);
+			SaveCommonDataAreaA1("Cy06");
+		}
+	}
+	head = ObjText_Create;
+	ObjText_SetFontType(head, S("font.dialogue"));
+	ObjText_SetFontSize(head, 16);
+	ObjText_SetFontColorTop(head, 128, 255, 255);
+	ObjText_SetFontColorBottom(head, 128, 255, 255);
+	Obj_SetRenderPriority(head, 0.1);
+	ObjRender_SetPosition(head, 64, 64, 0);
+	txt = ObjText_Create;
+	ObjText_SetFontType(txt, hsFont);
+	ObjText_SetFontSize(txt, 16);
+	ObjText_SetFontColorTop(txt, 128, 255, 255);
+	ObjText_SetFontColorBottom(txt, 128, 255, 255);
+	Obj_SetRenderPriority(txt, 0.1);
+	ObjRender_SetPosition(txt, 64, 84, 0);
+	update(chara, difficulty);
+	flushZ;
+	loop {
+		if (isPushed(VK_OK) ||
+			isPushed(VK_CANCEL)) {
+			Obj_Delete(txt);
+			Obj_Delete(head);
+			TStopBG;
+			CloseScript(GetOwnScriptID);
+			return;
+		}
+		if (op == VIEW_HIGH_SCORE) {
+			if (isPushed(VK_UP)) {
+				difficulty--;
+				turnPage;
+				if (difficulty < 0) {difficulty = 5;}
+				update(chara, difficulty);
+			}
+			else if (isPushed(VK_DOWN)) {
+				difficulty++;
+				turnPage;
+				if (difficulty > 5) {difficulty = 0;}
+				update(chara, difficulty);
+			}
+			else if (isPushed(VK_LEFT)) {
+				chara--;
+				turnPage;
+				if (chara < 0) {chara = 3;}
+				update(chara, difficulty);
+			}
+			else if (isPushed(VK_RIGHT)) {
+				chara++;
+				turnPage;
+				if (chara > 3) {chara = 0;}
+				update(chara, difficulty);
+			}
+		}
+		yield;
+	}
+}
+
+function isPushed(key) {
+	return GetVirtualKeyState(key) == KEY_PUSH;
+}
+
+function update(c, d) {
+	let se = scoreEntry(c, d);
+	ObjText_SetText(head, se[0]);
+	ObjText_SetText(txt, se[1]);
+}
+
+function scoreEntry(chara, diff) {
+	let charDesc = "character.c" ~ IntToString(chara / 2);
+	let header = S(charDesc ~ ".name") ~ " " ~
+		S(charDesc ~ [".a", ".b"][chara % 2] ~ ".label") ~ " " ~
+		S("hs.d" ~ IntToString(diff)) ~ "[r]";
+	let hs = getHighScore(chara, diff);
+	let hsn = getHighScoreNames(chara, diff);
+	if (length(hsn) == 0) {
+		hsn = S("noname");
+	}
+	let base = GetCommonData("Base", 16);
+	let entries = "";
+	ascent (i in 0 .. 16) {
+		let raw = hs[i];
+		entries = entries ~
+			"0123456789ABCDEF"[i .. i + 1] ~ ". " ~ vtos("-8s", hsn[i]) ~ " " ~
+			vtos("14s", IntToStringBase(raw[0], base)) ~ " (" ~
+			"0123456789FXC"[raw[1] .. raw[1] + 1]  ~ ")[r]";
+	}
+	return [header, entries];
+}
+
+function getHighScore(character, difficulty) {
+	return GetAreaCommonData("Cy06", "HS" ~ IntToString(character) ~ IntToString(difficulty),
+		scarr);
+}
+
+function hasHighScore(score, character, difficulty) {
+	return score > getHighScore(character, difficulty)[15][0];
+}
+
+function getHighScoreNames(character, difficulty) {
+	return GetAreaCommonData("Cy06", "HSn" ~ IntToString(character) ~ IntToString(difficulty),
+		scnames);
+}

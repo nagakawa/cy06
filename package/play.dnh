@@ -1,6 +1,7 @@
 #include "../propkg.dnh"
 #include "./ingame_scenes.dnh"
 #include "./loading.dnh"
+#include "../system/transparent_background.dnh"
 
 let rpi = -1;
 let difficulty;
@@ -9,7 +10,7 @@ let start = 1;
 let end = 6;
 let mode;
 let i;
-let alreadyLoaded = [false, false, false, false, false, false, false];
+let alreadyLoaded = [false, false, false, false, false, false, false, false];
 
 @Initialize {
 	rpi = GetScriptArgument(0);
@@ -102,6 +103,11 @@ task main {
 				return;
 			}
 		}
+		if (isDedz) {
+			dedz(false);
+			endScene;
+			return;
+		}
 		let state = GetStageSceneState;
 		if (state == STAGE_STATE_FINISHED) {
 			let res = GetStageSceneResult;
@@ -163,4 +169,12 @@ task loadStageStats(stage, difficulty) {
 		"Replay", "Rank",
 		GetAreaCommonData("Replay", "Rank" ~ s, difficulty)
 	);
+}
+
+function isDedz {
+	return GetCommonData("Dedz", false);
+}
+
+task dedz(d) {
+	SetCommonData("Dedz", d);
 }

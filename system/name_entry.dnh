@@ -1,9 +1,11 @@
 #include "./replay_slot.dnh"
 #include "../sound.dnh"
+#include "./transparent_background.dnh"
 
 let BACKSLASH = ToString("|" - " ");
 
 function enterName(str) {
+	TBackground;
 	let name = GetAreaCommonData("Cy06", "Name", "");
 	let title = createTextR(str, 80, 320);
 	let text = createTextR(name ~ "_", 80, 400);
@@ -82,6 +84,7 @@ function enterName(str) {
 	SetAreaCommonData("Cy06", "Name", name);
 	Obj_Delete(title);
 	Obj_Delete(text);
-	if (name == "") {return "Cen.Cyr."}
+	if (name == "") { return S("noname"); }
+	TStopBG;
 	return name;
 }

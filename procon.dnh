@@ -109,7 +109,9 @@ task unlockCharacter(id) {
 	SetAreaCommonData("Cy06", "Unlocked" ~ IntToString(id), true);
 }
 
-
 function randomSign {
 	return 1 - 2 * round(rand(0, 1));
 }
+
+let EV_SUBMIT = EV_USER + 6;
+let EV_DEDZ = EV_USER + 5;

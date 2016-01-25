@@ -5,9 +5,9 @@ function TEndScene(mode, rpSlot, difficulty, character) {
 	if (IsReplay) {
 		return false;
 	}
-	RenderToTextureA1(GetTransitionRenderTargetName, 0, 100, true);
+	//RenderToTextureA1("TB", 0, 100, true);
 	FinalizeStageScene;
-	flushZ;
+	//flushZ;
 	let dir = GetCurrentScriptDirectory;
 	let pathScript = dir ~ "../system/end_scene.dnh";
 	let idScript = LoadScript(pathScript);
@@ -49,7 +49,7 @@ function TEndScene(mode, rpSlot, difficulty, character) {
 
 function RunPauseScene {
 	if (GetCommonData("pauseblocked", false)) {return;}
-	RenderToTextureA1(GetTransitionRenderTargetName, 0, 100, true);
+	RenderToTextureA1("TB", 0, 100, true);
 	let dir = GetCurrentScriptDirectory;
 	let pathScript = dir ~ "../system/pause.dnh";
 	let idScript = LoadScript(pathScript);
@@ -61,7 +61,6 @@ function RunPauseScene {
 	let res = GetScriptResult(idScript);
 	return res;
 }
-
 
 function TReplaySaveScene(difficulty, character, mode) {
 	let dir = GetCurrentScriptDirectory;

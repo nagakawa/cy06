@@ -46,6 +46,7 @@ function showMenu(title, titleColor, items) {
 		textObjs = textObjs ~ menuItem(i, items[i], 48, 128 + 32 * i);
 	}
 	flushEsc;
+	flushZ;
 	let frames = 0;
 	loop {
 		if (GetVirtualKeyState(VK_OK) == KEY_PULL) {
@@ -83,4 +84,8 @@ function showMenu(title, titleColor, items) {
 
 function flushEsc {
 	while (GetVirtualKeyState(VK_PAUSE) != KEY_FREE) {yield;}
+}
+
+function flushZ {
+	while (GetVirtualKeyState(VK_OK) != KEY_FREE) {yield;}
 }

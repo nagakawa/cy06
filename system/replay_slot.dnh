@@ -1,4 +1,5 @@
 #include "../language.dnh"
+#include "./transparent_background.dnh"
 
 let selected = 0;
 let exited = false;
@@ -8,6 +9,7 @@ function selectSlot {
 }
 
 function selectSlotS(idx) {
+	TBackground;
 	let currentPage = truncate(idx / 10);
 	selected = idx % 10;
 	exited = false;
@@ -75,6 +77,7 @@ function selectSlotS(idx) {
 	ascent (i in 0 ..  2 * slotsPerPage) {
 		Obj_Delete(replayTextItems[i]);
 	}
+	TStopBG;
 	return selected + 10 * currentPage;
 }
 
@@ -82,7 +85,7 @@ function createTextR(text, x, y) {
 	let obj = ObjText_Create;
 	ObjText_SetText(obj, text);
 	ObjText_SetFontSize(obj, 16);
-	ObjText_SetFontType(obj, S("font.dialogue"));
+	ObjText_SetFontType(obj, S("font.score"));
 	ObjText_SetFontColorTop(obj, 128, 255, 255);
 	ObjText_SetFontColorBottom(obj, 128, 255, 255);
 	Obj_SetRenderPriority(obj, 0.9);
@@ -115,7 +118,12 @@ function replayString(slot) {
 		let num = atoi(char[6 .. 7]);
 		let com = GetReplayInfo(slot, REPLAY_COMMENT);
 		let coms = SplitString(com, "|");
-		
+		let charL = S("replay.c" ~ IntToString(num / 2));
+		let charR = S("replay." ~ ["a", "b"][num % 2]);
+		let char2 = charL ~ charR;
+		let comR = com[1..length(com)];
+		if (comR == "Stage 7") {comR = "Extra";}
+		else if (comR == "Stage 8") {comR = "Phantasm";}
 		return text ~
 			vtos("-8s", GetReplayInfo(slot, REPLAY_USER_NAME)) ~ " " ~
 			GetReplayInfo(slot, REPLAY_DATE_TIME) ~ " " ~

@@ -33,6 +33,7 @@ let cwd = GetCurrentScriptDirectory;
 	currentFps;
 	replayFps;
 	mech;
+	pollForGameOver;
 }
 
 @Event {
@@ -270,4 +271,32 @@ task replayFps {
 		ObjText_SetText(objText, text);
 		yield;
 	}
+}
+
+#include "./transparent_background.dnh"
+
+task pollForGameOver {
+	yield;
+	loop {
+		if (GetPlayerLife < 0 || GetVirtualKeyState(VK_USER2) == KEY_PUSH) {
+			SetPlayerLife(-1);
+			submitScore;
+		}
+		yield;
+	}
+}
+
+function submitScore {
+	SetCommonData("pauseblocked", true);
+	if (getMode == MODE_ALL && !IsReplay) {
+		WriteLog(getCharacter);
+		WriteLog(getDifficulty);
+		WriteLog(GetCommonData("Stage", 1));
+		WriteLog(GetScore);
+		NotifyEventAll(EV_SUBMIT, [getCharacter, getDifficulty, GetCommonData("Stage", 1), GetScore]);
+		while (!GetCommonData("HSSubmitDone", false)) {yield;}
+	}
+	SetCommonData("Dedz", true);
+	SetCommonData("HSSubmitDone", false);
+	CloseStgScene;
 }
