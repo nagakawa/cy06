@@ -1,0 +1,15 @@
+function createTextR(text, x, y) {
+	let obj = ObjText_Create;
+	ObjText_SetText(obj, text);
+	ObjText_SetFontSize(obj, 16);
+	ObjText_SetFontType(obj, S("font.score"));
+	ObjText_SetFontColorTop(obj, 255, 255, 255);
+	ObjText_SetFontColorBottom(obj, 255, 255, 255);
+	ObjText_SetFontBorderType(obj, BORDER_FULL);
+	ObjText_SetFontBorderWidth(obj, 2);
+	ObjText_SetFontBorderColor(obj, 0, 0, 0);
+	ObjText_SetSyntacticAnalysis(obj, false);
+	Obj_SetRenderPriority(obj, 0.9);
+	ObjRender_SetPosition(obj, x, y, 1);
+	return obj;
+}

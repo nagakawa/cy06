@@ -1,6 +1,8 @@
-#include "../language.dnh"
+#include "../itsbloc.dnh"
 #include "./transparent_background.dnh"
+#include "./rpm_text.dnh"
 
+let NEWLINE = ToString("n" - "a") ~ ToString("k" - "a");
 let selected = 0;
 let exited = false;
 
@@ -20,7 +22,11 @@ function selectSlotS(idx) {
 	let slotsOnLastPage = noSlots - slotsPerPage * (totalPages - 1);
 	let replayTextItems = [];
 	ascent (i in 0 .. slotsPerPage) {
-		let items = menuItem(i, replayString(i + currentPage * 10), 64, 64 + 30 * i);
+		let strs = replayString(i + currentPage * 10);
+		let items = [
+			menuItem(i, strs[0], 32, 48 + 50 * i),
+			menuItem(i, strs[1], 32, 68 + 50 * i),
+		];
 		replayTextItems = replayTextItems ~ items;
 	}
 	flushZ;
@@ -67,44 +73,32 @@ function selectSlotS(idx) {
 		else if (currentPage >= totalPages) {currentPage = 0;}
 		if (prevPage != currentPage) {
 			ascent (i in 0 .. slotsPerPage) {
-				let str = replayString(currentPage * 10 + i);
-				ObjText_SetText(replayTextItems[2 * i], str);
-				ObjText_SetText(replayTextItems[2 * i + 1], str);
+				let strs = replayString(currentPage * 10 + i);
+				ObjText_SetText(replayTextItems[2 * i], strs[0]);
+				ObjText_SetText(replayTextItems[2 * i + 1], strs[1]);
 			}
 		}
 		yield;
 	}
-	ascent (i in 0 ..  2 * slotsPerPage) {
+	ascent (i in 0 .. 2 * slotsPerPage) {
 		Obj_Delete(replayTextItems[i]);
 	}
 	TStopBG;
 	return selected + 10 * currentPage;
 }
 
-function createTextR(text, x, y) {
-	let obj = ObjText_Create;
-	ObjText_SetText(obj, text);
-	ObjText_SetFontSize(obj, 16);
-	ObjText_SetFontType(obj, S("font.score"));
-	ObjText_SetFontColorTop(obj, 128, 255, 255);
-	ObjText_SetFontColorBottom(obj, 128, 255, 255);
-	Obj_SetRenderPriority(obj, 0.9);
-	ObjRender_SetPosition(obj, x, y, 1);
-	return obj;
-}
-
 function menuItem(i, text, x, y) {
 	let objText = createTextR(text, x, y);
-	let objSelect = createTextR(text, x, y);
-	ObjRender_SetBlendType(objSelect, BLEND_ADD_RGB);
 	task fork {
 		while (!Obj_IsDeleted(objText)) {
-			Obj_SetVisible(objSelect, i == selected);
+			let b = [255, 128][i == selected];
+			ObjText_SetFontColorTop(objText, 255, 255, b);
+			ObjText_SetFontColorBottom(objText, 255, 255, b);
 			yield;
 		}
 	}
 	fork;
-	return [objText, objSelect];
+	return objText;
 }
 
 function replayString(slot) {
@@ -113,7 +107,7 @@ function replayString(slot) {
 	slot++;
 	if (IsValidReplayIndex(slot)) {
 		let scoreStringR = "              " ~
-			IntToStringBase(min(GetReplayInfo(slot, REPLAY_TOTAL_SCORE), base ^ 14 - 1), base);
+			IntToStringIL(GetReplayInfo(slot, REPLAY_TOTAL_SCORE));
 		let char = GetReplayInfo(slot, REPLAY_PLAYER_NAME);
 		let num = atoi(char[6 .. 7]);
 		let com = GetReplayInfo(slot, REPLAY_COMMENT);
@@ -124,15 +118,25 @@ function replayString(slot) {
 		let comR = com[1..length(com)];
 		if (comR == "Stage 7") {comR = "Extra";}
 		else if (comR == "Stage 8") {comR = "Phantasm";}
-		return text ~
-			vtos("-8s", GetReplayInfo(slot, REPLAY_USER_NAME)) ~ " " ~
-			GetReplayInfo(slot, REPLAY_DATE_TIME) ~ " " ~
-			(scoreStringR)[(length(scoreStringR) - 14) .. length(scoreStringR)] ~ " " ~
-			vtos("-8s", char2) ~ " " ~
-			com[0..1] ~ " " ~ comR;
+		let fps = GetReplayInfo(slot, REPLAY_FPS_AVERAGE);
+		let drop = max(0, 100 * (60 - fps) / 60);
+		let suffix = S("stgf.trance.suffix");
+		let ds = RealToStringL(drop, 1) ~ suffix;
+		let dml = 3 + truncate(log(100) / log(base)) + length(suffix);
+		let dfs = IntToString(dml) ~ "s";
+		return [
+			text ~
+				vtos("-8s", GetReplayInfo(slot, REPLAY_USER_NAME)) ~ " " ~
+				GetReplayInfo(slot, REPLAY_DATE_TIME) ~ " " ~
+				(scoreStringR)[(length(scoreStringR) - 12) .. length(scoreStringR)],
+			"  " ~
+				vtos("-8s", char2) ~ " " ~
+				vtos(dfs, ds) ~ " " ~
+				com[0..1] ~ " " ~ comR
+		];
 	}
 	else {
-		return text ~ "Civoro";
+		return [text ~ "Civoro", ""];
 	}
 }
 

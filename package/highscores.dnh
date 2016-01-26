@@ -4,6 +4,7 @@
 #include "../system/name_entry.dnh"
 #include "../sound.dnh"
 #include "../system/transparent_background.dnh"
+#include "../system/rpm_text.dnh"
 
 let op;
 let data;
@@ -69,20 +70,11 @@ task arrows {
 			SaveCommonDataAreaA1("Cy06");
 		}
 	}
-	head = ObjText_Create;
+	head = createTextR("", 64, 64);
 	ObjText_SetFontType(head, S("font.dialogue"));
-	ObjText_SetFontSize(head, 16);
-	ObjText_SetFontColorTop(head, 128, 255, 255);
-	ObjText_SetFontColorBottom(head, 128, 255, 255);
-	Obj_SetRenderPriority(head, 0.1);
-	ObjRender_SetPosition(head, 64, 64, 0);
-	txt = ObjText_Create;
-	ObjText_SetFontType(txt, hsFont);
-	ObjText_SetFontSize(txt, 16);
-	ObjText_SetFontColorTop(txt, 128, 255, 255);
-	ObjText_SetFontColorBottom(txt, 128, 255, 255);
+	txt = createTextR("", 96, 84);
+	ObjText_SetSyntacticAnalysis(txt, true);
 	Obj_SetRenderPriority(txt, 0.1);
-	ObjRender_SetPosition(txt, 64, 84, 0);
 	update(chara, difficulty);
 	flushZ;
 	loop {
@@ -138,18 +130,19 @@ function scoreEntry(chara, diff) {
 	let charDesc = "character.c" ~ IntToString(chara / 2);
 	let header = S(charDesc ~ ".name") ~ " " ~
 		S(charDesc ~ [".a", ".b"][chara % 2] ~ ".label") ~ " " ~
-		S("hs.d" ~ IntToString(diff)) ~ "[r]";
+		S("hs.d" ~ IntToString(diff));
 	let hs = getHighScore(chara, diff);
 	let hsn = getHighScoreNames(chara, diff);
-	if (length(hsn) == 0) {
-		hsn = S("noname");
-	}
 	let base = GetCommonData("Base", 16);
 	let entries = "";
 	ascent (i in 0 .. 16) {
 		let raw = hs[i];
+		let name = hsn[i];
+		if (length(name) == 0) {
+			name = S("noname");
+		}
 		entries = entries ~
-			"0123456789ABCDEF"[i .. i + 1] ~ ". " ~ vtos("-8s", hsn[i]) ~ " " ~
+			"0123456789ABCDEF"[i .. i + 1] ~ ". " ~ vtos("-8s", name) ~ " " ~
 			vtos("14s", IntToStringBase(raw[0], base)) ~ " (" ~
 			"0123456789FXC"[raw[1] .. raw[1] + 1]  ~ ")[r]";
 	}
