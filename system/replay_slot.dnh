@@ -152,4 +152,5 @@ function flushZ {
 function flushX {
 	while (GetVirtualKeyState(VK_CANCEL) != KEY_FREE) {yield;}
 }
+
 function turnPage {playSE("paper00");}

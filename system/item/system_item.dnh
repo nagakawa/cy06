@@ -17,7 +17,7 @@ let textures = 0;
 		if (length(position) > 0) {
 			createItemU1(RADIUS_SMALL, position[0], position[1]);
 		}
-		CollectAllItems;
+		CollectItemsByType(ITEM_USER + RADIUS_SMALL);
 	}
 	case (EV_GET_ITEM) {
 		getItem(GetEventArgument(0), GetEventArgument(1));
@@ -81,6 +81,7 @@ task renderScore(x, y, amt, color) {
 	y += rand(-2, 2);
 	if (textures > 200 - 40 * getEffectCut) {return;}
 	textures++;
+	playSE("on00");
 	let obj = cta(RealToStringIL(amt, 4));
 	txc(color[0], color[1], color[2]);
 	txh(12);

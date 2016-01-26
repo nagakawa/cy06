@@ -268,6 +268,11 @@ task spellBonus(radius) {
 	playSE("power03");
 	addRank(0.1);
 	setRadius(getRadius + radius);
+	let x = ObjMove_GetX(objBoss);
+	let y = ObjMove_GetY(objBoss);
+	ascent (i in 0 .. 8) {
+		createItemU1(POWER, x + 28 * cos(i * 45), x + 28 * sin(i * 45));
+	}
 	wait(180);
 	Obj_Delete(text);
 	Obj_Delete(score);

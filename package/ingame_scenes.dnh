@@ -27,9 +27,11 @@ function TEndScene(mode, rpSlot, difficulty, character) {
 	case (RESULT_RETRY) {
 		if (mode == MODE_ALL) {
 			startMe(rpSlot, difficulty, character, 0, 1, 6);
+			main;
 		}
 		else if (mode < MODE_SPELL) {
 			startMe(rpSlot, difficulty, character, mode, mode, mode);
+			main;
 		}
 		else {
 			/*let spell = mode - MODE_SPELL;

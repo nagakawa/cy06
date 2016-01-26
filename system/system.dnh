@@ -14,6 +14,7 @@ let cwd = GetCurrentScriptDirectory;
 	}
 	if (GetCommonData("Start", false)) {reset;}
 	SetCommonData("Dialogue", false);
+	SetCommonData("pauseblocked", false);
 	StartItemScript(cwd ~ "item/system_item.dnh");
 	let path = cwd ~ "../player/playersd.dnh";
 	LoadEnemyShotData(path); //Loads the player bullet graphics
@@ -65,13 +66,13 @@ function initFrame {
 task reset {
 	yield;
 	if (!IsReplay) {
+		WriteLog("reset stats");
 		setPower(0);
 		setRadius(5);
 		setValue(0.01);
 		setRank(getDifficulty);
 		AddGraze(-GetGraze);
 	}
-	SetCommonData("pauseblocked", false);
 }
 
 function createNumberObject(x, y, tr, tg, tb, mw) {
