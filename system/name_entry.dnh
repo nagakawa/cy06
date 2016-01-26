@@ -76,6 +76,7 @@ function enterName(str) {
 		checkAndEnter(KEY_GRAVE, "`", "~");
 		checkAndEnter(KEY_COMMA, ",", "<");
 		checkAndEnter(KEY_PERIOD, ".", ">");
+		checkAndEnter(KEY_BACKSLASH, BACKSLASH, "|");
 		checkAndEnter(KEY_YEN, BACKSLASH, "|");
 		checkAndEnter(KEY_BACK, "", "");
 		if (checkAndEnter(KEY_RETURN, "", "")) {break;}

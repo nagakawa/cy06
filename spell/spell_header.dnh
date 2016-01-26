@@ -247,6 +247,28 @@ task switchSprite(row, col) {
 }
 
 task spellBonus(radius) {
+	let text = cta(S("stgf.getBonus"));
+	txr(79);
+	txalign(400, ALIGNMENT_CENTER);
+	txp(GetStgFrameWidth / 2 - 200, 100);
+	txt("menu");
+	txh(48);
+	txct(255, 255, 255);
+	txcb(255, 128, 192);
+	txb(128, 64, 96);
+	let score = cta("+" ~ RealToStringL(radius, 3));
+	txr(79);
+	txalign(400, ALIGNMENT_RIGHT);
+	txp(GetStgFrameWidth - 550, 160);
+	txt("score");
+	txh(48);
+	txct(255, 255, 255);
+	txcb(255, 192, 192);
+	txb(128, 96, 96);
+	playSE("power03");
 	addRank(0.1);
 	setRadius(getRadius + radius);
+	wait(180);
+	Obj_Delete(text);
+	Obj_Delete(score);
 }

@@ -7,7 +7,6 @@ function TEndScene(mode, rpSlot, difficulty, character) {
 	}
 	//RenderToTextureA1("TB", 0, 100, true);
 	FinalizeStageScene;
-	//flushZ;
 	let dir = GetCurrentScriptDirectory;
 	let pathScript = dir ~ "../system/end_scene.dnh";
 	let idScript = LoadScript(pathScript);
