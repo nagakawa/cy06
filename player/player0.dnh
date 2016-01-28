@@ -1,8 +1,7 @@
 #TouhouDanmakufu[Player]
 #ScriptVersion[3]
 #ID["Player0"]
-#Title["明槍　怜悧　Aタイプ"]
-//#Image["./ExRumiaImage.png"]
+#Title["Elssecisso Rencron A"]
 #include "./player_magic_circle.dnh"
 
 let unfocusedSpeed = 5;

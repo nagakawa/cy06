@@ -1,7 +1,7 @@
 #TouhouDanmakufu[Package]
 #ScriptVersion[3]
-#Title["í©ózâ_é÷êÂÅ@Å` Exorcism of Infinite Blossoms"]
-#Text["6th í©óz Project"]
+#Title["CY06 Exorcism of Infinite Blossoms"]
+#Text["6th CY Project"]
 #Player["./../player/player0.dnh", "./../player/player1.dnh", "./../player/player2.dnh", "./../player/player3.dnh", "./../player/player4.dnh", "./../player/player5.dnh"]
 #System["./../system/system.dnh"]
 #include "./loading.dnh"

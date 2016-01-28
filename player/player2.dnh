@@ -1,8 +1,7 @@
 #TouhouDanmakufu[Player]
 #ScriptVersion[3]
 #ID["Player2"]
-#Title["広江　二虹　Aタイプ"]
-//#Image["./ExRumiaImage.png"]
+#Title["Esel Rygen A"]
 #include "./player_magic_circle.dnh"
 #include "./laser.dnh"
 
