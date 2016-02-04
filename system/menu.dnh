@@ -47,6 +47,7 @@ function showMenu(title, titleColor, items) {
 	}
 	flushEsc;
 	flushZ;
+	flushX;
 	let frames = 0;
 	loop {
 		if (GetVirtualKeyState(VK_OK) == KEY_PULL) {
@@ -88,4 +89,8 @@ function flushEsc {
 
 function flushZ {
 	while (GetVirtualKeyState(VK_OK) != KEY_FREE) {yield;}
+}
+
+function flushX {
+	while (GetVirtualKeyState(VK_CANCEL) != KEY_FREE) {yield;}
 }

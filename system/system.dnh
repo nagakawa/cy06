@@ -176,6 +176,13 @@ task timeLeft {
 		if (bs != ID_INVALID) {
 			let timeF = ObjEnemyBossScene_GetInfo(bs, INFO_TIMERF) / 60;
 			updateReal(num, timeF, 2);
+			if (ObjEnemyBossScene_GetInfo(bs, INFO_IS_DURABLE_SPELL)) {
+				ObjText_SetFontColorTop(num, 192, 192, 255);
+			} else if (timeF < 10) {
+				ObjText_SetFontColorTop(num, 255, 192, 192);
+			} else {
+				ObjText_SetFontColorTop(num, 255, 255, 192);
+			}
 		}
 		Obj_SetVisible(num, bs != ID_INVALID);
 		yield;
