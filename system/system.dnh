@@ -288,6 +288,7 @@ task pollForGameOver {
 	loop {
 		if (GetPlayerLife < 0 || GetVirtualKeyState(VK_USER2) == KEY_PUSH) {
 			SetPlayerLife(-1);
+			RenderToTextureA1("TB", 0, 100, true);
 			submitScore;
 		}
 		yield;

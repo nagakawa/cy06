@@ -36,11 +36,12 @@ task TShot {
 				createPlayerShotA1(x - 15, y, 10, 280, 6, 1, STEEL_ARROW);
 			}
 			else {
-				home(createPlayerShotA1(x, y, 10, 270, 11, 1, SILVER_ARROW));
-				createPlayerShotA1(x - 5, y - 3, 10, 270, 9, 1, SILVER_ARROW);
-				createPlayerShotA1(x + 5, y - 3, 10, 270, 9, 1, SILVER_ARROW);
-				createPlayerShotA1(x - 10, y - 3, 10, 270, 7, 1, SILVER_ARROW);
-				createPlayerShotA1(x + 10, y - 3, 10, 270, 7, 1, SILVER_ARROW);
+				let width = truncate(getPower / 10);
+				ascent (i in -width .. width + 1) {
+					let even = width % 2 == 0;
+					let shot = createPlayerShotA1(x + 5 * i, y - 3 * !!i, 10, 270, max(3, 11 - 2 * i) + 2 * even, 1, SILVER_ARROW);
+					if (even) { home(shot); }
+				}
 			}
 		}
 		tick++;

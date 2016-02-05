@@ -1,0 +1,44 @@
+#include "./spell_header.dnh"
+#include "./sp_ceri.dnh"
+
+let level = 1;
+let id = 0;
+
+@Event {
+	alternative (GetEventType)
+	case (EV_REQUEST_LIFE) {
+		SetScriptResult(4000);
+	}
+	case (EV_REQUEST_TIMER) {
+		SetScriptResult(32);
+	}
+}
+
+task move {
+	let a = 270;
+	let bx = ObjMove_GetX(objBoss);
+	let by = ObjMove_GetY(objBoss) + 60;
+	while (!isDead) {
+		ObjMove_SetPosition(objBoss, bx + 120 * cos(a), by + 60 * sin(a));
+		a += 2;
+		yield;
+	}
+}
+
+task TWork {
+	move;
+	while (!isDead) {
+		if (rand(0, max(30, 40 - 2 * getRank)) < 6) {
+			let x = ObjMove_GetX(objBoss) + rand(-120, 120);
+			let y = ObjMove_GetY(objBoss) + rand(-60, 60);
+			let n = truncate(3 + 0.8 * getRank);
+			let ms = -2.5 - 0.5 * getRank;
+			let accel = -0.04 - 0.01 * getRank;
+			ascent (i in 0 .. n) {
+				CreateShotA2(x, y, 3, 270, accel, ms, BALL_M_RED, 5 * i);
+			}
+			shotSound;
+		}
+		yield;
+	}
+}

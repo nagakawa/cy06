@@ -13,7 +13,7 @@ Player Then stop.
 PlayBGM 2
 Boss I work only for my master!
 Boss No one will stop me!
-Fight 0 2 3 2 3
+Fight 0 2 4 2 3
 Boss You're strong~
 Player Show me the exit or you're asking for more pain.
 Boss Up there at the waterfall.

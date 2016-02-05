@@ -7,7 +7,6 @@ function TEndScene(mode, rpSlot, difficulty, character) {
 		return false;
 	}*/
 	//RenderToTextureA1("TB", 0, 100, true);
-	WriteLog("poop1");
 	FinalizeStageScene;
 	let dir = GetCurrentScriptDirectory;
 	let pathScript = dir ~ "../system/end_scene.dnh";
@@ -16,7 +15,6 @@ function TEndScene(mode, rpSlot, difficulty, character) {
 	while (!IsCloseScript(idScript)) {
 		yield;
 	}
-	WriteLog("poop2");
 	let res = GetScriptResult(idScript);
 	alternative (res)
 	case (RESULT_SAVE_REPLAY) {
@@ -30,7 +28,7 @@ function TEndScene(mode, rpSlot, difficulty, character) {
 	}
 	case (RESULT_RETRY) {
 		if (mode == MODE_ALL) {
-			startMe(rpSlot, difficulty, character, 0, 1, 6);
+			startMe(rpSlot, difficulty, character, MODE_ALL, 1, 6);
 			main;
 		}
 		else if (mode < MODE_SPELL) {

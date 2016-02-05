@@ -76,7 +76,7 @@ function startMe(rpi_, difficulty_, character_, mode_, start_, end_) {
 }
 
 sub endScene {
-	if (rpi != -1 || !TEndScene(start, rpi, difficulty, character)) {
+	if (rpi != -1 || !TEndScene(mode, rpi, difficulty, character)) {
 		playBGM(0);
 		TerminateStageScene;
 		CloseScript(GetOwnScriptID);
