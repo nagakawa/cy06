@@ -118,7 +118,7 @@ function createText(x, y, tr, tg, tb, key) {
 
 function getHighScore {
 	let hs = GetAreaCommonData("Cy06",
-		"HS" ~ IntToString(getCharacter) ~ IntToString(getDifficulty), [[1024]])[0][0];
+		"HS" ~ IntToString(getCharacter) ~ IntToString(getDifficulty), [[2048]])[0][0];
 	return max(GetScore, hs);
 }
 

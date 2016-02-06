@@ -14,7 +14,6 @@
 let bgm;
 
 @Initialize {
-	WriteLog(a);
 	CreateCommonDataArea("Cy06");
 	LoadCommonDataAreaA1("Cy06");
 	CreateCommonDataArea("Replay");
@@ -255,7 +254,6 @@ task titleScene(showIntro) {
 			ObjPrim_SetTexture(titleImg, pathTitle3);
 			Obj_SetRenderPriorityI(titleImg, 2);
 			// TODO: fill in the stubs
-			SaveCommonDataAreaA1("Cy06");
 			alternative (selected)
 			case (START) {
 				// play(-1);
@@ -299,6 +297,7 @@ task titleScene(showIntro) {
 			}
 			ObjPrim_SetTexture(titleImg, pathTitle2);
 			Obj_SetRenderPriorityI(titleImg, 0);
+			SaveCommonDataAreaA1("Cy06");
 		}
 		let up = GetVirtualKeyState(VK_UP);
 		let down = GetVirtualKeyState(VK_DOWN);

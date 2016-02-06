@@ -13,6 +13,7 @@ let text;
 
 let SUBMIT_HIGH_SCORE = 0;
 let VIEW_HIGH_SCORE = 1;
+let NO_ENTRY = "** NO ENTRY **"
 let hsFont = S("font.score");
 let scin = 128;
 let scarr = [];
@@ -40,7 +41,7 @@ task arrows {
 	TBackground;
 	descent (i in 0 .. 16) {
 		scarr = scarr ~ [[scin * (i + 1), 1]];
-		scnames = scnames ~ [""];
+		scnames = scnames ~ [NO_ENTRY];
 	}
 	op = GetScriptArgument(0);
 	data = GetScriptArgument(1);
@@ -139,7 +140,7 @@ function scoreEntry(chara, diff) {
 	ascent (i in 0 .. 16) {
 		let raw = hs[i];
 		let name = hsn[i];
-		if (length(name) == 0) {
+		if (name == NO_ENTRY) {
 			name = S("noname");
 		}
 		entries = entries ~
