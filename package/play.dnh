@@ -28,7 +28,9 @@ let alreadyLoaded = [false, false, false, false, false, false, false, false];
 let textures = [
 	[
 		"mb3d/Rock_04_UV_H_CM_1.jpg",
-		"rentex/09_DIFFUSE.jpg"
+		"rentex/09_DIFFUSE.jpg",
+		"../ambient/spritesheet/b0.png",
+		"../ambient/portrait/b0_0.png"
 	]
 ];
 

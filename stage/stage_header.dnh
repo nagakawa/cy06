@@ -7,14 +7,22 @@ let NUM_STAGES = 6;
 
 @Initialize {
 	//StartScript(LoadScript("./" ~ stage ~ "/stg_back.dnh"));
+	let l = length(scripts);
+	ascent (i in 0 .. l) {
+		let name = scripts[i];
+		LoadScriptInThread(GetCurrentScriptDirectory ~ "../" ~ name);
+	}
 	restartBGMWithTitle(bgm);
 	SetCommonData("Stage", atoi(stage));
 	TStage;
 }
+
 @Event {}
+
 @MainLoop {
 	yield;
 }
+
 @Finalize {}
 
 function TBossPre(config) {
@@ -26,7 +34,7 @@ function TBossPre(config) {
 	SetScriptArgument(idScript, 2, config[2]);
 	SetScriptArgument(idScript, 3, config[3]);
 	SetScriptArgument(idScript, 4, config[4]);
-	loop(60){yield;}
+	wait(60);
 	StartScript(idScript);
 	while (!IsCloseScript(idScript)) {
 		yield;

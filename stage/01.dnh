@@ -5,6 +5,13 @@
 let stage = "01";
 let bgm = 1;
 
+let scripts = [
+	"spell/non2.dnh",
+	"spell/spell2.dnh",
+	"spell/non3.dnh",
+	"stage/01.dnh"
+];
+
 task TStage {
 	TDialogue(readDD("d1_0"));
 }
