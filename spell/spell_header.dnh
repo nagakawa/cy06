@@ -119,7 +119,7 @@ function getBonus(bs) {
 			ObjEnemyBossScene_GetInfo(bs, INFO_ORGTIMERF));
 }
 
-task TBonusUpdate(txt) {
+task TBonusUpdate(text) {
 	let bs = GetEnemyBossSceneObjectID;
 	let hist = getHistory(id);
 	let sb = S("stgf.bonus");
@@ -128,7 +128,7 @@ task TBonusUpdate(txt) {
 	while (ObjEnemy_GetInfo(objBoss, INFO_LIFE) > 0) {
 		if (GetPlayerInvincibilityFrame > 1) {success = false;}
 		let score = getBonus(bs);
-		ObjText_SetText(txt, [bf, sb ~ RealToStringL(score, 3)][success] ~
+		ObjText_SetText(text, [bf, sb ~ RealToStringL(score, 3)][success] ~
 			hh ~ IntToStringL(hist[0]) ~ "/" ~ IntToStringL(hist[1]));
 		yield;
 	}

@@ -36,7 +36,8 @@ let textures = [
 
 function startStage(stage) {
 	SetStageIndex(i);
-	if (!alreadyLoaded[stage - 1]) {
+	let res = alreadyLoaded[stage - 1];
+	if (!res) {
 		load(
 			textures[stage - 1],
 			[],
@@ -44,6 +45,7 @@ function startStage(stage) {
 		);
 		alreadyLoaded[stage - 1] = true;
 	}
+	return res;
 }
 
 function startMe(rpi_, difficulty_, character_, mode_, start_, end_) {

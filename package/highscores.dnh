@@ -9,7 +9,7 @@
 let op;
 let data;
 let head;
-let txt;
+let text;
 
 let SUBMIT_HIGH_SCORE = 0;
 let VIEW_HIGH_SCORE = 1;
@@ -72,16 +72,16 @@ task arrows {
 	}
 	head = createTextR("", 64, 64);
 	ObjText_SetFontType(head, S("font.dialogue"));
-	txt = createTextR("", 96, 84);
-	ObjText_SetSyntacticAnalysis(txt, true);
-	Obj_SetRenderPriority(txt, 0.1);
+	text = createTextR("", 96, 84);
+	ObjText_SetSyntacticAnalysis(text, true);
+	Obj_SetRenderPriority(text, 0.1);
 	update(chara, difficulty);
 	flushZ;
 	flushX;
 	loop {
 		if (isPushed(VK_OK) ||
 			isPushed(VK_CANCEL)) {
-			Obj_Delete(txt);
+			Obj_Delete(text);
 			Obj_Delete(head);
 			TStopBG;
 			CloseScript(GetOwnScriptID);
@@ -124,7 +124,7 @@ function isPushed(key) {
 function update(c, d) {
 	let se = scoreEntry(c, d);
 	ObjText_SetText(head, se[0]);
-	ObjText_SetText(txt, se[1]);
+	ObjText_SetText(text, se[1]);
 }
 
 function scoreEntry(chara, diff) {

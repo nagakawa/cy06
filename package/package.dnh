@@ -14,6 +14,7 @@
 let bgm;
 
 @Initialize {
+	WriteLog(a);
 	CreateCommonDataArea("Cy06");
 	LoadCommonDataAreaA1("Cy06");
 	CreateCommonDataArea("Replay");
@@ -107,7 +108,7 @@ task ss {
 		let args = GetEventArgument(0);
 		let id = args[0];
 		let fr = args[1];
-		let st = args[2];
+		let sg = args[2];
 		if (GetCommonData("NowPlaying", -1) == id && !fr) {return;}
 		let path = GetCurrentScriptDirectory ~ "../bgm/cy06_" ~ bgmNames[id] ~ ".ogg";
 		ObjSound_Stop(bgm);
@@ -120,7 +121,7 @@ task ss {
 			ObjSound_Play(bgm);
 			SetAreaCommonData("Cy06", "HeardBGM " ~ IntToString(id), true);
 			SetCommonData("NowPlaying", id);
-			if (st) {
+			if (sg) {
 				let name = "BGM: " ~ S("music.m" ~ IntToString(id) ~ ".title");
 				let textObj = cta(name);
 				txr(99);
