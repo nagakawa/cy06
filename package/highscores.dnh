@@ -13,7 +13,7 @@ let text;
 
 let SUBMIT_HIGH_SCORE = 0;
 let VIEW_HIGH_SCORE = 1;
-let NO_ENTRY = "** NO ENTRY **"
+let NO_ENTRY = "** NO ENTRY **";
 let hsFont = S("font.score");
 let scin = 128;
 let scarr = [];

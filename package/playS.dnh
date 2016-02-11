@@ -1,0 +1,163 @@
+#include "../propkg.dnh"
+#include "./ingame_scenes.dnh"
+#include "./loading.dnh"
+#include "../system/transparent_background.dnh"
+
+let rpi = -1;
+let difficulty;
+let character;
+let spell;
+let i;
+let mode;
+
+let bossNData = [
+	0, 0, 0,
+];
+
+let stageNData = [
+	1, 1, 1,
+];
+
+@Initialize {
+	rpi = GetScriptArgument(0);
+	difficulty = GetScriptArgument(1);
+	character = GetScriptArgument(2);
+	spell = GetScriptArgument(3);
+	startMe(rpi, difficulty, character, spell, 0, 0);
+	main;
+}
+
+function startStage(stage) {
+	SetStageIndex(i);
+}
+
+function startMe(rpi_, difficulty_, character_, spell_, dummy, idiot) {
+	rpi = rpi_;
+	difficulty = difficulty_;
+	character = character_;
+	spell = spell_;
+	mode = MODE_SPELL + spell;
+	let current = GetCurrentScriptDirectory;
+	InitializeStageScene;
+	WriteLog("initialized stage scene");
+	i = stageNData[spell - 1];
+	let mainPath = current ~ "../stage/boss.dnh";
+	SetCommonData(
+		"BossDNHParams",
+		[bossNData[spell - 1], 0, 0, spell, spell + 1, 1]
+	);
+	let playerPath = current ~ "../player/player" ~ IntToString(character_) ~ ".dnh";
+	SetStagePlayerScript(playerPath);
+	WriteLog("player set");
+	startStage(i);
+	SetStageMainScript(mainPath);
+	WriteLog("main set");
+	setDifficulty(difficulty);
+	setCharacter(character);
+	setMode(mode);
+	WriteLog("DCM set");
+	SetCommonData("Start", true);
+	if (rpi != -1) {
+		let path = GetReplayInfo(rpi, REPLAY_FILE_PATH);
+		SetStageReplayFile(path);
+		loadStageStats(i, difficulty);
+	}
+	WriteLog("replay set");
+	StartStageScene;
+	WriteLog("blastoff!");
+}
+
+sub endScene {
+	if (rpi != -1 || !TEndScene(mode, rpi, difficulty, character)) {
+		playBGM(0);
+		TerminateStageScene;
+		CloseScript(GetOwnScriptID);
+	}
+}
+
+task main {
+	while (!IsCloseScript(GetOwnScriptID)) {
+		if (GetVirtualKeyState(VK_PAUSE) == KEY_PUSH && !GetCommonData("pauseblocked", false)) {
+			let res = RunPauseScene;
+			alternative (res)
+			case (RESULT_RETRY) {
+				if (!IsReplay) {
+					TerminateStageScene;
+					startMe(-1, difficulty, character, spell, 0, 0);
+					main;
+					return;
+				}
+			}
+			case (RESULT_END) {
+				TerminateStageScene;
+				playBGM(0);
+				CloseScript(GetOwnScriptID);
+				return;
+			}
+		}
+		if (isDedz) {
+			dedz(false);
+			endScene;
+			return;
+		}
+		let state = GetStageSceneState;
+		if (state == STAGE_STATE_FINISHED) {
+			let res = GetStageSceneResult;
+			alternative (res)
+			case (STAGE_RESULT_CLEARED) {
+				endScene;
+				return;
+			}
+			case (STAGE_RESULT_PLAYER_DOWN) {
+				endScene;
+				return;
+			}
+			case (STAGE_RESULT_BREAK_OFF) {
+				playBGM(0);
+				TerminateStageScene;
+				CloseScript(GetOwnScriptID);
+			}
+		}
+		yield;
+	}
+}
+
+@MainLoop {
+	yield;
+}
+
+@Finalize {
+	playBGM(0);
+}
+
+task loadStageStats(stage, difficulty) {
+	let s = IntToString(stage);
+	SetAreaCommonData(
+		"Replay", "Power",
+		GetAreaCommonData("Replay", "Power" ~ s, 0)
+	);
+	SetAreaCommonData(
+		"Replay", "Radius",
+		GetAreaCommonData("Replay", "Radius" ~ s, 5)
+	);
+	SetAreaCommonData(
+		"Replay", "Value",
+		GetAreaCommonData("Replay", "Value" ~ s, 0.01)
+	);
+	SetAreaCommonData(
+		"Replay", "Trance",
+		GetAreaCommonData("Replay", "Trance" ~ s, 0)
+	);
+	SetAreaCommonData(
+		"Replay", "Rank",
+		GetAreaCommonData("Replay", "Rank" ~ s, difficulty)
+	);
+}
+
+function isDedz {
+	return GetCommonData("Dedz", false);
+}
+
+task dedz(d) {
+	SetCommonData("Dedz", d);
+}

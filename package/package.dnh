@@ -271,11 +271,13 @@ task titleScene(showIntro) {
 			}
 			case (PRACTICE) {
 				playStage;
-			}
+			}*/
 			case (SPELL_PRACTICE) {
-				spellPractice;
+				ObjRender_SetColor(titleImg, 0, 0, 0);
+				runScript(dir ~ "playS.dnh", [-1, 1, 1, 3]);
+				ObjRender_SetColor(titleImg, 255, 255, 255);
 			}
-			case (REPLAY) {
+			/*case (REPLAY) {
 				replayMenu;
 			}
 			case (DATA) {

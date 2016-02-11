@@ -52,7 +52,7 @@ task shootLaser(angle) {
 }
 
 task easyNormalHard {
-	ObjMove_SetDestAtFrame(objBoss, GetStgFrameWidth / 2, 150, 60);
+	ObjMove_SetDestAtFrame(objBoss, GetStgFrameWidth / 2, 190, 60);
 	wait(60);
 	while (!isDead) {
 		shootLaser(-60);
@@ -90,7 +90,7 @@ function moveWithDelayLaser(x, y, a, i) {
 		CreateShotOA1(objBoss, 1.6, a, RICE_M_RED, 30);
 		a += s * 120 / n;
 	}
-	CreateLooseLaserA1(
+	createLooseLaserA1(
 		x, y,
 		2.4,
 		(GetAngleToPlayer(objBoss) + a + rand(-90, 90)) / 2,

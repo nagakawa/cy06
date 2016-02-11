@@ -33,7 +33,7 @@ let bossN;
 	let current = GetCurrentScriptDirectory;
 	objBoss = ObjEnemy_Create(OBJ_ENEMY_BOSS);
 	ObjEnemy_Regist(objBoss);
-	ObjMove_SetDestAtFrame(objBoss, GetStgFrameWidth / 2, 90, 30);
+	ObjMove_SetDestAtFrame(objBoss, GetStgFrameWidth / 2, 150, 30);
 	ObjEnemy_SetDamageRate(objBoss, 0, 0);
 	setBoss(objBoss);
 	bossN = GetCommonData("BossN", 0);

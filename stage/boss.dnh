@@ -1,3 +1,4 @@
+#System["./../system/system.dnh"]
 #include "./../system/healthbar.dnh"
 #include "../prostg.dnh"
 #include "../textf.dnh"
@@ -8,13 +9,18 @@ let nend;
 let sstart;
 let send;
 let end;
+let closeOnDone = false;
 
 @Initialize {
-	bossN = GetScriptArgument(0);
-	nstart = GetScriptArgument(1);
-	nend = GetScriptArgument(2);
-	sstart = GetScriptArgument(3);
-	send = GetScriptArgument(4);
+	let params = GetCommonData("BossDNHParams", []);
+	bossN = params[0];
+	nstart = params[1];
+	nend = params[2];
+	sstart = params[3];
+	send = params[4];
+	if (length(params) > 5) {
+		closeOnDone = params[5] != 0;
+	}
 	SetCommonData("BossN", bossN);
 	TPlural;
 }
@@ -50,5 +56,9 @@ task TPlural {
 	//loop (300) {yield;}
 	wait(60);
 	SetCommonData("ShakeDisabled", false);
+	if (closeOnDone) {
+		wait(180);
+		CloseStgScene;
+	}
 	CloseScript(GetOwnScriptID);
 }

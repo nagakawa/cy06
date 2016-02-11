@@ -29,11 +29,7 @@ function TBossPre(config) {
 	let dir = GetCurrentScriptDirectory;
 	let path = dir ~ "boss.dnh";
 	let idScript = LoadScriptInThread(path);
-	SetScriptArgument(idScript, 0, config[0]);
-	SetScriptArgument(idScript, 1, config[1]);
-	SetScriptArgument(idScript, 2, config[2]);
-	SetScriptArgument(idScript, 3, config[3]);
-	SetScriptArgument(idScript, 4, config[4]);
+	SetCommonData("BossDNHParams", config);
 	wait(60);
 	StartScript(idScript);
 	while (!IsCloseScript(idScript)) {

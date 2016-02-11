@@ -36,13 +36,9 @@ function TEndScene(mode, rpSlot, difficulty, character) {
 			main;
 		}
 		else {
-			/*let spell = mode - MODE_SPELL;
-			let i = 0;
-			while (i < 12) {
-				if (spell <= cumSpellCounts[i]) {break;}
-				i++;
-			}
-			playS(rpSlot, settings, i + 1, spell);*/
+			let spell = mode - MODE_SPELL;
+			startMe(rpSlot, difficulty, character, spell, 0, 0);
+			main;
 		}
 		return true;
 	}
