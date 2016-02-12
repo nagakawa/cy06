@@ -14,6 +14,16 @@ let id = 3;
 	}
 }
 
+task toggleHitbox(s) {
+	while (exists(s)) {
+		ObjShot_SetIntersectionEnable(
+			s,
+			GetObjectDistance(s, GetPlayerObjectID) <= 50
+		);
+		yield;
+	}
+}
+
 task shootOut(speed, angle, graphic) {
 	let x = ObjMove_GetX(objBoss);
 	let y = ObjMove_GetY(objBoss);
@@ -21,7 +31,7 @@ task shootOut(speed, angle, graphic) {
 	let dy = -dev * cos(angle);
 	let dx = dev * sin(angle);
 	ascent (i in -1 .. 2) {
-		CreateShotA1(x + i * dx, y + i * dy, speed, angle, graphic, 30);
+		toggleHitbox(CreateShotA1(x + i * dx, y + i * dy, speed, angle, graphic, 30));
 	}
 }
 
@@ -39,6 +49,7 @@ task laserTask {
 	while (!isDead) {
 		shootLaserFrom(160, 120);
 		shootLaserFrom(GetStgFrameWidth - 160, 120);
+		laserSound;
 		wait(max(45, 90 - 10 * getRank));
 	}
 }
@@ -46,13 +57,15 @@ task laserTask {
 task TWork {
 	let a = 0;
 	let fd = max(2, truncate(5.6 - 0.7 * getRank));
+	let av = 5.79;
 	laserTask;
 	while (!isDead) {
+		if (a % 180 < av * fd) { swingSound; }
 		shootOut(1.3, 90 - a, LIGHT_S_RED);
 		shootOut(1.3, 90 + a, LIGHT_S_BLUE);
 		shootOut(0.7, 270 + a, LIGHT_S_RED);
 		shootOut(0.7, 270 - a, LIGHT_S_BLUE);
 		wait(fd);
-		a += 4 * fd;
+		a += av * fd;
 	}
 }

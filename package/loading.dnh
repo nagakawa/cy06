@@ -100,7 +100,15 @@ function loadWithDefaults {
 			"on01.wav",
 			"paper00.wav",
 			"power14.wav",
-			"sha00.wav"
+			"sha00.wav",
+			"arrow02.wav",
+			"bom01.wav",
+			"bom11.wav",
+			"shoot04.wav",
+			"swing10.wav",
+			"whip00.wav",
+			"animal02.wav",
+			"noise20.wav"
 		],
 		[
 			

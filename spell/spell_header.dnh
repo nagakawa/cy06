@@ -216,6 +216,10 @@ sub roar {
 	playSE("animal02");
 }
 
+sub laserSound {
+	playSE("noise20");
+}
+
 task timer {
 	while (ObjEnemy_GetInfo(objBoss, INFO_LIFE) > 0) {
 		let ticks = ObjEnemyBossScene_GetInfo(GetEnemyBossSceneObjectID, INFO_TIMERF);

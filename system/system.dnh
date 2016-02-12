@@ -297,7 +297,9 @@ task pollForGameOver {
 
 function submitScore {
 	SetCommonData("pauseblocked", true);
-	if (getMode == MODE_ALL && !IsReplay) {
+	let m = getMode;
+	if ((m == MODE_ALL || m == MODE_STAGE + 7 || m == MODE_STAGE + 8) &&
+			!IsReplay) {
 		WriteLog(getCharacter);
 		WriteLog(getDifficulty);
 		WriteLog(GetCommonData("Stage", 1));

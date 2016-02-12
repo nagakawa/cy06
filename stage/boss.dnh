@@ -10,6 +10,7 @@ let sstart;
 let send;
 let end;
 let closeOnDone = false;
+let bgscr = 0;
 
 @Initialize {
 	let params = GetCommonData("BossDNHParams", []);
@@ -20,6 +21,9 @@ let closeOnDone = false;
 	send = params[4];
 	if (length(params) > 5) {
 		closeOnDone = params[5] != 0;
+	}
+	if (length(params) > 6) {
+		bgscr = params[6];
 	}
 	SetCommonData("BossN", bossN);
 	TPlural;
@@ -57,7 +61,9 @@ task TPlural {
 	wait(60);
 	SetCommonData("ShakeDisabled", false);
 	if (closeOnDone) {
-		wait(180);
+		wait(179);
+		RenderToTextureA1("TB", 0, 100, true);
+		yield;
 		CloseStgScene;
 	}
 	CloseScript(GetOwnScriptID);

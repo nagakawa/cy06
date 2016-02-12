@@ -2,6 +2,7 @@
 #include "./ingame_scenes.dnh"
 #include "./loading.dnh"
 #include "../system/transparent_background.dnh"
+#include "./stageLoader.dnh"
 
 let rpi = -1;
 let difficulty;
@@ -25,10 +26,6 @@ let stageNData = [
 	spell = GetScriptArgument(3);
 	startMe(rpi, difficulty, character, spell, 0, 0);
 	main;
-}
-
-function startStage(stage) {
-	SetStageIndex(i);
 }
 
 function startMe(rpi_, difficulty_, character_, spell_, dummy, idiot) {
@@ -60,7 +57,6 @@ function startMe(rpi_, difficulty_, character_, spell_, dummy, idiot) {
 	if (rpi != -1) {
 		let path = GetReplayInfo(rpi, REPLAY_FILE_PATH);
 		SetStageReplayFile(path);
-		loadStageStats(i, difficulty);
 	}
 	WriteLog("replay set");
 	StartStageScene;
@@ -128,30 +124,6 @@ task main {
 
 @Finalize {
 	playBGM(0);
-}
-
-task loadStageStats(stage, difficulty) {
-	let s = IntToString(stage);
-	SetAreaCommonData(
-		"Replay", "Power",
-		GetAreaCommonData("Replay", "Power" ~ s, 0)
-	);
-	SetAreaCommonData(
-		"Replay", "Radius",
-		GetAreaCommonData("Replay", "Radius" ~ s, 5)
-	);
-	SetAreaCommonData(
-		"Replay", "Value",
-		GetAreaCommonData("Replay", "Value" ~ s, 0.01)
-	);
-	SetAreaCommonData(
-		"Replay", "Trance",
-		GetAreaCommonData("Replay", "Trance" ~ s, 0)
-	);
-	SetAreaCommonData(
-		"Replay", "Rank",
-		GetAreaCommonData("Replay", "Rank" ~ s, difficulty)
-	);
 }
 
 function isDedz {

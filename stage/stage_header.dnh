@@ -84,11 +84,10 @@ function TDialogue(data) {
 	let cartouche = ObjPrim_Create(OBJ_PRIMITIVE_2D);
 	ObjPrim_SetVertexCount(cartouche, 4);
 	ObjPrim_SetPrimitiveType(cartouche, PRIMITIVE_TRIANGLEFAN);
-	let vertexData = [[0, 0], [0, 1], [1, 1], [1, 0]];
 	ascent (i in 0 .. 4) {
 		ObjPrim_SetVertexPosition(cartouche, i,
-			left + 16 + (width - 16) * vertexData[i][0],
-			top + height - 16 - 64 * vertexData[i][1], 0);
+			left + 16 + (width - 16) * (i >= 2),
+			top + height - 16 - 64 * (i == 1 || i == 2), 0);
 		ObjPrim_SetVertexColor(cartouche, i, 0, 0, 0);
 		ObjPrim_SetVertexAlpha(cartouche, i, 90 - 15 * (i == 3));
 	}

@@ -14,4 +14,8 @@ let scripts = [
 
 task TStage {
 	TDialogue(readDD("d1_0"));
+	wait(239);
+	RenderToTextureA1("TB", 0, 100, true);
+	wait(1);
+	CloseStgScene;
 }

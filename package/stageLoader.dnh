@@ -1,0 +1,25 @@
+
+let alreadyLoaded = [false, false, false, false, false, false, false, false];
+
+let textures = [
+	[
+		"mb3d/Rock_04_UV_H_CM_1.jpg",
+		"rentex/09_DIFFUSE.jpg",
+		"../ambient/spritesheet/b0.png",
+		"../ambient/portrait/b0_0.png"
+	]
+];
+
+function startStage(stage) {
+	SetStageIndex(i);
+	let res = alreadyLoaded[stage - 1];
+	if (!res) {
+		load(
+			textures[stage - 1],
+			[],
+			[]
+		);
+		alreadyLoaded[stage - 1] = true;
+	}
+	return res;
+}
