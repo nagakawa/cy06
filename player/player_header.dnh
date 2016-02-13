@@ -7,9 +7,10 @@
 let POWER_PER_BOMB = 3;
 let POWER_PER_DEATHBOMB = 10;
 
-let objPlayer = GetPlayerObjectID();
+let objPlayer = GetPlayerObjectID;
 let objSlowShot = ID_INVALID;
-let current = GetCurrentScriptDirectory();
+let current = GetCurrentScriptDirectory;
+let invincibility = 0;
 
 @Initialize {
 	SetPlayerSpeed(unfocusedSpeed, focusedSpeed);
@@ -24,19 +25,22 @@ let current = GetCurrentScriptDirectory();
 	LoadPlayerShotData(path);
 	// The Player key stores the player.
 	SetAreaCommonData("Replay", "Character", playerID);
-	TImage();//Runs the player graphic task
-	TShot();//Runs the shooting task
-	hitbox();
-	TMagicCircle();//Runs the invincibility time magic circle task
+	TImage; // Runs the player graphic task
+	TShot; // Runs the shooting task
+	hitbox;
+	TMagicCircle; // Runs the invincibility time magic circle task
 }
 
 @MainLoop {
 	SetPlayerClip(11, 11, GetStgFrameWidth - 11, GetStgFrameHeight - 18);
 	ObjPlayer_ClearIntersection(objPlayer);
-	if (GetPlayerInvincibilityFrame <= 0) {
+	if (invincibility <= 0) {
 		ObjPlayer_AddIntersectionCircleA1(objPlayer, 0, 0, hbSize, getRadius);
+	} else {
+		ObjPlayer_AddIntersectionCircleA2(objPlayer, 0, 0, hbSize + getRadius);
+		invincibility--;
 	}
-	ObjPlayer_AddIntersectionCircleA2(objPlayer, 0, 0, hbSize + getRadius);
+	SetCommonData("Invincibility", invincibility);
 	yield;
 }
 

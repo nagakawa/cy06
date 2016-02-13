@@ -66,7 +66,7 @@ task starTask(shot) {
 
 task TSpell {
 	let objManage = GetSpellManageObject;
-	SetPlayerInvincibilityFrame(60);
+	invincibility = 60;
 	let width = GetStgFrameWidth;
 	let height = GetStgFrameHeight;
 	let x = GetPlayerX;

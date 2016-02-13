@@ -8,7 +8,8 @@ let rpi = -1;
 let difficulty;
 let character;
 let start = 1;
-let end = 6;
+let STAGE_COUNT = 1;
+let end = STAGE_COUNT;
 let mode;
 let i;
 

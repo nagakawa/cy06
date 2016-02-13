@@ -27,7 +27,7 @@ task TMagicCircle {
 	let angle = 0;
 	let MAX_FRAMES = 400;
 	loop {
-		let i = GetPlayerInvincibilityFrame;
+		let i = invincibility;
 		coR = oR * (i / MAX_FRAMES) ^ 0.5;
 		ciR = iR * (i / MAX_FRAMES) ^ 0.5;
 		rotate(angle, GetPlayerX, GetPlayerY);

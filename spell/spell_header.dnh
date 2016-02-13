@@ -11,7 +11,7 @@ task SetDamageRateAtFrame(obj, shot, bomb, frame) { //Talos
   ObjEnemy_SetDamageRate(obj, 0, 0);
   let time = frame;
   // below modified by Fluffy8x to wait until player is also not invincible
-  while ((GetPlayerInvincibilityFrame > 0 && !isTranceActive) || IsPlayerSpellActive) { //Prevents Bomb Damage from previous attack. 
+  while ((getInvincibility > 0 && !isTranceActive) || IsPlayerSpellActive) { //Prevents Bomb Damage from previous attack. 
     time--; //However, makes stage enemies immune to bombs because it just yields after time hits 0.
     yield;
   }
@@ -126,7 +126,7 @@ task TBonusUpdate(text) {
 	let bf = S("stgf.failed");
 	let hh = " | " ~ S("stgf.history");
 	while (ObjEnemy_GetInfo(objBoss, INFO_LIFE) > 0) {
-		if (GetPlayerInvincibilityFrame > 1) {success = false;}
+		if (getInvincibility > 1) {success = false;}
 		let score = getBonus(bs);
 		ObjText_SetText(text, [bf, sb ~ RealToStringL(score, 3)][success] ~
 			hh ~ IntToStringL(hist[0]) ~ "/" ~ IntToStringL(hist[1]));

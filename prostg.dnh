@@ -270,3 +270,7 @@ task delayLaser(x, y, ang, l, w, dt, graph, delay) {
 	}
 	Obj_Delete(objlaser);
 }
+
+function getInvincibility {
+	return GetCommonData("Invincibility", 0);
+}

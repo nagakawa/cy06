@@ -56,7 +56,7 @@ task TSpell {
 	let y = GetPlayerY;
 	let sword = CreatePlayerShotA1(x, y, 0, 0, 1, 10000, FANTASTIC_SWORD);
 	ObjShot_SetEraseShot(sword, true);
-	SetPlayerInvincibilityFrame(420);
+	invincibility = 420;
 	let width = GetStgFrameWidth;
 	let height = GetStgFrameHeight;
 	let canShoot = IsPermitPlayerShot;

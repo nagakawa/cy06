@@ -50,7 +50,7 @@ task TShot {
 
 task TSpell {
 	let objManage = GetSpellManageObject();
-	SetPlayerInvincibilityFrame(390);
+	invincibility = 390;
 	SetForbidPlayerShot(true);
 	shake(300);
 	let width = GetStgFrameWidth;
