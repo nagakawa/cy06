@@ -15,8 +15,8 @@ let bossNData = [
 	0, 0, 0,
 ];
 
-let stageNData = [
-	1, 1, 1,
+let bgmNData = [
+	1, 2, 2,
 ];
 
 @Initialize {
@@ -37,7 +37,8 @@ function startMe(rpi_, difficulty_, character_, spell_, dummy, idiot) {
 	let current = GetCurrentScriptDirectory;
 	InitializeStageScene;
 	WriteLog("initialized stage scene");
-	i = stageNData[spell - 1];
+	let bgm = bgmNData[spell - 1];
+	i = bgm % 2 + 1;
 	let mainPath = current ~ "../stage/boss.dnh";
 	SetCommonData(
 		"BossDNHParams",
@@ -59,6 +60,7 @@ function startMe(rpi_, difficulty_, character_, spell_, dummy, idiot) {
 		SetStageReplayFile(path);
 	}
 	WriteLog("replay set");
+	playBGM(bgm);
 	StartStageScene;
 	WriteLog("blastoff!");
 }
