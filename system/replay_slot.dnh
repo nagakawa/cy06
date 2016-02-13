@@ -11,7 +11,6 @@ function selectSlot {
 }
 
 function selectSlotS(idx) {
-	TBackground;
 	let currentPage = truncate(idx / 10);
 	selected = idx % 10;
 	exited = false;
@@ -83,7 +82,6 @@ function selectSlotS(idx) {
 	ascent (i in 0 .. 2 * slotsPerPage) {
 		Obj_Delete(replayTextItems[i]);
 	}
-	TStopBG;
 	return selected + 10 * currentPage;
 }
 

@@ -14,7 +14,9 @@ let mode = GetScriptArgument(0);
 @Finalize {}
 
 task replayMenu {
+	TBackground;
 	let slot = selectSlot;
+	TStopBG;
 	if (slot != -1) {
 		let strs = replayString(slot);
 		let name = enterName(strs[0]);

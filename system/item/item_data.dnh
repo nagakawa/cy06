@@ -19,11 +19,11 @@ ItemData {
 }
 ItemData {
 	id = 4
-	rect = (16, 17, 23, 24)
+	rect = (24, 17, 31, 24)
 	render = ALPHA
 }
 ItemData {
 	id = 5
-	rect = (24, 17, 31, 24)
+	rect = (16, 17, 23, 24)
 	render = ALPHA
 }
