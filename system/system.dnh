@@ -34,6 +34,7 @@ let cwd = GetCurrentScriptDirectory;
 	replayFps;
 	mech;
 	pollForGameOver;
+	showRank;
 }
 
 @Event {
@@ -333,4 +334,13 @@ task loadStageStats(stage) {
 		"Replay", "Rank",
 		GetAreaCommonData("Replay", "Rank" ~ s, getDifficulty)
 	);
+}
+
+task showRank {
+	let text = createText(525, 380, 192, 128, 192, "Rank");
+	let num = createNumberObject(525, 410, 192, 128, 192, 250);
+	while (!IsCloseScript(GetOwnScriptID)) {
+		updateReal(num, getRank, 3);
+		yield;
+	}
 }
