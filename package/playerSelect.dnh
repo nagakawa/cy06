@@ -5,9 +5,13 @@ let textObjs = [];
 let frames = 0;
 let ended = false;
 let difficulty;
+let ctss = false;
 
 @Initialize {
 	difficulty = GetScriptArgument(0);
+	if (GetScriptArgumentCount >= 2) {
+		ctss = GetScriptArgument(1) != 0;
+	}
 	main;
 }
 
@@ -122,6 +126,20 @@ task main {
 			loop {
 				if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
 					SetScriptResult(2 * selected + sel2);
+					# Wondering why this functionality is here?
+					# Well, because it needs to be called before
+					# the text objects are deleted.
+					# Also this type of commenting definitely works.
+					if (ctss) {
+						let stage = runScript(
+							GetCurrentScriptDirectory ~ "stageSelect.dnh",
+							[
+								[1, 2, 3, 4, 5, 6],
+								[0, 0, 0, 0, 0, 0],
+							]
+						);
+						SetScriptResult([2 * selected + sel2, stage]);
+					}
 					finalize;
 					return;
 				}

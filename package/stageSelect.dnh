@@ -4,6 +4,7 @@
 
 let selected = 0;
 let textObjs = [];
+let back;
 let frames = 0;
 let ended = false;
 
@@ -26,14 +27,32 @@ function stageName(n) {
 	return IntToString(n) ~ " ";
 }
 
+function createRect(n) {
+	let left = 490;
+	let right = 750;
+	let top = 140;
+	let bottom = 160 + 25 * n;
+	let obj = ObjPrim_Create(OBJ_PRIMITIVE_2D);
+	ObjPrim_SetPrimitiveType(obj, PRIMITIVE_TRIANGLESTRIP);
+	ObjPrim_SetVertexCount(obj, 4);
+	ObjPrim_SetVertexPosition(obj, 0, left, top, 0);
+	ObjPrim_SetVertexPosition(obj, 1, right, top, 0);
+	ObjPrim_SetVertexPosition(obj, 2, left, bottom, 0);
+	ObjPrim_SetVertexPosition(obj, 3, right, bottom, 0);
+	ascent (i in 0 .. 4) {
+		ObjPrim_SetVertexColor(obj, i, 0, 0, 0);
+		ObjPrim_SetVertexAlpha(obj, i, 80 + 10 * (i > 0) + 10 * (i == 3));
+	}
+	Obj_SetRenderPriority(obj, 0.89);
+	return obj;
+}
+
 task main {
 	let prefix = S("menu.stagePrefix");
 	let suffix = S("menu.stageSuffix");
 	let stages = GetScriptArgument(0);
 	let scores = GetScriptArgument(1);
 	let itemCount = length(stages);
-	let difficulty = GetScriptArgument(2)[0];
-	let character = GetScriptArgument(2)[1];
 	ascent (i in 0 .. itemCount) {
 		let title = createTextR(
 			prefix ~ stageName(stages[i]) ~ suffix ~
@@ -43,6 +62,7 @@ task main {
 		itemTask(title, i);
 		textObjs = textObjs ~ [title];
 	}
+	back = createRect(itemCount);
 	flushZ;
 	let frames = 0;
 	loop {
@@ -92,5 +112,6 @@ task finalize {
 	ascent (i in 0 .. l) {
 		Obj_Delete(textObjs[i]);
 	}
+	Obj_Delete(back);
 	CloseScript(GetOwnScriptID);
 }

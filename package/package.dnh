@@ -229,7 +229,7 @@ task titleScene(showIntro) {
 	let x = 600;
 	let y = 142;
 	//let exUnlocked = isExtraUnlocked(0) || isExtraUnlocked(1) || isExtraUnlocked(2) || isExtraUnlocked(3);
-	let enabled = [true, false, false, false, true, false, false, false, false, true, true];
+	let enabled = [true, false, true, false, true, false, false, false, false, true, true];
 	let labels = ["start", "extra", "practice", "spell", "replay", "scores", "musicRoom", "manual", "character", "options", "quit"];
 	let itemCt = length(labels);
 	let titleItems = [];
@@ -271,8 +271,12 @@ task titleScene(showIntro) {
 				if (exUnlocked) {playX(-1);}
 			}*/
 			case (PRACTICE) {
-				//playStage;
-				runScript(dir ~ "stageSelect.dnh", [[1, 2, 3, 4, 5, 6], [0, 0, 0, 0, 0, 0], [1, 0]]);
+				let lp = getLevelPlayerAndStage(0, 5);
+				if (lp[0] != -1) {
+					ObjRender_SetColor(titleImg, 0, 0, 0);
+					runScript(dir ~ "play.dnh", [-1, lp[0], lp[1], lp[2]]);
+					ObjRender_SetColor(titleImg, 255, 255, 255);
+				}
 			}
 			case (SPELL_PRACTICE) {
 				ObjRender_SetColor(titleImg, 0, 0, 0);
@@ -332,6 +336,17 @@ function getLevelAndPlayer(ld, ud) {
 		if (difficulty == -1) {return [-1, -1];}
 		let player = runScript(dir ~ "playerSelect.dnh", [difficulty]);
 		if (player != -1) {return [difficulty, player];}
+	}
+}
+
+function getLevelPlayerAndStage(ld, ud) {
+	let difficulty = ld;
+	let dir = GetCurrentScriptDirectory;
+	loop {
+		difficulty = runScript(dir ~ "difficultySelect.dnh", [ld, ud, difficulty]);
+		if (difficulty == -1) {return [-1, -1, -1];}
+		let playerStage = runScript(dir ~ "playerSelect.dnh", [difficulty, 1]);
+		if (playerStage[0] != -1) {return [difficulty] ~ playerStage;}
 	}
 }
 

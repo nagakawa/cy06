@@ -68,11 +68,11 @@ let MODE_STAGE = 0;
 let MODE_SPELL = 100;
 
 function getHistory(spellID) {
-	return GetAreaCommonData("Cy06", "H-" ~ IntToString(spellID) ~ "/" ~ IntToString(getDifficulty), [0, 0]);
+	return GetAreaCommonData("Cy06", "H-" ~ IntToString(getCharacter) ~ "/" ~ IntToString(spellID) ~ "/" ~ IntToString(getDifficulty), [0, 0]);
 }
 
 task setHistory(spellID, history) {
-	SetAreaCommonData("Cy06", "H-" ~ IntToString(spellID) ~ "/" ~ IntToString(getDifficulty), history);
+	SetAreaCommonData("Cy06", "H-" ~ IntToString(getCharacter) ~ "/" ~ IntToString(spellID) ~ "/" ~ IntToString(getDifficulty), history);
 }
 
 task saveHistoryPre(spellID) {
