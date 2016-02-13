@@ -269,10 +269,11 @@ task titleScene(showIntro) {
 			}
 			/*case (EXTRA) {
 				if (exUnlocked) {playX(-1);}
-			}
-			case (PRACTICE) {
-				playStage;
 			}*/
+			case (PRACTICE) {
+				//playStage;
+				runScript(dir ~ "stageSelect.dnh", [[1, 2, 3, 4, 5, 6], [0, 0, 0, 0, 0, 0], [1, 0]]);
+			}
 			case (SPELL_PRACTICE) {
 				ObjRender_SetColor(titleImg, 0, 0, 0);
 				runScript(dir ~ "playS.dnh", [-1, 1, 1, 3]);
