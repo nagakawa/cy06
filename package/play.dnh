@@ -49,7 +49,6 @@ function startMe(rpi_, difficulty_, character_, mode_, start_, end_) {
 	if (rpi != -1) {
 		let path = GetReplayInfo(rpi, REPLAY_FILE_PATH);
 		SetStageReplayFile(path);
-		loadStageStats(start, difficulty);
 	}
 	WriteLog("replay set");
 	StartStageScene;
@@ -70,12 +69,10 @@ task main {
 			let res = RunPauseScene;
 			alternative (res)
 			case (RESULT_RETRY) {
-				if (!IsReplay) {
-					TerminateStageScene;
-					startMe(-1, difficulty, character, mode, start, end);
-					main;
-					return;
-				}
+				TerminateStageScene;
+				startMe(rpi, difficulty, character, mode, start, end);
+				main;
+				return;
 			}
 			case (RESULT_END) {
 				TerminateStageScene;
@@ -126,30 +123,6 @@ task main {
 
 @Finalize {
 	playBGM(0);
-}
-
-task loadStageStats(stage, difficulty) {
-	let s = IntToString(stage);
-	SetAreaCommonData(
-		"Replay", "Power",
-		GetAreaCommonData("Replay", "Power" ~ s, 0)
-	);
-	SetAreaCommonData(
-		"Replay", "Radius",
-		GetAreaCommonData("Replay", "Radius" ~ s, 5)
-	);
-	SetAreaCommonData(
-		"Replay", "Value",
-		GetAreaCommonData("Replay", "Value" ~ s, 0.01)
-	);
-	SetAreaCommonData(
-		"Replay", "Trance",
-		GetAreaCommonData("Replay", "Trance" ~ s, 0)
-	);
-	SetAreaCommonData(
-		"Replay", "Rank",
-		GetAreaCommonData("Replay", "Rank" ~ s, difficulty)
-	);
 }
 
 function isDedz {

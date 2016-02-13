@@ -8,6 +8,7 @@
 #include "./../propkg.dnh"
 #include "./highscores_main.dnh"
 #include "../system/transparent_background.dnh"
+#include "../system/replay_slot.dnh"
 
 // Hello viewers
 
@@ -277,10 +278,10 @@ task titleScene(showIntro) {
 				runScript(dir ~ "playS.dnh", [-1, 1, 1, 3]);
 				ObjRender_SetColor(titleImg, 255, 255, 255);
 			}
-			/*case (REPLAY) {
-				replayMenu;
+			case (REPLAY) {
+				replayMenu(titleImg);
 			}
-			case (DATA) {
+			/*case (DATA) {
 				data;
 			}*/
 			case (OPTION) {
@@ -337,4 +338,33 @@ task viewHS(arg) {
 	yield;
 	SetCommonData("HSSubmitDone", false);
 	hsOf(SUBMIT_HIGH_SCORE, arg);
+}
+
+function replayMenu(titleImg) {
+	LoadReplayList;
+	let dir = GetCurrentScriptDirectory;
+	let slot = selectSlot;
+	while (slot != -1) {
+		if (IsValidReplayIndex(slot + 1)) {
+			let commS = GetReplayInfo(slot + 1, REPLAY_COMMENT);
+			let comm = SplitString(commS, "|");
+			let difficulty = atoi(comm[0]);
+			let character = atoi(comm[1]);
+			let mode = atoi(comm[2]);
+			yield;
+			ObjRender_SetColor(titleImg, 0, 0, 0);
+			if (mode == MODE_ALL) {
+				runScript(dir ~ "play.dnh", [slot + 1, difficulty, character, 0]);
+			}
+			else if (mode < MODE_SPELL) {
+				runScript(dir ~ "play.dnh", [slot + 1, difficulty, character, mode, mode, mode]);
+			}
+			else { // spell
+				let spln = mode - MODE_SPELL;
+				runScript(dir ~ "playS.dnh", [slot + 1, difficulty, character, spln]);
+			}
+			ObjRender_SetColor(titleImg, 255, 255, 255);
+		}
+		slot = selectSlotS(slot);
+	}
 }

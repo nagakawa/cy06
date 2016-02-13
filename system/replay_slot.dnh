@@ -144,13 +144,6 @@ function replayString(slot) {
 #include "../sound.dnh"
 
 #include "../itsb.dnh"
-
-function flushZ {
-	while (GetVirtualKeyState(VK_OK) != KEY_FREE) {yield;}
-}
-
-function flushX {
-	while (GetVirtualKeyState(VK_CANCEL) != KEY_FREE) {yield;}
-}
+#include "../procon.dnh"
 
 function turnPage {playSE("paper00");}
