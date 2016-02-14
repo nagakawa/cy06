@@ -172,7 +172,9 @@ function TDialogue(data) {
 			unlockCharacter(bossID);
 			SetForbidPlayerShot(false);
 			SetForbidPlayerSpell(false);
+			toggleDialogue;
 			TBossPre([bossID, atoi(strs[1]), atoi(strs[2]), atoi(strs[3]), atoi(strs[4])]);
+			toggleDialogue;
 			SetForbidPlayerShot(true);
 			SetForbidPlayerSpell(true);
 			Obj_SetVisible(playerPortrait, true);

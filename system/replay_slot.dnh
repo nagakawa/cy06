@@ -113,9 +113,21 @@ function replayString(slot) {
 		let charL = S("replay.c" ~ IntToString(num / 2));
 		let charR = S("replay." ~ ["a", "b"][num % 2]);
 		let char2 = charL ~ charR;
-		let comR = com[1..length(com)];
-		if (comR == "Stage 7") {comR = "Extra";}
-		else if (comR == "Stage 8") {comR = "Phantasm";}
+		# Technically the second part of the replay comment
+		# is redundant, since that info is already in the
+		# replay file.
+		let mode = atoi(coms[2]);
+		let dstring = S("replay.d" ~ coms[0]);
+		let mstring = S("replay.all");
+		if (mode > MODE_ALL) {
+			if (mode < MODE_SPELL) {
+				if (mode < 7) {
+					mstring = S("menu.stagePrefix") ~ coms[2] ~ S("menu.stageSuffix");
+				}
+			} else {
+				mstring = S("replay.spell") ~ IntToStringIL(mode - MODE_SPELL);
+			}
+		}
 		let fps = GetReplayInfo(slot, REPLAY_FPS_AVERAGE);
 		let drop = max(0, 100 * (60 - fps) / 60);
 		let suffix = S("stgf.trance.suffix");
@@ -130,7 +142,7 @@ function replayString(slot) {
 			"  " ~
 				vtos("-8s", char2) ~ " " ~
 				vtos(dfs, ds) ~ " " ~
-				com[0..1] ~ " " ~ comR
+				dstring ~ " " ~ mstring
 		];
 	}
 	else {

@@ -216,20 +216,22 @@ task mech {
 	let player = GetPlayerObjectID;
 	let oldg = GetGraze;
 	while (!IsCloseScript(GetOwnScriptID)) {
-		if (GetGraze - oldg > 0) {playSE("on01");}
-		AddScore(-GetScore);
-		AddScore(GetGraze);
-		if (getTrancePercentage >= 100) {
-			activateTrance(true);
-		} else if (getTrancePercentage <= 0) {
-			setTrancePercentage(0);
-			activateTrance(false);
+		if (!inDialogue) {
+			if (GetGraze - oldg > 0) {playSE("on01");}
+			AddScore(-GetScore);
+			AddScore(GetGraze);
+			if (getTrancePercentage >= 100) {
+				activateTrance(true);
+			} else if (getTrancePercentage <= 0) {
+				setTrancePercentage(0);
+				activateTrance(false);
+			}
+			if (isTranceActive) {
+				addTrancePercentage(-1 / 6);
+			}
+			oldg = GetGraze;
+			addRank(0.00005);
 		}
-		if (isTranceActive) {
-			addTrancePercentage(-1 / 6);
-		}
-		oldg = GetGraze;
-		addRank(0.00005);
 		yield;
 	}
 }
