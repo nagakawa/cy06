@@ -36,13 +36,18 @@ task TShot {
 		if (shot == KEY_PUSH || shot == KEY_HOLD && tick == 0 &&
 			GetPlayerState == STATE_NORMAL && IsPermitPlayerShot) {
 			if (isFocused) {
-				ObjRender_SetAlpha(createPlayerShotA1(x + 12 * sin(7 * counter), y, 7, 270, 8, 1, off[randIntH(0, 8)]), 80);
-				ObjRender_SetAlpha(createPlayerShotA1(x - 12 * sin(7 * counter), y, 7, 270, 8, 1, off[randIntH(0, 8)]), 80);
+				ObjRender_SetAlpha(createPlayerShotA1(x + 12 * sin(7 * counter), y, 7, 270, 20, 1, off[randIntH(0, 8)]), 80);
+				ObjRender_SetAlpha(createPlayerShotA1(x - 12 * sin(7 * counter), y, 7, 270, 20, 1, off[randIntH(0, 8)]), 80);
+				if (getPower > 35) {
+					ObjRender_SetAlpha(createPlayerShotA1(x + 24 * sin(7 * counter), y, 7, 270, 15, 1, off[randIntH(0, 8)]), 80);
+					ObjRender_SetAlpha(createPlayerShotA1(x - 24 * sin(7 * counter), y, 7, 270, 15, 1, off[randIntH(0, 8)]), 80);
+				}
 			}
 			else {
-				ascent (i in 0 .. 7) {
+				let count = min(7, 1 + truncate(getPower / 15));
+				ascent (i in 0 .. count) {
 					let a = counter + 360 * i / 7;
-					ObjRender_SetAlpha(createPlayerShotA1(x, y, 10, 270 + 30 * sin(a), 15, 1, off[i]), 100 + 40 * cos(a));
+					ObjRender_SetAlpha(createPlayerShotA1(x, y, 10, 270 + 30 * sin(a), 210 / count, 1, off[i]), 100 + 40 * cos(a));
 				}
 			}
 		}

@@ -29,11 +29,11 @@ task TShot {
 		if (shot == KEY_PUSH || shot == KEY_HOLD && tick == 0 &&
 			GetPlayerState == STATE_NORMAL && IsPermitPlayerShot) {
 			if (isFocused) {
-				createPlayerShotA1(x, y, 10, 270, 18, 2, SALAMANDER);
+				createPlayerShotA1(x, y, 10, 270, 28, 2, SALAMANDER);
 			}
 			else {
-				createPlayerShotA1(x - 5, y, 10, 270, 15, 1, SPIKED_SEED);
-				createPlayerShotA1(x + 5, y, 10, 270, 15, 1, SPIKED_SEED);
+				createPlayerShotA1(x - 5, y, 10, 270, 12, 1, SPIKED_SEED);
+				createPlayerShotA1(x + 5, y, 10, 270, 12, 1, SPIKED_SEED);
 				createPlayerShotA1(x - 2.5, y, 10, 262, 8, 1, SPIKED_SEED);
 				createPlayerShotA1(x + 2.5, y, 10, 278, 8, 1, SPIKED_SEED);
 				createPlayerShotA1(x - 2.5, y + 8, 10, 254, 6, 1, SPIKED_SEED);

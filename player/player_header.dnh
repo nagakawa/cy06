@@ -78,7 +78,7 @@ let invincibility = 0;
 }
 
 function createPlayerShotA1(x, y, speed, angle, damage, penetration, id) {
-	let dmgp = damage * (1 + 0.2 * (getPower / 100) ^ 0.5);
+	let dmgp = damage * (1 + 0.5 * (getPower / 100) ^ 0.5);
 	return CreatePlayerShotA1(x, y, speed, angle, dmgp, penetration, id)
 }
 
