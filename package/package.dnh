@@ -345,8 +345,13 @@ function getLevelPlayerAndStage(ld, ud) {
 	loop {
 		difficulty = runScript(dir ~ "difficultySelect.dnh", [ld, ud, difficulty]);
 		if (difficulty == -1) {return [-1, -1, -1];}
-		let playerStage = runScript(dir ~ "playerSelect.dnh", [difficulty, 1]);
-		if (playerStage[0] != -1) {return [difficulty] ~ playerStage;}
+		loop {
+			let playerStage = runScript(dir ~ "playerSelect.dnh", [difficulty, 1]);
+			if (playerStage[0] != -1 && playerStage[1] != -1) {
+				return [difficulty] ~ playerStage;
+			}
+			if (playerStage[0] == -1) { break; }
+		}
 	}
 }
 
