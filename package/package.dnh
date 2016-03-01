@@ -113,11 +113,14 @@ task ss {
 		let path = GetCurrentScriptDirectory ~ "../bgm/cy06_" ~ bgmNames[id] ~ ".ogg";
 		ObjSound_Stop(bgm);
 		if (path != "") {
+			Obj_Delete(bgm);
+			bgm = ObjSound_Create;
 			ObjSound_Load(bgm, path);
 			ObjSound_SetSoundDivision(bgm, SOUND_BGM);
 			ObjSound_SetVolumeRate(bgm, GetAreaCommonData("Cy06", "BGMVol", 100));
 			ObjSound_SetLoopEnable(bgm, true);
 			ObjSound_SetLoopTime(bgm, 0, endTimes[id]);
+			ObjSound_SetRestartEnable(bgm, true);
 			ObjSound_Play(bgm);
 			SetAreaCommonData("Cy06", "HeardBGM " ~ IntToString(id), true);
 			SetCommonData("NowPlaying", id);
@@ -144,6 +147,26 @@ task ss {
 				}
 				fork;
 			}
+		}
+	}
+	case (EV_STOP_BGM) {
+		task fork {
+			let seq = [];
+			ascent (i in 0 .. 8) {
+				seq = seq ~ [randIntH(0, 4)];
+			}
+			WriteLog(seq);
+			let len = length(seq);
+			ascent (i in 0 .. len) {
+				playSE("cursor15_" ~ ["a", "b", "c", "d"][seq[i]]);
+				wait(5);
+			}
+		}
+		if (GetEventArgument(0) != 0) {
+			ObjSound_Stop(bgm);
+			fork;
+		} else {
+			ObjSound_Play(bgm);
 		}
 	}
 	case (EV_PLAY_SE) {
@@ -326,7 +349,7 @@ task titleScene(showIntro) {
 	}
 }
 
-@MainLoop {yield;}
+@MainLoop { yield; }
 
 function getLevelAndPlayer(ld, ud) {
 	let difficulty = ld;

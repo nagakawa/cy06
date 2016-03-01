@@ -3,6 +3,7 @@
 let randomValues = [0.3];
 let seeds = [];
 let sky = GetCurrentScriptDirectory ~ "../resource/luv.png";
+let spr;
 
 task initBG {
 	ascent (i in 0 .. 32) {
@@ -24,18 +25,18 @@ task initBG {
 	if (getEffectCut == 4) {CloseScript(GetOwnScriptID); return;}
 	let start = GetPackageTime;
 	let waterPath = GetCurrentScriptDirectory ~ "../resource/rentex/09_DIFFUSE.jpg";
-	let w1 = rectangular(waterPath, 560, -50, 20, 560, 100, 20, 560, -50, 10, 560, 100, 10, 2, 1);
-	let w2 = rectangular(waterPath, 570, -50, 20, 570, 100, 20, 570, -50, 10, 570, 100, 10, 2, 1);
-	let w3 = rectangular(waterPath, 570, -50, 10, 570, 100, 10, 560, -50, 10, 560, 100, 10, 2, 1);
-	let w4 = rectangular(waterPath, 570, -50, 20, 570, 100, 20, 560, -50, 20, 560, 100, 20, 2, 1);
-	ObjRender_SetColor(w1, 64, 128, 255);
-	ObjRender_SetColor(w2, 64, 128, 255);
-	ObjRender_SetColor(w3, 64, 128, 255);
-	ObjRender_SetColor(w4, 64, 128, 255);
-	flow(w1);
-	flow(w2);
-	flow(w3);
-	flow(w4);
+	spr = ObjPrim_Create(OBJ_PRIMITIVE_3D);
+	ObjPrim_SetTexture(spr, waterPath);
+	ObjPrim_SetPrimitiveType(spr, PRIMITIVE_TRIANGLESTRIP);
+	ObjPrim_SetVertexCount(spr, 16);
+	rectangularW(spr, 560, -50, 20, 560, 100, 20, 560, -50, 10, 560, 100, 10, 2, 1, 0);
+	rectangularW(spr, 570, -50, 20, 570, 100, 20, 570, -50, 10, 570, 100, 10, 2, 1, 4);
+	rectangularW(spr, 570, -50, 10, 570, 100, 10, 560, -50, 10, 560, 100, 10, 2, 1, 8);
+	rectangularW(spr, 570, -50, 20, 570, 100, 20, 560, -50, 20, 560, 100, 20, 2, 1, 12);
+	ObjRender_SetColor(spr, 64, 128, 255);
+	ascent (i in 0 .. 4) { flow(spr, 4 * i); }
+	Obj_SetRenderPriority(spr, 0.21);
+	invisibleOnSpell(spr);
 	createCaveMesh(20, 100, 50, seeds[0], seeds[1], seeds[2]);
 	createCaveMesh(-20, 100, 50, seeds[3], seeds[4], seeds[5]);
 	setFog;
@@ -117,15 +118,14 @@ function createCaveMesh(y, sy, res, seed1, seed2, seed3) {
 	return obj;
 }
 
-task flow(water) {
-	invisibleOnSpell(water);
+task flow(water, i) {
 	while (GetCameraFocusX < 320) {yield;}
 	let u = 0;
 	while (exists(water)) {
-		ObjPrim_SetVertexUV(water, 0, u, 0);
-		ObjPrim_SetVertexUV(water, 1, u + 2, 0);
-		ObjPrim_SetVertexUV(water, 2, u + 2, 1);
-		ObjPrim_SetVertexUV(water, 3, u, 1);
+		ObjPrim_SetVertexUV(water, i, u, 0);
+		ObjPrim_SetVertexUV(water, i + 1, u + 2, 0);
+		ObjPrim_SetVertexUV(water, i + 2, u + 2, 1);
+		ObjPrim_SetVertexUV(water, i + 3, u, 1);
 		u += 1 / 60;
 		yield;
 	}

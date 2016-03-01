@@ -5,7 +5,7 @@ let cwd = GetCurrentScriptDirectory;
 
 @Initialize {
 	if (IsReplay) {
-		LoadCommonDataAreaFromReplayFile("Replay");
+		//LoadCommonDataAreaFromReplayFile("Replay");
 		loadStageStats(GetCommonData("Stage", 131) - 1);
 	}
 	else {

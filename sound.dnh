@@ -1,5 +1,6 @@
 let EV_PLAY_BGM = EV_USER + 3;
 let EV_PLAY_SE = EV_USER + 13;
+let EV_STOP_BGM = EV_USER + 14;
 
 task playBGM(id) {
 	NotifyEventAll(EV_PLAY_BGM, [id, 0, 0]);
@@ -15,6 +16,14 @@ task restartBGM(id) {
 
 task restartBGMWithTitle(id) {
 	NotifyEventAll(EV_PLAY_BGM, [id, 1, 1]);
+}
+
+task stopBGM {
+	NotifyEventAll(EV_STOP_BGM, 1);
+}
+
+task resumeBGM {
+	NotifyEventAll(EV_STOP_BGM, 0);
 }
 
 task playSE(path) {

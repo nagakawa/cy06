@@ -37,6 +37,17 @@ function rectangular(tx, x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4, u, v) {
 	return spr;
 }
 
+function rectangularW(spr, x1, y1, z1, x2, y2, z2, x3, y3, z3, x4, y4, z4, u, v, i) {
+	ObjPrim_SetVertexPosition(spr, i, x1, y1, z1);
+	ObjPrim_SetVertexUV(spr, i, 0, 0);
+	ObjPrim_SetVertexPosition(spr, i + 1, x2, y2, z2);
+	ObjPrim_SetVertexUV(spr, i + 1, u, 0);
+	ObjPrim_SetVertexPosition(spr, i + 2, x3, y3, z3);
+	ObjPrim_SetVertexUV(spr, i + 2, u, v);
+	ObjPrim_SetVertexPosition(spr, i + 3, x4, y4, z4);
+	ObjPrim_SetVertexUV(spr, i + 3, 0, v);
+}
+
 task invisibleOnSpell(obj) {
 	while (exists(obj)) {
 		Obj_SetVisible(obj,

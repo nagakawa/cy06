@@ -1,9 +1,11 @@
 // menu header
 #include "./transparent_background.dnh"
 #include "../language.dnh"
+#include "../sound.dnh"
 function showMenu(title, titleColor, items) {
 	TBackground;
 	PauseStageScene(true);
+	stopBGM;
 	function createText(text, x, y) {
 		let obj = ObjText_Create;
 		ObjText_SetText(obj, text);
@@ -51,24 +53,38 @@ function showMenu(title, titleColor, items) {
 	let frames = 0;
 	loop {
 		if (GetVirtualKeyState(VK_OK) == KEY_PULL) {
+			playSE("cursor15_a");
 			break;
 		}
 		if (GetVirtualKeyState(VK_CANCEL) == KEY_PULL ||
 			GetVirtualKeyState(VK_PAUSE) == KEY_PULL) {
 			selected = -1;
+			playSE("cursor15_b");
 			break;
 		}
 		let up = GetVirtualKeyState(VK_UP);
 		let down = GetVirtualKeyState(VK_DOWN);
-		if (up == KEY_PUSH) {selected--;}
-		else if (down == KEY_PUSH) {selected++;}
+		if (up == KEY_PUSH) {
+			selected--;
+			playSE("cursor15_c");
+		}
+		else if (down == KEY_PUSH) {
+			selected++;
+			playSE("cursor15_c");
+		}
 		else if (up == KEY_HOLD) {
 			frames++;
-			if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {selected--;}
+			if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {
+				selected--;
+				playSE("cursor15_c");
+			}
 		}
-		else if (down== KEY_HOLD) {
+		else if (down == KEY_HOLD) {
 			frames++;
-			if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {selected++;}
+			if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {
+				selected++;
+				playSE("cursor15_c");
+			}
 		}
 		else {frames = 0;}
 		if (selected < 0) {selected = noItems - 1;}
@@ -80,6 +96,7 @@ function showMenu(title, titleColor, items) {
 	}
 	TStopBG;
 	PauseStageScene(false);
+	resumeBGM;
 	return selected;
 }
 
