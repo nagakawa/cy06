@@ -1,4 +1,5 @@
 #include "../itsbloc.dnh"
+#include "../sound.dnh"
 #include "./transparent_background.dnh"
 #include "./rpm_text.dnh"
 
@@ -32,27 +33,41 @@ function selectSlotS(idx) {
 	let frames = 0;
 	while (!exited) {
 		if (GetVirtualKeyState(VK_OK) == KEY_PULL) {
+			ok;
 			break;
 		}
 		if (GetVirtualKeyState(VK_CANCEL) == KEY_PULL ||
 			GetVirtualKeyState(VK_PAUSE) == KEY_PULL) {
 			selected = -1;
 			currentPage = 0;
+			cancel;
 			break;
 		}
 		let up = GetVirtualKeyState(VK_UP);
 		let down = GetVirtualKeyState(VK_DOWN);
 		let left = GetVirtualKeyState(VK_LEFT);
 		let right = GetVirtualKeyState(VK_RIGHT);
-		if (up == KEY_PUSH) {selected--;}
-		else if (down == KEY_PUSH) {selected++;}
+		if (up == KEY_PUSH) {
+			selected--;
+			cmove;
+		}
+		else if (down == KEY_PUSH) {
+			selected++;
+			cmove;
+		}
 		else if (up == KEY_HOLD) {
 			frames++;
-			if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {selected--;}
+			if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {
+				selected--;
+				cmove;
+			}
 		}
 		else if (down == KEY_HOLD) {
 			frames++;
-			if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {selected++;}
+			if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {
+				selected++;
+				cmove;
+			}
 		}
 		if (selected < 0) {selected = slotsPerPage - 1;}
 		else if (selected >= slotsPerPage) {selected = 0;}
@@ -146,7 +161,7 @@ function replayString(slot) {
 		];
 	}
 	else {
-		return [text ~ "Civoro", ""];
+		return [text ~ S("noname"), ""];
 	}
 }
 

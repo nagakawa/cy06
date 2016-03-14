@@ -339,8 +339,8 @@ task loadStageStats(stage) {
 }
 
 task showRank {
-	let text = createText(525, 380, 192, 128, 192, "Rank");
-	let num = createNumberObject(525, 410, 192, 128, 192, 250);
+	let text = createText(525, 380, 255, 192, 128, "Rank");
+	let num = createNumberObject(525, 410, 255, 192, 128, 250);
 	while (!IsCloseScript(GetOwnScriptID)) {
 		updateReal(num, getRank, 3);
 		yield;

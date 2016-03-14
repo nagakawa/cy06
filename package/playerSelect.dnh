@@ -1,4 +1,5 @@
-#include "./../propkg.dnh"
+#include "../propkg.dnh"
+#include "../sound.dnh"
 
 let selected = 0;
 let textObjs = [];
@@ -74,6 +75,7 @@ task main {
 		let nselected = selected % 3;
 		alternative (selected - old)
 		case (-1) { // LEFT
+			cmove;
 			Obj_SetVisible(description1, false);
 			Obj_SetVisible(description2, false);
 			ObjRender_SetX(textObjs[2 * nselected], -700);
@@ -97,6 +99,7 @@ task main {
 			txs(buildString("c" ~ IntToString(nselected) ~ ".b"));
 		}
 		case (1) { // RIGHT
+			cmove;
 			Obj_SetVisible(description1, false);
 			Obj_SetVisible(description2, false);
 			ObjRender_SetX(textObjs[2 * nselected], 900);
@@ -122,9 +125,11 @@ task main {
 		selected = nselected;
 		if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
 			let sel2 = 0;
+			ok;
 			flushZ;
 			loop {
 				if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
+					ok;
 					let exited = false;
 					SetScriptResult(2 * selected + sel2);
 					# Wondering why this functionality is here?
@@ -148,10 +153,12 @@ task main {
 					}
 				}
 				else if (GetVirtualKeyState(VK_CANCEL) == KEY_PUSH) {
+					cancel;
 					break;
 				}
 				else if (GetVirtualKeyState(VK_UP) == KEY_PUSH ||
 						GetVirtualKeyState(VK_DOWN) == KEY_PUSH) {
+					cmove;
 					sel2 = 1 - sel2;
 				}
 				ObjRender_SetAlpha(description1, 255 - 175 * sel2);
@@ -162,6 +169,7 @@ task main {
 			ObjRender_SetAlpha(description2, 80);
 		}
 		else if (GetVirtualKeyState(VK_CANCEL) == KEY_PUSH) {
+			cancel;
 			if (ctss) { SetScriptResult([-1, -1]); }
 			else { SetScriptResult(-1); }
 			flushX;

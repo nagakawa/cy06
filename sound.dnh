@@ -43,3 +43,15 @@ let endTimes = [
 	103,
 	144
 ];
+
+sub ok {
+	playSE("cursor15_a");
+}
+
+sub cancel {
+	playSE("cursor15_b");
+}
+
+sub cmove {
+	playSE("cursor15_c");
+}

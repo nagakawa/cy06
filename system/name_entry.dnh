@@ -87,5 +87,6 @@ function enterName(str) {
 	Obj_Delete(text);
 	if (name == "") { return S("noname"); }
 	TStopBG;
+	ok;
 	return name;
 }

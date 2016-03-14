@@ -1,4 +1,5 @@
 #include "./../propkg.dnh"
+#include "./../sound.dnh"
 
 function cy06(key, default) {return GetAreaCommonData("Cy06", key, default);}
 task setCy06(key, value) {SetAreaCommonData("Cy06", key, value);}
@@ -82,6 +83,7 @@ task main {
 	flushZ;
 	while (!ended) {
 		if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
+			if (selected != 5 && selected >= 2) { ok; }
 			alternative (selected)
 			case (2) {
 				let old = initialValues[2];
@@ -101,6 +103,7 @@ task main {
 				}
 			}
 			case (5) {
+				cancel;
 				ended = true;
 			}
 			case (3) {
@@ -116,17 +119,31 @@ task main {
 		let down = GetVirtualKeyState(VK_DOWN);
 		let left = GetVirtualKeyState(VK_LEFT);
 		let right = GetVirtualKeyState(VK_RIGHT);
-		if (up == KEY_PUSH) {selected--;}
-		else if (down == KEY_PUSH) {selected++;}
+		if (up == KEY_PUSH) {
+			selected--;
+			cmove;
+		}
+		else if (down == KEY_PUSH) {
+			selected++;
+			cmove;
+		}
 		else if (up == KEY_HOLD) {
 			frames++;
-			if (frames >= 30 && (frames % 10 == 0)) {selected--;}
+			if (frames >= 30 && (frames % 10 == 0)) {
+				selected--;
+				cmove;
+			}
 		}
 		else if (down == KEY_HOLD) {
 			frames++;
-			if (frames >= 30 && (frames % 10 == 0)) {selected++;}
+			if (frames >= 30 && (frames % 10 == 0)) {
+				selected++;
+				cmove;
+			}
 		}
 		else if (right == KEY_PUSH || (right == KEY_HOLD && flag)) {
+			if (selected < 3) { ok; }
+			frames++;
 			alternative (selected)
 			case (2) {
 				let old = initialValues[2];
@@ -157,6 +174,7 @@ task main {
 			if (frames >= 30 && (frames % 6 == 0)) {flag = true;}
 		}
 		else if (left == KEY_PUSH || (left == KEY_HOLD && flag)) {
+			if (selected < 3) { ok; }
 			frames++;
 			alternative (selected)
 			case (2) {
@@ -221,6 +239,7 @@ function selectLanguage {
 	flushZ;
 	loop {
 		if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
+			ok;
 			ascent (i in 0 .. 5) {
 				Obj_Delete(texts[i]);
 			}
@@ -229,15 +248,27 @@ function selectLanguage {
 		let up = GetVirtualKeyState(VK_UP);
 		let down = GetVirtualKeyState(VK_DOWN);
 		let os = s;
-		if (up == KEY_PUSH) {s--;}
-		else if (down == KEY_PUSH) {s++;}
+		if (up == KEY_PUSH) {
+			s--;
+			cmove;
+		}
+		else if (down == KEY_PUSH) {
+			s++;
+			cmove;
+		}
 		else if (up == KEY_HOLD) {
 			frames++;
-			if (frames >= 30 && (frames % 10 == 0)) {s--;}
+			if (frames >= 30 && (frames % 10 == 0)) {
+				s--;
+				cmove;
+			}
 		}
 		else if (down== KEY_HOLD) {
 			frames++;
-			if (frames >= 30 && (frames % 10 == 0)) {s++;}
+			if (frames >= 30 && (frames % 10 == 0)) {
+				s++;
+				cmove;
+			}
 		}
 		else {frames = 0;}
 		if (s < 0) {s = ne - 1;}

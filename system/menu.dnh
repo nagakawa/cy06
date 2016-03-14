@@ -2,10 +2,15 @@
 #include "./transparent_background.dnh"
 #include "../language.dnh"
 #include "../sound.dnh"
+
 function showMenu(title, titleColor, items) {
+	showMenuX(title, titleColor, items, false, 999);
+}
+
+function showMenuX(title, titleColor, items, isGameOver, unreleaseOp) {
 	TBackground;
+	if (!isGameOver) { stopBGM; }
 	PauseStageScene(true);
-	stopBGM;
 	function createText(text, x, y) {
 		let obj = ObjText_Create;
 		ObjText_SetText(obj, text);
@@ -94,9 +99,11 @@ function showMenu(title, titleColor, items) {
 	ascent (i in 0 .. 2 * noItems + 1) {
 		Obj_Delete(textObjs[i]);
 	}
-	TStopBG;
 	PauseStageScene(false);
-	resumeBGM;
+	TStopBG;
+	if (!isGameOver && selected != unreleaseOp) {
+		resumeBGM;
+	}
 	return selected;
 }
 
