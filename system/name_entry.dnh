@@ -85,8 +85,8 @@ function enterName(str) {
 	SetAreaCommonData("Cy06", "Name", name);
 	Obj_Delete(title);
 	Obj_Delete(text);
-	if (name == "") { return S("noname"); }
 	TStopBG;
 	ok;
+	if (name == "") { return S("noname"); }
 	return name;
 }

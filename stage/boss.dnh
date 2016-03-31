@@ -85,7 +85,7 @@ task stars(obj) {
 		let ct = ObjEnemyBossScene_GetInfo(obj, INFO_REMAIN_STEP_COUNT);
 		ObjSpriteList2D_ClearVertexCount(sl);
 		ascent (i in 0 .. ct) {
-			let x = 18 + 24 * i + offsets[3 * i];
+			let x = 18 + 18 * i + offsets[3 * i];
 			let y = 12 + offsets[3 * i + 1];
 			ObjRender_SetPosition(sl, x, y, 0);
 			ObjRender_SetAngleZ(sl, offsets[3 * i + 2] + dt);

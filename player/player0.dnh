@@ -38,7 +38,7 @@ task TShot {
 			else {
 				let width = truncate(getPower / 10);
 				ascent (i in -width .. width + 1) {
-					let even = width % 2 == 0;
+					let even = i % 2 == 0;
 					let shot = createPlayerShotA1(x + 5 * i, y - 3 * !!i, 10, 270, max(3, 11 - 2 * i) + 2 * even, 1, SILVER_ARROW);
 					if (even) { home(shot); }
 				}

@@ -96,7 +96,7 @@ function TDialogue(data) {
 	ObjText_SetFontType(dialogueText, S("font.dialogue"));
 	ObjText_SetFontSize(dialogueText, 16 * fontScale);
 	ObjRender_SetX(dialogueText, left + 22);
-	ObjText_SetMaxWidth(dialogueText, 340);
+	ObjText_SetMaxWidth(dialogueText, 420);
 	ObjRender_SetY(dialogueText, top + height - 80);
 	Obj_SetRenderPriority(dialogueText, 0.83);
 	let intro = cta("");
@@ -191,7 +191,7 @@ function TDialogue(data) {
 			ObjText_SetFontColorBottom(dialogueText, c[0], c[1], c[2]);
 			let theName = [S("dialogue.c" ~ IntToString(getCharacter / 2)), name, ""][t];
 			message = theName ~ "[r]" ~ message;
-			ObjText_SetTextWW(dialogueText, message, 80);
+			ObjText_SetTextWW(dialogueText, message, 53);
 			ObjRender_SetAlpha(playerPortrait, [128, 255][t == 0]);
 			ObjRender_SetAlpha(enemyPortrait, [128, 255][t == 1]);
 			//Obj_SetRenderPriority(enemyPortrait, [0.29, 0.31, 0.3][t]);

@@ -12,7 +12,7 @@ let cwd = GetCurrentScriptDirectory;
 		SetAreaCommonData("Replay", "Difficulty", getDifficulty);
 	}
 	if (GetCommonData("Start", false)) {reset;}
-	SetCommonData("Dialogue", false);
+	SetCommonData("InDialogue", false);
 	SetCommonData("pauseblocked", false);
 	StartItemScript(cwd ~ "item/system_item.dnh");
 	let path = cwd ~ "../player/playersd.dnh";

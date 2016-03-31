@@ -38,6 +38,10 @@ def iterate(f):
 
 # main
 
-path = argv[1]
-process_file(Path(path))
-print("Packaged " + path)
+try:
+	path = argv[1]
+	process_file(Path(path))
+	print("Packaged " + path)
+except IndexError:
+	iterate(process_file)
+	print("Packaged files")

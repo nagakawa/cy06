@@ -120,8 +120,12 @@ task ss {
 			ObjSound_SetVolumeRate(bgm, GetAreaCommonData("Cy06", "BGMVol", 100));
 			ObjSound_SetLoopEnable(bgm, true);
 			ObjSound_SetLoopTime(bgm, 0, endTimes[id]);
-			ObjSound_SetRestartEnable(bgm, true);
-			ObjSound_Play(bgm);
+			task playAfter30Frames {
+				wait(30);
+				ObjSound_Play(bgm);
+				ObjSound_SetRestartEnable(bgm, true);
+			}
+			playAfter30Frames;
 			SetAreaCommonData("Cy06", "HeardBGM " ~ IntToString(id), true);
 			SetCommonData("NowPlaying", id);
 			if (sg) {
