@@ -5,11 +5,11 @@ let cwd = GetCurrentScriptDirectory;
 
 @Initialize {
 	if (IsReplay) {
-		//LoadCommonDataAreaFromReplayFile("Replay");
-		loadStageStats(GetCommonData("Stage", 131) - 1);
+		LoadCommonDataAreaFromReplayFile("Replay");
 	}
 	else {
 		SetAreaCommonData("Replay", "Difficulty", getDifficulty);
+		SaveCommonDataAreaToReplayFile("Replay");
 	}
 	if (GetCommonData("Start", false)) {reset;}
 	SetCommonData("InDialogue", false);
@@ -312,30 +312,6 @@ function submitScore {
 	SetCommonData("Dedz", true);
 	SetCommonData("HSSubmitDone", false);
 	CloseStgScene;
-}
-
-task loadStageStats(stage) {
-	let s = IntToString(stage);
-	SetAreaCommonData(
-		"Replay", "Power",
-		GetAreaCommonData("Replay", "Power" ~ s, 0)
-	);
-	SetAreaCommonData(
-		"Replay", "Radius",
-		GetAreaCommonData("Replay", "Radius" ~ s, 5)
-	);
-	SetAreaCommonData(
-		"Replay", "Value",
-		GetAreaCommonData("Replay", "Value" ~ s, 0.01)
-	);
-	SetAreaCommonData(
-		"Replay", "Trance",
-		GetAreaCommonData("Replay", "Trance" ~ s, 0)
-	);
-	SetAreaCommonData(
-		"Replay", "Rank",
-		GetAreaCommonData("Replay", "Rank" ~ s, getDifficulty)
-	);
 }
 
 task showRank {

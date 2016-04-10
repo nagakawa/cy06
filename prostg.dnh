@@ -67,15 +67,6 @@ task activateTrance(active) {
 	SetCommonData("IsTrance", active);
 }
 
-task saveStats(stage) {
-	let s = IntToString(stage);
-	SetAreaCommonData("Replay", "Power" ~ s, getPower);
-	SetAreaCommonData("Replay", "Radius" ~ s, getRadius);
-	SetAreaCommonData("Replay", "Value" ~ s, getValue);
-	SetAreaCommonData("Replay", "Trance" ~ s, getTrancePercentage);
-	SetAreaCommonData("Rank", "Rank" ~ s, getRank);
-}
-
 task hitbox {
 	let path = GetCurrentScriptDirectory ~ "resource/hurtbox.png";
 	let pathc = GetCurrentScriptDirectory ~ "resource/hurtbox_center.png";

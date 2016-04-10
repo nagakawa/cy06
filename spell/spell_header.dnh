@@ -86,9 +86,16 @@ task cutIn {
 		);
 		// 224 wide, 368 tall
 		ObjSprite2D_SetSourceRect(enemyPortrait, 0, 1, 511, 512);
-		descent (i in 0 .. 90) {
-			ObjSprite2D_SetDestRect(enemyPortrait, width - 511 + i, height - 511, width + i, height);
-			ObjRender_SetY(spellText, 30 + i);
+		ObjSprite2D_SetDestRect(enemyPortrait, width - 421, height - 511, width + 90, height);
+		ascent (i in 0 .. 90) {
+			let xoff = i;
+			if (i >= 60) {
+				let alpha = truncate(255 - 255 * (i - 59) ^ 2 / (30 ^ 2));
+				ObjRender_SetAlpha(enemyPortrait, alpha);
+				xoff = 60 + (i - 60) + 0.05 * (i - 60) ^ 2;
+			}
+			ObjRender_SetPosition(enemyPortrait, -xoff, -xoff / 3, 0);
+			ObjRender_SetY(spellText, 119 - i);
 			yield;
 		}
 		baseBonus = 0.5 + 0.5 * getRank; // TODO: elaborate

@@ -17,6 +17,5 @@ task TStage {
 	wait(239);
 	RenderToTextureA1("TB", 0, 100, true);
 	wait(1);
-	saveStats(1);
 	CloseStgScene;
 }
