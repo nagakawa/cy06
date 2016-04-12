@@ -34,11 +34,11 @@ PSOutput PSColorful(PSInput In): COLOR0 {
 	float hue = frac((0.9 * (In.vPos.x + In.vPos.y) + 0.6 * frame) / 360);
 	float3 hsl;
 	hsl.x = hue;
-	hsl.y = 0.5;
-	hsl.z = 0.5;
+	hsl.y = 0.2;
+	hsl.z = 0.2;
 	float3 color = HSLtoRGB(hsl);
 	Out.color.a = In.diffuse.a;
-	Out.color.rgb = 0.1 * color;
+	Out.color.rgb = color;
 	return Out;
 }
 
