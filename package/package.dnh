@@ -16,7 +16,7 @@ let bgm;
 
 @Initialize {
 	CreateCommonDataArea("Cy06");
-	LoadCommonDataAreaA1("Cy06");
+	LoadCommonDataAreaA2("Cy06", GetModuleDirectory ~ "data/Cy06.dat");
 	CreateCommonDataArea("Replay");
 	CreateCommonDataArea("Str");
 	CreateRenderTarget("TB");
@@ -96,7 +96,7 @@ task initBG {
 task ss {
 	loop {
 		if (GetKeyState(KEY_P) == KEY_PUSH) {
-			SaveSnapShotA1(GetCurrentScriptDirectory ~ "../screenshot/" ~ GetCurrentDateTimeS ~ ".bmp");
+			SaveSnapShotA1(GetModuleDirectory ~ "screenshot/" ~ GetCurrentDateTimeS ~ ".bmp");
 		}
 		yield;
 	}
@@ -274,7 +274,7 @@ task titleScene(showIntro) {
 	txr(1);
 	titleItems = titleItems ~ [bottomMatter];
 	playBGM(0);
-	SaveCommonDataAreaA1("Cy06");
+	SaveCommonDataAreaA2("Cy06", GetModuleDirectory ~ "data/Cy06.dat");
 	flushZ;
 	let frames = 0;
 	while (!titleSceneEnded) {
@@ -329,7 +329,7 @@ task titleScene(showIntro) {
 				cancel;
 				ObjPrim_SetTexture(titleImg, pathTitle2);
 				Obj_SetRenderPriorityI(titleImg, 0);
-				SaveCommonDataAreaA1("Cy06");
+				SaveCommonDataAreaA2("Cy06", GetModuleDirectory ~ "data/Cy06.dat");
 				wait(60);
 				WriteLog("STOP");
 				Obj_Delete(titleImg);
@@ -338,7 +338,7 @@ task titleScene(showIntro) {
 			}
 			ObjPrim_SetTexture(titleImg, pathTitle2);
 			Obj_SetRenderPriorityI(titleImg, 0);
-			SaveCommonDataAreaA1("Cy06");
+			SaveCommonDataAreaA2("Cy06", GetModuleDirectory ~ "data/Cy06.dat");
 		}
 		let up = GetVirtualKeyState(VK_UP);
 		let down = GetVirtualKeyState(VK_DOWN);
@@ -409,7 +409,13 @@ task viewHS(arg) {
 function replayMenu(titleImg) {
 	LoadReplayList;
 	let dir = GetCurrentScriptDirectory;
-	let slot = selectSlot;
+	function slot {
+		return slotSt[0];
+	}
+	function stage {
+		return slotSt[1];
+	}
+	let slotSt = selectSlotC(0, true);
 	while (slot != -1) {
 		if (IsValidReplayIndex(slot + 1)) {
 			let commS = GetReplayInfo(slot + 1, REPLAY_COMMENT);
@@ -420,7 +426,7 @@ function replayMenu(titleImg) {
 			yield;
 			ObjRender_SetColor(titleImg, 0, 0, 0);
 			if (mode == MODE_ALL) {
-				runScript(dir ~ "play.dnh", [slot + 1, difficulty, character, 0]);
+				runScript(dir ~ "play.dnh", [slot + 1, difficulty, character, 0, stage]);
 			}
 			else if (mode < MODE_SPELL) {
 				runScript(dir ~ "play.dnh", [slot + 1, difficulty, character, mode, mode, mode]);
@@ -431,6 +437,6 @@ function replayMenu(titleImg) {
 			}
 			ObjRender_SetColor(titleImg, 255, 255, 255);
 		}
-		slot = selectSlotS(slot);
+		slotSt = selectSlotC(slot, true);
 	}
 }

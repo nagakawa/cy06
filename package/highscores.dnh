@@ -68,7 +68,7 @@ task arrows {
 			hsn[i] = name;
 			SetAreaCommonData("Cy06", "HS" ~ IntToString(chara) ~ IntToString(difficulty), hs);
 			SetAreaCommonData("Cy06", "HSn" ~ IntToString(chara) ~ IntToString(difficulty), hsn);
-			SaveCommonDataAreaA1("Cy06");
+			SaveCommonDataAreaA2("Cy06", GetModuleDirectory ~ "data/Cy06.dat");
 		}
 	}
 	head = createTextR("", 64, 64);

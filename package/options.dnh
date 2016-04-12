@@ -108,7 +108,7 @@ task main {
 			}
 			case (3) {
 				setCy06("Language", selectLanguage);
-				SaveCommonDataAreaA1("cy06");
+				SaveCommonDataAreaA2("Cy06", GetModuleDirectory ~ "data/Cy06.dat");
 				init;
 				ascent (i in 0 .. 4) {
 					updateMenuItem(i);
@@ -291,7 +291,7 @@ function selectLanguage {
 }
 
 task finalize {
-	SaveCommonDataAreaA1("Cy06");
+	SaveCommonDataAreaA2("Cy06", GetModuleDirectory ~ "data/Cy06.dat");
 	ascent (i in 0 .. 2 * itemCt) {
 		Obj_Delete(textObjs[i]);
 	}

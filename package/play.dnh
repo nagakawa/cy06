@@ -18,8 +18,10 @@ let i;
 	difficulty = GetScriptArgument(1);
 	character = GetScriptArgument(2);
 	mode = GetScriptArgument(3);
-	if (GetScriptArgumentCount >= 6) {
+	if (GetScriptArgumentCount >= 5) {
 		start = GetScriptArgument(4);
+	}
+	if (GetScriptArgumentCount >= 6) {
 		end = GetScriptArgument(5);
 	}
 	startMe(rpi, difficulty, character, mode, start, end);

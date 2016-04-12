@@ -12,15 +12,20 @@ function selectSlot {
 }
 
 function selectSlotS(idx) {
+	return selectSlotC(idx, false);
+}
+
+function selectSlotC(idx, cback) {
 	let currentPage = truncate(idx / 10);
 	selected = idx % 10;
-	exited = false;
-	//let noSlots = REPLAY_INDEX_DIGIT_MAX - REPLAY_INDEX_DIGIT_MIN + 1;
 	let noSlots = 100;
 	let slotsPerPage = 10;
 	let totalPages = max(1, truncate((noSlots - 1) / slotsPerPage)) + 1;
 	let slotsOnLastPage = noSlots - slotsPerPage * (totalPages - 1);
 	let replayTextItems = [];
+	let frames = 0;
+	exited = false;
+	flushZ;
 	ascent (i in 0 .. slotsPerPage) {
 		let strs = replayString(i + currentPage * 10);
 		let items = [
@@ -29,75 +34,94 @@ function selectSlotS(idx) {
 		];
 		replayTextItems = replayTextItems ~ items;
 	}
-	flushZ;
-	let frames = 0;
-	while (!exited) {
-		if (GetVirtualKeyState(VK_OK) == KEY_PULL) {
-			ok;
-			break;
+	sub deleteAll {
+		ascent (i in 0 .. 2 * slotsPerPage) {
+			Obj_Delete(replayTextItems[i]);
 		}
-		if (GetVirtualKeyState(VK_CANCEL) == KEY_PULL ||
-			GetVirtualKeyState(VK_PAUSE) == KEY_PULL) {
-			selected = -1;
-			currentPage = 0;
-			cancel;
-			break;
-		}
-		let up = GetVirtualKeyState(VK_UP);
-		let down = GetVirtualKeyState(VK_DOWN);
-		let left = GetVirtualKeyState(VK_LEFT);
-		let right = GetVirtualKeyState(VK_RIGHT);
-		if (up == KEY_PUSH) {
-			selected--;
-			cmove;
-		}
-		else if (down == KEY_PUSH) {
-			selected++;
-			cmove;
-		}
-		else if (up == KEY_HOLD) {
-			frames++;
-			if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {
+	}
+	while (true) {
+		while (!exited) {
+			if (GetVirtualKeyState(VK_OK) == KEY_PULL) {
+				ok;
+				break;
+			}
+			if (GetVirtualKeyState(VK_CANCEL) == KEY_PULL ||
+				GetVirtualKeyState(VK_PAUSE) == KEY_PULL) {
+				cancel;
+				deleteAll;
+				if (cback) { return [-1, -1]; }
+				else { return -1; }
+			}
+			let up = GetVirtualKeyState(VK_UP);
+			let down = GetVirtualKeyState(VK_DOWN);
+			let left = GetVirtualKeyState(VK_LEFT);
+			let right = GetVirtualKeyState(VK_RIGHT);
+			if (up == KEY_PUSH) {
 				selected--;
 				cmove;
 			}
-		}
-		else if (down == KEY_HOLD) {
-			frames++;
-			if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {
+			else if (down == KEY_PUSH) {
 				selected++;
 				cmove;
 			}
+			else if (up == KEY_HOLD) {
+				frames++;
+				if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {
+					selected--;
+					cmove;
+				}
+			}
+			else if (down == KEY_HOLD) {
+				frames++;
+				if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {
+					selected++;
+					cmove;
+				}
+			}
+			if (selected < 0) {selected = slotsPerPage - 1;}
+			else if (selected >= slotsPerPage) {selected = 0;}
+			let prevPage = currentPage;
+			if (left == KEY_PUSH) {currentPage--; turnPage;}
+			else if (right == KEY_PUSH) {currentPage++; turnPage;}
+			else if (left == KEY_HOLD) {
+				frames++;
+				if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {currentPage--; turnPage;}
+			}
+			else if (right == KEY_HOLD) {
+				frames++;
+				if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {currentPage++; turnPage;}
+			}
+			else if (up == KEY_FREE && down == KEY_FREE) {frames = 0;}
+			if (currentPage < 0) {currentPage = totalPages - 1;}
+			else if (currentPage >= totalPages) {currentPage = 0;}
+			if (prevPage != currentPage) {
+				ascent (i in 0 .. slotsPerPage) {
+					let strs = replayString(currentPage * 10 + i);
+					ObjText_SetText(replayTextItems[2 * i], strs[0]);
+					ObjText_SetText(replayTextItems[2 * i + 1], strs[1]);
+				}
+			}
+			yield;
 		}
-		if (selected < 0) {selected = slotsPerPage - 1;}
-		else if (selected >= slotsPerPage) {selected = 0;}
-		let prevPage = currentPage;
-		if (left == KEY_PUSH) {currentPage--; turnPage;}
-		else if (right == KEY_PUSH) {currentPage++; turnPage;}
-		else if (left == KEY_HOLD) {
-			frames++;
-			if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {currentPage--; turnPage;}
-		}
-		else if (right == KEY_HOLD) {
-			frames++;
-			if (frames == 30 || (frames > 30 && (frames % 10 == 0))) {currentPage++; turnPage;}
-		}
-		else if (up == KEY_FREE && down == KEY_FREE) {frames = 0;}
-		if (currentPage < 0) {currentPage = totalPages - 1;}
-		else if (currentPage >= totalPages) {currentPage = 0;}
-		if (prevPage != currentPage) {
-			ascent (i in 0 .. slotsPerPage) {
-				let strs = replayString(currentPage * 10 + i);
-				ObjText_SetText(replayTextItems[2 * i], strs[0]);
-				ObjText_SetText(replayTextItems[2 * i + 1], strs[1]);
+		let nidx = selected + 10 * currentPage;
+		if (cback) {
+			let stage = runScript(
+				GetCurrentScriptDirectory ~ "../package/stageSelect.dnh",
+				[
+					GetReplayInfo(idx + 1, REPLAY_STAGE_INDEX_LIST),
+					GetReplayInfo(idx + 1, REPLAY_STAGE_LAST_SCORE_LIST)
+				]
+			);
+			if (stage != -1) {
+				deleteAll;
+				return [nidx, stage];
 			}
 		}
-		yield;
+		else {
+			deleteAll;
+			return nidx;
+		}
 	}
-	ascent (i in 0 .. 2 * slotsPerPage) {
-		Obj_Delete(replayTextItems[i]);
-	}
-	return selected + 10 * currentPage;
 }
 
 function menuItem(i, text, x, y) {

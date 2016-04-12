@@ -201,7 +201,7 @@ function buildString(label) {
 }
 
 task finalize {
-	SaveCommonDataAreaA1("Cy06");
+	SaveCommonDataAreaA2("Cy06", GetModuleDirectory ~ "data/Cy06.dat");
 	let l = length(textObjs);
 	ascent (i in 0 .. l) {
 		Obj_Delete(textObjs[i]);
