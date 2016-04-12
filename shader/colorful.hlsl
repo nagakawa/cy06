@@ -32,10 +32,7 @@ float3 HSLtoRGB(in float3 HSL) {
 PSOutput PSColorful(PSInput In): COLOR0 {
 	PSOutput Out;
 	float hue = frac((0.9 * (In.vPos.x + In.vPos.y) + 0.6 * frame) / 360);
-	float3 hsl;
-	hsl.x = hue;
-	hsl.y = 0.2;
-	hsl.z = 0.2;
+	float3 hsl = float3(hue, 0.2, 0.2);
 	float3 color = HSLtoRGB(hsl);
 	Out.color.a = In.diffuse.a;
 	Out.color.rgb = color;
