@@ -2,6 +2,7 @@
 #include "../sound.dnh"
 #include "../system/rpm_text.dnh"
 #include "../itsbloc.dnh"
+#include "../rect.dnh"
 
 let selected = 0;
 let textObjs = [];
@@ -28,26 +29,6 @@ function stageName(n) {
 	return IntToString(n) ~ " ";
 }
 
-function createRect(n) {
-	let left = 490;
-	let right = 750;
-	let top = 140;
-	let bottom = 160 + 25 * n;
-	let obj = ObjPrim_Create(OBJ_PRIMITIVE_2D);
-	ObjPrim_SetPrimitiveType(obj, PRIMITIVE_TRIANGLESTRIP);
-	ObjPrim_SetVertexCount(obj, 4);
-	ObjPrim_SetVertexPosition(obj, 0, left, top, 0);
-	ObjPrim_SetVertexPosition(obj, 1, right, top, 0);
-	ObjPrim_SetVertexPosition(obj, 2, left, bottom, 0);
-	ObjPrim_SetVertexPosition(obj, 3, right, bottom, 0);
-	ascent (i in 0 .. 4) {
-		ObjPrim_SetVertexColor(obj, i, 0, 0, 0);
-		ObjPrim_SetVertexAlpha(obj, i, 160 + 20 * (i > 0) + 20 * (i == 3));
-	}
-	Obj_SetRenderPriority(obj, 0.89);
-	return obj;
-}
-
 task main {
 	let prefix = S("menu.stagePrefix");
 	let suffix = S("menu.stageSuffix");
@@ -63,7 +44,7 @@ task main {
 		itemTask(title, i);
 		textObjs = textObjs ~ [title];
 	}
-	back = createRect(itemCount);
+	back = createRect(490, 750, 140, 160 + 25 * itemCount);
 	flushZ;
 	let frames = 0;
 	loop {

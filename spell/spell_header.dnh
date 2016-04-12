@@ -82,7 +82,7 @@ task cutIn {
 		ObjPrim_SetTexture(
 			enemyPortrait,
 			GetCurrentScriptDirectory ~  "../ambient/portrait/b" ~
-				IntToString(level - 1) ~ "_0.png"
+				IntToString(bossn) ~ "_0.png"
 		);
 		// 224 wide, 368 tall
 		ObjSprite2D_SetSourceRect(enemyPortrait, 0, 1, 511, 512);

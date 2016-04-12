@@ -1,5 +1,5 @@
 Player じゃあ、ようやく雨宿りした
-Player But I don't know where I am.
+Player でもところが分からない
 SetSprite 0 0
 ShowSprite
 Boss おはようございます！

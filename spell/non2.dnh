@@ -2,6 +2,7 @@
 #include "./sp_ceri.dnh"
 
 let level = 1;
+let bossn = 0;
 let id = 0;
 
 @Event {
