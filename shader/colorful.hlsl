@@ -1,7 +1,4 @@
-sampler sampler0_: register(s0);
-
-static const float RENDER_WIDTH = 1024;
-static const float RENDER_HEIGHT = 1024;
+sampler sampler0: register(s0);
 
 float frame;
 
@@ -34,8 +31,8 @@ PSOutput PSColorful(PSInput In): COLOR0 {
 	float hue = frac((0.9 * (In.vPos.x + In.vPos.y) + 0.6 * frame) / 360);
 	float3 hsl = float3(hue, 0.2, 0.2);
 	float3 color = HSLtoRGB(hsl);
-	Out.color.a = In.diffuse.a;
 	Out.color.rgb = color;
+	Out.color.a = In.diffuse.a;
 	return Out;
 }
 

@@ -5,10 +5,11 @@
 #Player["./../player/player0.dnh", "./../player/player1.dnh", "./../player/player2.dnh", "./../player/player3.dnh", "./../player/player4.dnh", "./../player/player5.dnh"]
 #System["./../system/system.dnh"]
 #include "./loading.dnh"
-#include "./../propkg.dnh"
+#include "../propkg.dnh"
 #include "./highscores_main.dnh"
 #include "../system/transparent_background.dnh"
 #include "../system/replay_slot.dnh"
+#include "../rect.dnh"
 
 // Hello viewers
 
@@ -19,6 +20,7 @@ let bgm;
 	LoadCommonDataAreaA2("Cy06", GetModuleDirectory ~ "data/Cy06.dat");
 	CreateCommonDataArea("Replay");
 	CreateCommonDataArea("Str");
+	CreateCommonDataArea("Shader");
 	CreateRenderTarget("TB");
 	initBG;
 	bgm = ObjSound_Create;
@@ -207,6 +209,7 @@ task titleScene(showIntro) {
 		ObjSprite2D_SetDestRect(titleImg, 0, 0, 800, 600);
 		loadWithDefaults;
 		wait(150);
+		initColorfulShader;
 	}
 	ObjPrim_SetTexture(titleImg, pathTitle2);
 	ObjSprite2D_SetSourceRect(titleImg, 0, 0, 800, 600);

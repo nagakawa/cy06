@@ -1,5 +1,13 @@
 # GET REKT
 
+task initColorfulShader {
+	let s = ObjShader_Create;
+	ObjShader_SetShaderF(s, GetCurrentScriptDirectory ~ "shader/colorful.hlsl");
+	ObjShader_SetTechnique(s, "TecColorful");
+	cycle(s);
+	SetAreaCommonData("Shader", "Colorful", s);
+}
+
 task cycle(s) {
 	let f = rand(0, 360);
 	while (!Obj_IsDeleted(s)) {
@@ -10,6 +18,10 @@ task cycle(s) {
 }
 
 function createRect(left, right, top, bottom) {
+	return createRectR(left, right, top, bottom, 0.89);
+}
+
+function createRectR(left, right, top, bottom, rp) {
 	let obj = ObjPrim_Create(OBJ_PRIMITIVE_2D);
 	ObjPrim_SetPrimitiveType(obj, PRIMITIVE_TRIANGLESTRIP);
 	ObjPrim_SetVertexCount(obj, 4);
@@ -22,13 +34,8 @@ function createRect(left, right, top, bottom) {
 		ObjPrim_SetVertexColor(obj, i, 0, 0, 0);
 		ObjPrim_SetVertexAlpha(obj, i, 190 + 20 * (i > 0) + 20 * (i == 3));
 	}
-	Obj_SetRenderPriority(obj, 0.89);
-	if (IsPixelShaderSupported(3, 0)) {
-		let s = ObjShader_Create;
-		ObjShader_SetShaderF(s, GetCurrentScriptDirectory ~ "shader/colorful.hlsl");
-		ObjShader_SetShaderO(obj, s);
-		ObjShader_SetTechnique(s, "TecColorful");
-		cycle(s);
-	}
+	Obj_SetRenderPriority(obj, rp);
+	ObjShader_SetShaderO(obj,
+		GetAreaCommonData("Shader", "Colorful", ID_INVALID));
 	return obj;
 }
