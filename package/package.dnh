@@ -18,6 +18,7 @@ let bgm;
 @Initialize {
 	CreateCommonDataArea("Cy06");
 	LoadCommonDataAreaA2("Cy06", GetModuleDirectory ~ "data/Cy06.dat");
+	dumpCy06Area;
 	CreateCommonDataArea("Replay");
 	CreateCommonDataArea("Str");
 	CreateCommonDataArea("Shader");
@@ -442,4 +443,17 @@ function replayMenu(titleImg) {
 		}
 		slotSt = selectSlotC(slot, true);
 	}
+}
+
+task dumpCy06Area {
+	let keys = GetCommonDataValueKeyList("Cy06");
+	let len = length(keys);
+	let handle = ObjFile_Create(OBJ_FILE_TEXT);
+	ObjFile_OpenNW(handle, GetModuleDirectory ~ "debug/cy06.txt");
+	ascent (i in 0 .. len) {
+		let key = keys[i];
+		ObjFileT_AddLine(handle,
+			key ~ " is " ~ ToString(GetAreaCommonData("Cy06", key, "a mutilated puppy")));
+	}
+	ObjFile_Store(handle);
 }

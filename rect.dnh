@@ -31,6 +31,7 @@ function createRectR(left, right, top, bottom, rp, do) {
 	# the shader derping in SS
 	if (do) {
 		ObjShader_SetShaderF(obj, GetCurrentScriptDirectory ~ "shader/colorful.hlsl");
+		ObjShader_SetTechnique(obj, "TecColorful");
 		cycle(obj);
 	}
 	return obj;
