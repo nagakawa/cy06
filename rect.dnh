@@ -29,10 +29,8 @@ function createRectR(left, right, top, bottom, rp, do) {
 	Obj_SetRenderPriority(obj, rp);
 	# temporary workaround until we know the real cause of
 	# the shader derping in SS
-	if (true || do) {
-		ObjShader_SetShaderF(obj, GetCurrentScriptDirectory ~ "shader/colorful.hlsl");
-		ObjShader_SetTechnique(obj, "TecColorful");
-		cycle(obj);
-	}
+	ObjShader_SetShaderF(obj, GetCurrentScriptDirectory ~ "shader/colorful.hlsl");
+	ObjShader_SetTechnique(obj, "TecColorful");
+	cycle(obj);
 	return obj;
 }

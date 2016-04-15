@@ -60,10 +60,10 @@ task customBehavior {
 	SetCameraAzimuthAngle(1);
 	SetCameraElevationAngle(0);
 	SetCameraYaw(180);
-	SetCameraFocusXYZ(-320, 5, 0);
+	SetCameraFocusXYZ(-250, 5, 0);
 	let i = -1600;
 	while (!IsCloseScript(GetOwnScriptID)) {
-		if (i <= 1600) {SetCameraFocusX(i / 5);}
+		if (i <= 1600) {SetCameraFocusX(i / 6.4);}
 		SetCameraRoll(45 * sin(i + 1600));
 		i++;
 		yield;
@@ -129,7 +129,7 @@ function createCaveMesh(y, res, seed1, seed2, seed3) {
 }
 
 task flow(water, i) {
-	while (GetCameraFocusX < 320) {yield;}
+	while (GetCameraFocusX < 250) {yield;}
 	let u = 0;
 	while (exists(water)) {
 		ObjPrim_SetVertexUV(water, i, u, 0);
