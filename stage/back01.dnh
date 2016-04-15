@@ -40,8 +40,8 @@ task initBG {
 	ascent (i in 0 .. 4) { flow(spr, 4 * i); }
 	Obj_SetRenderPriority(spr, 0.21);
 	invisibleOnSpell(spr);
-	createCaveMesh(20, 100, 100, seeds[0], seeds[1], seeds[2]);
-	createCaveMesh(-20, 100, 100, seeds[3], seeds[4], seeds[5]);
+	createCaveMesh(20, 20, seeds[0], seeds[1], seeds[2]);
+	createCaveMesh(-20, 20, seeds[3], seeds[4], seeds[5]);
 	setFog;
 	WriteLog("It took " ~ IntToString(GetPackageTime - start) ~ " ms to initialize the background.");
 	//debug;
@@ -72,10 +72,13 @@ task customBehavior {
 
 let MESH_SIZE = 256;
 
-function createCaveMesh(y, sy, res, seed1, seed2, seed3) {
-	let px = MESH_SIZE / y;
+function createCaveMesh(y, res, seed1, seed2, seed3) {
+	let px = MESH_SIZE / res;
 	let verticesPerRow = 1 + 4 * res;
-	let vertexTotal = 2 * res * verticesPerRow + 1;
+	let vertexTotal = 2 * res * (verticesPerRow + 1) + 1;
+	let seed4 = seeds[5];
+	let seed5 = seeds[6];
+	let seed6 = seeds[7];
 	let obj = ObjPrim_Create(OBJ_PRIMITIVE_3D);
 	ObjPrim_SetPrimitiveType(obj, PRIMITIVE_TRIANGLESTRIP);
 	ObjPrim_SetTexture(obj, GetCurrentScriptDirectory ~ 
@@ -83,20 +86,23 @@ function createCaveMesh(y, sy, res, seed1, seed2, seed3) {
 	ObjPrim_SetVertexCount(obj, vertexTotal);
 	function setVertex(vidx, i, j) {
 		let offset = (seed1 * i * i + seed2 * j * j + seed3 * i * j) % 256;
-		let offset2 = (seeds[5] * i * i + seeds[6] * j * j + seeds[7] * i * j) % 256;
 		let x = i * px + px * (randomValues[(offset + 7) % 256]) ^ 2;
 		let z = j * px + px * (randomValues[(offset + 14) % 256]) ^ 2;
-		let dy = sy * (randomValues[offset]) ^ 4;
-		if (absolute(j) <= 5) {dy *= (0.2 + 0.032 * j * j);}
-		else if (offset2 < 3) {dy *= 2 + 0.8 * randomValues[(offset + 98) % 256];}
+		let dy = 100 * (randomValues[offset]) ^ 4;
+		if (absolute(j) <= 5) {
+			dy *= 0.2 + 0.032 * j ^ 2;
+		}
+		else if ((seed4 * i * i + seed5 * j * j + seed6 * i * j) % 256 < 3) {
+			dy *= 2 + 0.8 * randomValues[(offset + 98) % 256];
+		}
 		let Y = y + dy;
 		let lr = 1 + randomValues[(offset + 209) % 256] * 0.1;
 		let lg = 1 + randomValues[(offset + 210) % 256] * 0.1;
 		let lb = 1 + randomValues[(offset + 21) % 256] * 0.1;
 		ObjPrim_SetVertexPosition(obj, vidx, x, Y, z);
 		ObjPrim_SetVertexUV(obj, vidx,
-			0.01 * (x + 0.6 * randomValues[(offset + 74) % 256]),
-			0.01 * (z + 0.6 * randomValues[(offset + 74) % 256])
+			0.01 * x + 0.006 * randomValues[(offset + 74) % 256],
+			0.01 * z + 0.006 * randomValues[(offset + 74) % 256]
 		);
 		ObjPrim_SetVertexColor(obj, vidx, 105 * lr, 94 * lg, 78 * lb);
 	}
@@ -114,6 +120,7 @@ function createCaveMesh(y, sy, res, seed1, seed2, seed3) {
 		}
 	}
 	setVertex(vidx, res, res);
+	WriteLog("Debug: " ~ IntToString(vertexTotal) ~ " vs " ~ IntToString(vidx + 1));
 	Obj_SetRenderPriority(obj, 0.21);
 	invisibleOnSpell(obj);
 	ObjRender_SetZWrite(obj, true);
