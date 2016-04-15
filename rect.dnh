@@ -1,11 +1,8 @@
-# GET REKT
+#include "./shader/utils.dnh"
 
 task initColorfulShader {
-	let s = ObjShader_Create;
-	ObjShader_SetShaderF(s, GetCurrentScriptDirectory ~ "shader/colorful.hlsl");
-	ObjShader_SetTechnique(s, "TecColorful");
+	let s = initShader("colorful", "TecColorful");
 	cycle(s);
-	SetAreaCommonData("Shader", "Colorful", s);
 }
 
 task cycle(s) {
@@ -36,6 +33,6 @@ function createRectR(left, right, top, bottom, rp) {
 	}
 	Obj_SetRenderPriority(obj, rp);
 	ObjShader_SetShaderO(obj,
-		GetAreaCommonData("Shader", "Colorful", ID_INVALID));
+		GetAreaCommonData("Shader", "Colorful", "Call initColorfulShader!"));
 	return obj;
 }

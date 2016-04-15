@@ -1,0 +1,7 @@
+function initShader(fname, technique) {
+	let s = ObjShader_Create;
+	ObjShader_SetShaderF(s, GetCurrentScriptDirectory ~ fname ~ ".hlsl");
+	ObjShader_SetTechnique(s, "TecColorful");
+	SetAreaCommonData("Shader", "Colorful", s);
+	return s;
+}
