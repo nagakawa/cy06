@@ -9,7 +9,8 @@ let scripts = [
 	"spell/non2.dnh",
 	"spell/spell2.dnh",
 	"spell/non3.dnh",
-	"stage/01.dnh"
+	"stage/01.dnh",
+	"stage/back01.dnh"
 ];
 
 task TStage {

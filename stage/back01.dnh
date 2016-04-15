@@ -22,7 +22,10 @@ task initBG {
 	ascent (i in 0 .. 8) {
 		seeds = seeds ~ [truncate(rand(16384, 32768))];
 	}
-	if (getEffectCut == 4) {CloseScript(GetOwnScriptID); return;}
+	if (getEffectCut == 4) {
+		CloseScript(GetOwnScriptID);
+		return;
+	}
 	let start = GetPackageTime;
 	let waterPath = GetCurrentScriptDirectory ~ "../resource/rentex/09_DIFFUSE.jpg";
 	spr = ObjPrim_Create(OBJ_PRIMITIVE_3D);
@@ -37,8 +40,8 @@ task initBG {
 	ascent (i in 0 .. 4) { flow(spr, 4 * i); }
 	Obj_SetRenderPriority(spr, 0.21);
 	invisibleOnSpell(spr);
-	createCaveMesh(20, 100, 50, seeds[0], seeds[1], seeds[2]);
-	createCaveMesh(-20, 100, 50, seeds[3], seeds[4], seeds[5]);
+	createCaveMesh(20, 100, 100, seeds[0], seeds[1], seeds[2]);
+	createCaveMesh(-20, 100, 100, seeds[3], seeds[4], seeds[5]);
 	setFog;
 	WriteLog("It took " ~ IntToString(GetPackageTime - start) ~ " ms to initialize the background.");
 	//debug;
