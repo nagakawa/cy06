@@ -73,7 +73,7 @@ function TDialogue(data) {
 	let cartouche = createRectR(
 		left + 16, left + width - 16,
 		top + height - 80, top + height - 16,
-		0.82
+		0.82, false
 	);
 	let enemyPortrait = ObjPrim_Create(OBJ_SPRITE_2D);
 	Obj_SetVisible(enemyPortrait, false);
