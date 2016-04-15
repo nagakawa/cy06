@@ -209,7 +209,7 @@ task titleScene(showIntro) {
 		ObjSprite2D_SetDestRect(titleImg, 0, 0, 800, 600);
 		loadWithDefaults;
 		wait(150);
-		initColorfulShader;
+		//initColorfulShader;
 	}
 	ObjPrim_SetTexture(titleImg, pathTitle2);
 	ObjSprite2D_SetSourceRect(titleImg, 0, 0, 800, 600);

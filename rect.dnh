@@ -1,10 +1,5 @@
 #include "./shader/utils.dnh"
 
-task initColorfulShader {
-	let s = initShader("colorful", "TecColorful");
-	cycle(s);
-}
-
 task cycle(s) {
 	let f = rand(0, 360);
 	while (!Obj_IsDeleted(s)) {
@@ -32,7 +27,7 @@ function createRectR(left, right, top, bottom, rp) {
 		ObjPrim_SetVertexAlpha(obj, i, 190 + 20 * (i > 0) + 20 * (i == 3));
 	}
 	Obj_SetRenderPriority(obj, rp);
-	ObjShader_SetShaderO(obj,
-		GetAreaCommonData("Shader", "Colorful", "Call initColorfulShader!"));
+	ObjShader_SetShaderF(obj, GetCurrentScriptDirectory ~ "/shader/colorful.hlsl");
+	cycle(obj);
 	return obj;
 }

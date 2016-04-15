@@ -70,8 +70,11 @@ function TDialogue(data) {
 	let left = GetStgFrameLeft;
 	toggleDialogue;
 	let len = length(data);
-	//let path = GetCurrentScriptDirectory ~ data[0][0];
-	let path2 = GetCurrentScriptDirectory ~ "./../resource/cartouche.png";
+	let cartouche = createRectR(
+		left + 16, left + width - 16,
+		top + height - 80, top + height - 16,
+		0.82
+	);
 	let enemyPortrait = ObjPrim_Create(OBJ_SPRITE_2D);
 	Obj_SetVisible(enemyPortrait, false);
 	Obj_SetRenderPriority(enemyPortrait, 0.81);
@@ -82,11 +85,6 @@ function TDialogue(data) {
 	ObjSprite2D_SetSourceRect(playerPortrait, 0, 1, 511, 512);
 	ObjSprite2D_SetDestRect(playerPortrait, 0, 68, 511, 579);
 	Obj_SetRenderPriority(playerPortrait, 0.81);
-	let cartouche = createRectR(
-		left + 16, left + width - 16,
-		top + height - 80, top + height - 16,
-		0.82
-	);
 	let dialogueText = ObjText_Create;
 	ObjText_SetFontType(dialogueText, S("font.dialogue"));
 	ObjText_SetFontSize(dialogueText, 16 * fontScale);
