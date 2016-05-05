@@ -26,7 +26,7 @@ task TShot {
 		let x = GetPlayerX;
 		let y = GetPlayerY - 4;
 		let shot = GetVirtualKeyState(VK_SHOT);
-		if (shot == KEY_PUSH || shot == KEY_HOLD && tick == 0 &&
+		if (shot == KEY_PUSH || shot == KEY_HOLD && (tick % 3) == 0 &&
 			GetPlayerState == STATE_NORMAL && IsPermitPlayerShot) {
 			if (isFocused) {
 				createPlayerShotA1(x, y, 10, 270, 28, 2, SALAMANDER);
@@ -41,9 +41,9 @@ task TShot {
 				createPlayerShotA1(x - 2.5, y + 8, 10, 246, 6, 1, SPIKED_SEED);
 				createPlayerShotA1(x + 2.5, y + 8, 10, 294, 6, 1, SPIKED_SEED);
 			}
+			if (tick % 12 == 0) { playSEVol("arrow02-c", 30); }
 		}
 		tick++;
-		if (tick == 3) {tick = 0;}
 		yield;
 	}
 }

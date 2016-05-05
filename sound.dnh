@@ -27,7 +27,11 @@ task resumeBGM {
 }
 
 task playSE(path) {
-	NotifyEventAll(EV_PLAY_SE, path);
+	NotifyEventAll(EV_PLAY_SE, [path]);
+}
+
+task playSEVol(path, m) {
+	NotifyEventAll(EV_PLAY_SE, [path, IntToString(m)]);
 }
 
 let bgmNames = [

@@ -25,7 +25,6 @@ function selectSlotC(idx, cback) {
 	let replayTextItems = [];
 	let frames = 0;
 	exited = false;
-	flushZ;
 	ascent (i in 0 .. slotsPerPage) {
 		let strs = replayString(i + currentPage * 10);
 		let items = [
@@ -39,6 +38,7 @@ function selectSlotC(idx, cback) {
 			Obj_Delete(replayTextItems[i]);
 		}
 	}
+	flushZ;
 	while (true) {
 		while (!exited) {
 			if (GetVirtualKeyState(VK_OK) == KEY_PULL) {

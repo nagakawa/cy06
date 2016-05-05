@@ -118,6 +118,7 @@ task ss {
 		if (path != "") {
 			Obj_Delete(bgm);
 			bgm = ObjSound_Create;
+			SetCommonData("BGMObj", bgm);
 			ObjSound_Load(bgm, path);
 			ObjSound_SetSoundDivision(bgm, SOUND_BGM);
 			ObjSound_SetVolumeRate(bgm, GetAreaCommonData("Cy06", "BGMVol", 100));
@@ -177,11 +178,17 @@ task ss {
 		}
 	}
 	case (EV_PLAY_SE) {
-		let path = GetCurrentScriptDirectory ~ "../se/" ~ GetEventArgument(0) ~ ".wav";
+		let args = GetEventArgument(0);
+		let path = GetCurrentScriptDirectory ~ "../se/" ~ args[0] ~ ".wav";
 		let se = ObjSound_Create;
+		let m = 100;
+		if (length(args) >= 2) {
+			m = atoi(args[1]);
+		}
+		let netVolume = truncate(0.01 * m * GetAreaCommonData("Cy06", "SEVolume", 100));
 		ObjSound_SetSoundDivision(se, SOUND_SE);
-		ObjSound_SetVolumeRate(se, GetAreaCommonData("Cy06", "SEVolume", 100));
 		ObjSound_Load(se, path);
+		ObjSound_SetVolumeRate(se, netVolume);
 		ObjSound_Play(se);
 		task go {
 			loop (600) {yield;}
