@@ -108,7 +108,11 @@ function loadWithDefaults {
 			"swing10.wav",
 			"whip00.wav",
 			"animal02.wav",
-			"noise20.wav"
+			"noise20.wav",
+			"cursor15_a.wav",
+			"cursor15_b.wav",
+			"cursor15_c.wav",
+			"cursor15_d.wav"
 		],
 		[
 			

@@ -41,12 +41,12 @@ function selectSlotC(idx, cback) {
 	flushZ;
 	while (true) {
 		while (!exited) {
-			if (GetVirtualKeyState(VK_OK) == KEY_PULL) {
+			if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
 				ok;
 				break;
 			}
-			if (GetVirtualKeyState(VK_CANCEL) == KEY_PULL ||
-				GetVirtualKeyState(VK_PAUSE) == KEY_PULL) {
+			if (GetVirtualKeyState(VK_CANCEL) == KEY_PUSH ||
+				GetVirtualKeyState(VK_PAUSE) == KEY_PUSH) {
 				cancel;
 				deleteAll;
 				if (cback) { return [-1, -1]; }

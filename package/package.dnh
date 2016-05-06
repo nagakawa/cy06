@@ -264,6 +264,7 @@ task titleScene(showIntro) {
 		fork;
 		return [objText, objSelect];
 	}
+	playBGM(0);
 	let x = 600;
 	let y = 142;
 	//let exUnlocked = isExtraUnlocked(0) || isExtraUnlocked(1) || isExtraUnlocked(2) || isExtraUnlocked(3);
@@ -275,24 +276,25 @@ task titleScene(showIntro) {
 		titleItems = titleItems ~ menuItem(i, rand(560, 600), y + 32 * i,
 			S("menu.main." ~ labels[i]), enabled[i]);
 	}
-	let bottomMatter = cta("(C)opyright 2015 Fluffy8x/AGC. Ver 0.01tr.");
-	txp(20, 540);
+	let bottomMatter = cta("(C)opyright 2015 Fluffy8x/AGC.[r]Ver 0.01tr.");
+	txp(20, 490);
 	txct(255, 192, 192);
 	txcb(255, 128, 128);
 	txb(128, 64, 64);
 	txh(32);
-	txt("menu");
+	txt("bossName");
 	txr(1);
 	titleItems = titleItems ~ [bottomMatter];
-	playBGM(0);
 	SaveCommonDataAreaA2("Cy06", GetModuleDirectory ~ "data/Cy06.dat");
 	flushZ;
 	let frames = 0;
 	while (!titleSceneEnded) {
 		if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
-			if (selected != QUIT) { ok; }
-			ObjPrim_SetTexture(titleImg, pathTitle3);
-			Obj_SetRenderPriorityI(titleImg, 2);
+			if (selected != QUIT) {
+				ok;
+				ObjPrim_SetTexture(titleImg, pathTitle3);
+				Obj_SetRenderPriorityI(titleImg, 2);
+			}
 			// TODO: fill in the stubs
 			alternative (selected)
 			case (START) {
@@ -338,10 +340,11 @@ task titleScene(showIntro) {
 			}
 			case (QUIT) {
 				cancel;
+				yield;
+				SaveCommonDataAreaA2("Cy06", GetModuleDirectory ~ "data/Cy06.dat");
+				wait(59);
 				ObjPrim_SetTexture(titleImg, pathTitle2);
 				Obj_SetRenderPriorityI(titleImg, 0);
-				SaveCommonDataAreaA2("Cy06", GetModuleDirectory ~ "data/Cy06.dat");
-				wait(60);
 				WriteLog("STOP");
 				Obj_Delete(titleImg);
 				ClosePackage;

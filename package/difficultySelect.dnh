@@ -100,14 +100,12 @@ task main {
 		}
 		if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
 			SetScriptResult(selected);
-			flushZ;
 			ok;
 			finalize;
 			return;
 		}
 		else if (GetVirtualKeyState(VK_CANCEL) == KEY_PUSH) {
 			SetScriptResult(-1);
-			flushX;
 			cancel;
 			finalize;
 			return;
@@ -133,6 +131,7 @@ task textObjectTask(obj, offset, i) {
 }
 
 task finalize {
+	yield;
 	SaveCommonDataAreaA2("Cy06", GetModuleDirectory ~ "data/Cy06.dat");
 	let l = length(textObjs);
 	ascent (i in 0 .. l) {

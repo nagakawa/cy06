@@ -126,7 +126,6 @@ task main {
 		if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
 			let sel2 = 0;
 			ok;
-			flushZ;
 			loop {
 				if (GetVirtualKeyState(VK_OK) == KEY_PUSH) {
 					ok;
@@ -172,7 +171,6 @@ task main {
 			cancel;
 			if (ctss) { SetScriptResult([-1, -1]); }
 			else { SetScriptResult(-1); }
-			flushX;
 			finalize;
 			return;
 		}
@@ -201,6 +199,7 @@ function buildString(label) {
 }
 
 task finalize {
+	yield;
 	SaveCommonDataAreaA2("Cy06", GetModuleDirectory ~ "data/Cy06.dat");
 	let l = length(textObjs);
 	ascent (i in 0 .. l) {
